@@ -11,9 +11,10 @@ describe('Nav.svelte', () => {
 
 	it('shows only the ( ) mark when closed', async () => {
 		render(Nav, { current: '/' });
-		await expect
-			.element(page.getByRole('button', { name: 'open menu' }).first())
-			.toBeInTheDocument();
+		// The parens are persistent <a> elements (not swapped for a <button>)
+		// so their transform transition has something to animate from — see
+		// Nav.svelte's onParenClick. That makes their accessible role "link".
+		await expect.element(page.getByRole('link', { name: 'open menu' }).first()).toBeInTheDocument();
 		// The link is correctly removed from the accessibility tree while
 		// closed (visibility: hidden), so getByRole needs includeHidden to find
 		// it at all. toBeVisible() here only checks offsetParent/display:none,
@@ -26,7 +27,7 @@ describe('Nav.svelte', () => {
 
 	it('opens to reveal the route links', async () => {
 		render(Nav, { current: '/' });
-		await page.getByRole('button', { name: 'open menu' }).first().click();
+		await page.getByRole('link', { name: 'open menu' }).first().click();
 		expect(nav.open).toBe(true);
 		await expect
 			.element(page.getByRole('link', { name: 'food' }))

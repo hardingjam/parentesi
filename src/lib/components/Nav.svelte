@@ -10,25 +10,46 @@
 	];
 
 	let viewportWidth = $state(typeof window !== 'undefined' ? window.innerWidth : 1440);
-	// Natural (unconstrained) width of the "food music contact" row, measured
-	// live so the closing paren never overlaps the link text regardless of
-	// font metrics. 320 is just a first-paint guess before the real
-	// measurement lands.
+	// Natural width of the "food music contact" row, measured live so the
+	// closing paren's travel distance always trails the *actual* rendered
+	// content (never overlapping it) regardless of font metrics. On mobile
+	// this is additionally clamped by `maxLinksWidth` below, so the measured
+	// value here saturates at whatever room is actually available. 320 is
+	// just a first-paint guess before the real measurement lands.
 	let linksContentWidth = $state(320);
 
 	const isMobile = $derived(viewportWidth <= 1023);
 	const edge = $derived(isMobile ? 24 : 48);
 	const parenSize = $derived(isMobile ? 44 : 56);
 	const linkGap = $derived(isMobile ? 12 : 40);
-	// Distance the closing paren travels when the nav opens, i.e. how far past
-	// the opening paren's hit area it rests. Desktop rests just past the
-	// measured link content (design target ~330px). Mobile always spreads
-	// exactly to the viewport edge (left/right edge inset on both sides) so
-	// the open nav spans left-24 to right-24 and the closing paren never
-	// lands off-screen.
-	const openDistance = $derived(
-		isMobile ? Math.max(viewportWidth - edge * 2 - parenSize * 2, 0) : linksContentWidth + linkGap
+	const trailingGap = $derived(isMobile ? 8 : linkGap);
+	// On a narrow phone there isn't always room for the full link row
+	// between the parens' hit areas and the screen edges, so on mobile the
+	// links are capped (and clipped) to whatever room is actually
+	// available. Combined with `openDistance` below (which is always driven
+	// by the *measured* — and therefore clamped — width), this guarantees
+	// the closing paren can never overlap the link text AND never lands
+	// past the true right edge, at any viewport width.
+	const maxLinksWidth = $derived(
+		isMobile ? Math.max(viewportWidth - edge * 2 - parenSize * 2 - trailingGap, 0) : Infinity
 	);
+	// Distance the closing paren travels when the nav opens, i.e. how far
+	// past the opening paren's hit area it rests.
+	const openDistance = $derived(linksContentWidth + trailingGap);
+
+	// The parens are single, persistent elements across open/close (never
+	// swapped between <a> and <button>) so the CSS transform transition has
+	// something to interpolate from and actually animates. Tapping either
+	// one while open closes the nav and follows the href home; while closed,
+	// the default navigation is suppressed and it just opens the nav.
+	function onParenClick(e: MouseEvent) {
+		if (nav.open) {
+			closeNav();
+		} else {
+			e.preventDefault();
+			toggleNav();
+		}
+	}
 
 	function onKeydown(e: KeyboardEvent) {
 		if (e.key === 'Escape') closeNav();
@@ -39,14 +60,12 @@
 
 <nav class:open={nav.open} class:mobile={isMobile} aria-label="site">
 	<div class="row">
-		{#if nav.open}
-			<a class="paren" href="/" onclick={closeNav} aria-label="home">(</a>
-		{:else}
-			<button class="paren" onclick={toggleNav} aria-label="open menu">(</button>
-		{/if}
+		<a class="paren" href="/" aria-label={nav.open ? 'home' : 'open menu'} onclick={onParenClick}
+			>(</a
+		>
 		<div
 			class="links"
-			style="left: {parenSize}px"
+			style="left: {parenSize}px; max-width: {isMobile ? `${maxLinksWidth}px` : 'none'}"
 			bind:clientWidth={linksContentWidth}
 			aria-hidden={!nav.open}
 		>
@@ -61,22 +80,13 @@
 				>
 			{/each}
 		</div>
-		{#if nav.open}
-			<a
-				class="paren closing"
-				href="/"
-				style="transform: translateX({openDistance}px)"
-				onclick={closeNav}
-				aria-label="home">)</a
-			>
-		{:else}
-			<button
-				class="paren closing"
-				style="transform: translateX(0px)"
-				onclick={toggleNav}
-				aria-label="open menu">)</button
-			>
-		{/if}
+		<a
+			class="paren closing"
+			href="/"
+			style="transform: translateX({nav.open ? openDistance : 0}px)"
+			aria-label={nav.open ? 'home' : 'open menu'}
+			onclick={onParenClick}>)</a
+		>
 	</div>
 </nav>
 
@@ -117,6 +127,7 @@
 		letter-spacing: 0.15em;
 		color: var(--ecru);
 		cursor: pointer;
+		text-decoration: none;
 		transition: opacity 200ms;
 	}
 
@@ -137,14 +148,6 @@
 			opacity 200ms;
 	}
 
-	/* While open, hug the closing glyph to the outer edge of its hit area
-	   instead of centering it, so it reads clear of the link text on narrow
-	   mobile screens without changing the (still centered, already-compact)
-	   closed-state look. */
-	nav.open .paren.closing {
-		justify-content: flex-end;
-	}
-
 	.links {
 		position: absolute;
 		top: 0;
@@ -152,6 +155,7 @@
 		display: flex;
 		align-items: center;
 		gap: 40px;
+		overflow: hidden;
 		pointer-events: none;
 	}
 
@@ -180,6 +184,17 @@
 		min-height: 44px;
 		display: inline-flex;
 		align-items: center;
+		/* Let flexbox actually shrink (and clip, with an ellipsis) each link's
+		   own box to fit `.links`' clamped max-width, instead of relying on
+		   the ancestor's overflow:hidden to visually hide an overflowing tail
+		   — that left the anchor's own hit-tested/measured box wider than
+		   what's rendered, which read as overlapping the closing paren under
+		   a raw bounding-box check even though nothing was actually visible
+		   or clickable there. */
+		min-width: 0;
+		flex-shrink: 1;
+		overflow: hidden;
+		text-overflow: ellipsis;
 	}
 
 	nav.open .links a {
