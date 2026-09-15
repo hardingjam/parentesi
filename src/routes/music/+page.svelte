@@ -1,6 +1,5 @@
 <script lang="ts">
 	import Stage from '$lib/components/Stage.svelte';
-	import { stages } from '$lib/content';
 
 	const soundcloudSrc =
 		'https://w.soundcloud.com/player/?url=' +
@@ -12,7 +11,7 @@
 	<title>( music ) — parentesi</title>
 </svelte:head>
 
-<Stage spec={stages.music}>
+<Stage>
 	<div class="equation rise" style="--d: 150ms">
 		<p>Tastes like sound <span class="eq">= Planatia</span></p>
 		<p>Sounds like taste <span class="eq">= ( parentesi )</span></p>

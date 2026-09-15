@@ -1,6 +1,5 @@
 <script lang="ts">
 	import Stage from '$lib/components/Stage.svelte';
-	import { stages } from '$lib/content';
 
 	const services = [
 		'circular plant-based dining',
@@ -15,7 +14,7 @@
 	<title>( parentesi )</title>
 </svelte:head>
 
-<Stage spec={stages.home} corner="Berlin">
+<Stage corner="Berlin">
 	<h1 class="wordmark rise" style="--d: 100ms" aria-label="parentesi">
 		<span class="paren left">(</span><span class="letters reveal"
 			>&nbsp;p a r e n t e s i&nbsp;</span

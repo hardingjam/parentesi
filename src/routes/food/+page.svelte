@@ -1,6 +1,5 @@
 <script lang="ts">
 	import Stage from '$lib/components/Stage.svelte';
-	import { stages } from '$lib/content';
 
 	const restaurants = [
 		'Le Bristol***',
@@ -30,7 +29,7 @@
 	<title>( food ) — parentesi</title>
 </svelte:head>
 
-<Stage spec={stages.food}>
+<Stage>
 	<div class="frame">
 		<div class="grid">
 			<div class="bio rise" style="--d: 150ms">

@@ -1,0 +1,53 @@
+import { page } from 'vitest/browser';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { render } from 'vitest-browser-svelte';
+import { nav } from '$lib/nav.svelte';
+import { stagePhotos, stages } from '$lib/content';
+import PhotoStack from './PhotoStack.svelte';
+
+describe('PhotoStack.svelte', () => {
+	beforeEach(() => {
+		nav.open = false;
+	});
+
+	it('renders the full site-wide reel with alts', async () => {
+		render(PhotoStack, { spec: stages.home });
+		for (const photo of stagePhotos) {
+			await expect.element(page.getByAltText(photo.alt)).toBeInTheDocument();
+		}
+	});
+
+	it('raises the nav scrim while the nav is open', async () => {
+		render(PhotoStack, { spec: stages.home });
+		nav.open = true;
+		await expect.poll(() => Boolean(document.querySelector('.nav-scrim.visible'))).toBe(true);
+	});
+
+	it('hard-cuts between photos under prefers-reduced-motion (no WAAPI animations)', async () => {
+		vi.useFakeTimers();
+		const original = window.matchMedia.bind(window);
+		const spy = vi.spyOn(window, 'matchMedia').mockImplementation((query: string) => {
+			if (query.includes('prefers-reduced-motion')) {
+				return { matches: true, media: query } as MediaQueryList;
+			}
+			return original(query);
+		});
+		try {
+			render(PhotoStack, { spec: stages.home });
+			// let the $effect run
+			await Promise.resolve();
+			const imgs = [...document.querySelectorAll<HTMLImageElement>('.stack img')];
+			expect(imgs.length).toBe(stagePhotos.length);
+			expect(imgs.flatMap((el) => el.getAnimations()).length).toBe(0);
+			expect(imgs.filter((el) => el.style.opacity === '1').length).toBe(1);
+			expect(imgs[0].style.opacity).toBe('1');
+			// after one photo interval the next photo cuts in
+			vi.advanceTimersByTime(7000);
+			expect(imgs[0].style.opacity).toBe('0');
+			expect(imgs[1].style.opacity).toBe('1');
+		} finally {
+			spy.mockRestore();
+			vi.useRealTimers();
+		}
+	});
+});

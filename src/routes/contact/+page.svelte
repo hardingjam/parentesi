@@ -1,13 +1,12 @@
 <script lang="ts">
 	import Stage from '$lib/components/Stage.svelte';
-	import { stages } from '$lib/content';
 </script>
 
 <svelte:head>
 	<title>( contact ) — parentesi</title>
 </svelte:head>
 
-<Stage spec={stages.contact} credit="Photos: Fredericke Alma Sauerbrey, Zoe Spawton">
+<Stage credit="Photos: Fredericke Alma Sauerbrey, Zoe Spawton">
 	<div class="row rise" style="--d: 100ms">
 		<span class="big left" aria-hidden="true">(</span>
 		<div class="reveal block">
