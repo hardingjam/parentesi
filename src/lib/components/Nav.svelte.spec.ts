@@ -25,10 +25,11 @@ describe('Nav.svelte', () => {
 			.toHaveStyle({ visibility: 'hidden', opacity: '0' });
 	});
 
-	it('opens to reveal the route links', async () => {
+	it('opens on hover and reveals the route links', async () => {
+		// The test browser is hover-capable, so entering the nav opens it.
 		render(Nav, { current: '/' });
-		await page.getByRole('link', { name: 'open menu' }).first().click();
-		expect(nav.open).toBe(true);
+		await page.getByRole('link', { name: 'open menu' }).first().hover();
+		await expect.poll(() => nav.open).toBe(true);
 		await expect
 			.element(page.getByRole('link', { name: 'food' }))
 			.toHaveStyle({ visibility: 'visible', opacity: '1' });
@@ -38,6 +39,14 @@ describe('Nav.svelte', () => {
 		await expect
 			.element(page.getByRole('link', { name: 'contact' }))
 			.toHaveStyle({ visibility: 'visible', opacity: '1' });
+	});
+
+	it('closes when the pointer leaves the nav', async () => {
+		nav.open = true;
+		render(Nav, { current: '/' });
+		const el = document.querySelector('nav');
+		el?.dispatchEvent(new MouseEvent('mouseleave'));
+		await expect.poll(() => nav.open).toBe(false);
 	});
 
 	it('marks the current route non-interactive', async () => {

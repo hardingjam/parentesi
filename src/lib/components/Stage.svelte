@@ -197,9 +197,10 @@
 			left: 24px;
 			font-size: 11px;
 		}
+		/* The corner note (home's "Berlin") is a desktop-only flourish per the
+		   design handoff; on narrow screens it would crowd the photo credit. */
 		.corner {
-			left: auto;
-			right: 24px;
+			display: none;
 		}
 	}
 </style>

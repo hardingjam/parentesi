@@ -91,6 +91,9 @@
 		max-height: 560px;
 		overflow-y: auto;
 		scrollbar-width: none;
+		/* Content starts/ends beyond the mask's fade zones so nothing sits
+		   half-faded at rest — the fades only ever eat scrolled-away text. */
+		padding: 60px 0;
 		mask-image: linear-gradient(
 			to bottom,
 			transparent,
@@ -145,6 +148,9 @@
 			right: 28px;
 			bottom: 80px;
 			left: 28px;
+			/* Cancel the base width:100% — with left+width set, right would be
+			   ignored and the frame would overflow the viewport. */
+			width: auto;
 			overflow-y: auto;
 			padding-top: 40px;
 			touch-action: pan-y;

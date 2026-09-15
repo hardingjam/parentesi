@@ -22,8 +22,11 @@
 	const isMobile = $derived(viewportWidth <= 1023);
 	const edge = $derived(isMobile ? 24 : 48);
 	const parenSize = $derived(isMobile ? 44 : 56);
-	const linkGap = $derived(isMobile ? 12 : 40);
-	const trailingGap = $derived(isMobile ? 8 : linkGap);
+	const linkGap = $derived(isMobile ? 10 : 40);
+	// Small on both breakpoints: the closing paren's glyph is centered inside
+	// its ≥44px hit box, which already contributes ~15px of visual air — a
+	// full linkGap here made ") contact" read much wider than "( food".
+	const trailingGap = 8;
 	// On a narrow phone there isn't always room for the full link row
 	// between the parens' hit areas and the screen edges, so on mobile the
 	// links are capped (and clipped) to whatever room is actually
@@ -38,12 +41,42 @@
 	// past the opening paren's hit area it rests.
 	const openDistance = $derived(linksContentWidth + trailingGap);
 
+	// Hover-capable devices (desktop): the nav opens when the pointer enters
+	// it and closes when it leaves; the parens are then plain home links.
+	// Touch devices: no hover exists, so tapping the mark toggles instead —
+	// tap to open, tap a paren again to go home (which also closes).
+	const hoverCapable = () => window.matchMedia('(hover: hover)').matches;
+
+	function onMouseEnter() {
+		if (hoverCapable()) nav.open = true;
+	}
+
+	function onMouseLeave() {
+		if (hoverCapable()) closeNav();
+	}
+
+	// Keyboard access on hover-capable devices: tabbing into the nav opens
+	// it, tabbing out closes it. (Guarded like hover so a touch tap's
+	// focus event can't fight the tap-to-toggle click handler below.)
+	function onFocusIn() {
+		if (hoverCapable()) nav.open = true;
+	}
+
+	function onFocusOut(e: FocusEvent) {
+		if (hoverCapable() && !(e.currentTarget as Node).contains(e.relatedTarget as Node)) {
+			closeNav();
+		}
+	}
+
 	// The parens are single, persistent elements across open/close (never
 	// swapped between <a> and <button>) so the CSS transform transition has
-	// something to interpolate from and actually animates. Tapping either
-	// one while open closes the nav and follows the href home; while closed,
-	// the default navigation is suppressed and it just opens the nav.
+	// something to interpolate from and actually animates.
 	function onParenClick(e: MouseEvent) {
+		if (hoverCapable()) {
+			// Hover already opened the nav; a paren click is just "go home".
+			closeNav();
+			return;
+		}
 		if (nav.open) {
 			closeNav();
 		} else {
@@ -59,7 +92,14 @@
 
 <svelte:window bind:innerWidth={viewportWidth} onkeydown={onKeydown} />
 
-<nav class:open={nav.open} aria-label="site">
+<nav
+	class:open={nav.open}
+	aria-label="site"
+	onmouseenter={onMouseEnter}
+	onmouseleave={onMouseLeave}
+	onfocusin={onFocusIn}
+	onfocusout={onFocusOut}
+>
 	<div class="row">
 		<a
 			class="paren"
@@ -198,8 +238,12 @@
 
 	@media (max-width: 1023px) {
 		.links a {
-			font-size: 22px;
-			letter-spacing: 0.12em;
+			/* The handoff's 22px/.12em genuinely can't fit "food music contact"
+			   between two 44px parens at 360-390px — it ellipsis-clipped the
+			   labels. Readable beats clipped, so the open row runs smaller and
+			   tighter on phones. */
+			font-size: 18px;
+			letter-spacing: 0.06em;
 			min-height: 44px;
 			display: inline-flex;
 			align-items: center;
