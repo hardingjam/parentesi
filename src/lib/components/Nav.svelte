@@ -5,20 +5,10 @@
 	let { current }: { current: string } = $props();
 
 	const routes = [
-		{ href: '/food', label: 'food' },
-		{ href: '/music', label: 'music' },
-		{ href: '/contact', label: 'contact' }
-	];
-
-	// resolve()'s types are generated from the routes that exist today; the
-	// food/music/contact pages are on the site's route map (see the project
-	// plan) but don't have +page.svelte files yet, so TypeScript doesn't
-	// recognize their pathnames. This only narrows the *type* resolve() sees
-	// — resolve() still runs its real base-path prefixing at runtime — and
-	// can be dropped once those routes exist.
-	function resolveRouteHref(href: string) {
-		return resolve(href as '/');
-	}
+		{ href: resolve('/food'), label: 'food' },
+		{ href: resolve('/music'), label: 'music' },
+		{ href: resolve('/contact'), label: 'contact' }
+	] as const;
 
 	let viewportWidth = $state(typeof window !== 'undefined' ? window.innerWidth : 1440);
 	// Natural width of the "food music contact" row, measured live so the
@@ -89,7 +79,7 @@
 			{#each routes as route, i (route.href)}
 				{@const isCurrent = current === route.href}
 				<a
-					href={resolveRouteHref(route.href)}
+					href={route.href}
 					style="--i: {i}"
 					aria-current={isCurrent ? 'page' : undefined}
 					tabindex={nav.open && !isCurrent ? undefined : -1}
