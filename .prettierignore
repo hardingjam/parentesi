@@ -7,3 +7,6 @@ bun.lockb
 
 # Miscellaneous
 /static/
+
+# Design handoff is source material, not code
+design_handoff_parentesi_site/

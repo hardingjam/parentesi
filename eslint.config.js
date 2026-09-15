@@ -10,6 +10,8 @@ const gitignorePath = path.resolve(import.meta.dirname, '.gitignore');
 
 export default defineConfig(
 	includeIgnoreFile(gitignorePath),
+	// Design handoff is generated source material, not project code
+	{ ignores: ['design_handoff_parentesi_site/'] },
 	js.configs.recommended,
 	ts.configs.recommended,
 	svelte.configs.recommended,

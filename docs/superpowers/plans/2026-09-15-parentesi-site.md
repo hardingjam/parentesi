@@ -40,6 +40,7 @@ Deleted: `src/lib/vitest-examples/` (scaffold demo).
 ### Task 1: Housekeeping — tokens, font, entrance keyframes, favicon
 
 **Files:**
+
 - Modify: `src/routes/layout.css`
 - Modify: `src/app.html`
 - Modify: `src/lib/assets/favicon.svg`
@@ -138,7 +139,7 @@ a {
 - [ ] **Step 3: Add theme-color to `src/app.html`** — insert into `<head>` above `%sveltekit.head%`:
 
 ```html
-		<meta name="theme-color" content="#14120F" />
+<meta name="theme-color" content="#14120F" />
 ```
 
 - [ ] **Step 4: Replace `src/lib/assets/favicon.svg`**
@@ -163,6 +164,7 @@ git add -A && git commit -m "chore: brand tokens, Typo font, entrance keyframes,
 ### Task 2: Image pipeline + content data
 
 **Files:**
+
 - Create: `scripts/optimize-images.mjs`
 - Create: `src/lib/content.ts`
 - Test: `src/lib/content.test.ts`
@@ -323,10 +325,11 @@ git add -A && git commit -m "feat: optimized web images and per-route stage cont
 ### Task 3: Crossfade math (pure, TDD)
 
 **Files:**
+
 - Create: `src/lib/stage/crossfade.ts`
 - Test: `src/lib/stage/crossfade.test.ts`
 
-Reference behavior (handoff README): 7s per photo = 5s hold + 2s linear dissolve; incoming fades in over the current; outgoing released only once covered. For n=4 (28s cycle) the opacity keyframes are `0%:0, 25%:0, 32.14%:1, 57.14%:1, 57.2%:0, 100%:0`; photo *i* gets `animation-delay: -(3.5 + 7i)s`. Scroll sets `playbackRate = 1 + min(|deltaY|/120, 6)`, easing back to 1 over 1.5s after input stops.
+Reference behavior (handoff README): 7s per photo = 5s hold + 2s linear dissolve; incoming fades in over the current; outgoing released only once covered. For n=4 (28s cycle) the opacity keyframes are `0%:0, 25%:0, 32.14%:1, 57.14%:1, 57.2%:0, 100%:0`; photo _i_ gets `animation-delay: -(3.5 + 7i)s`. Scroll sets `playbackRate = 1 + min(|deltaY|/120, 6)`, easing back to 1 over 1.5s after input stops.
 
 - [ ] **Step 1: Write the failing test** — `src/lib/stage/crossfade.test.ts`:
 
@@ -479,6 +482,7 @@ git add src/lib/stage && git commit -m "feat: crossfade timing and playback-rate
 ### Task 4: Nav state + Nav component
 
 **Files:**
+
 - Create: `src/lib/nav.svelte.ts`
 - Create: `src/lib/components/Nav.svelte`
 - Test: `src/lib/components/Nav.svelte.spec.ts`
@@ -730,6 +734,7 @@ git add src/lib/nav.svelte.ts src/lib/components && git commit -m "feat: parenth
 ### Task 5: Stage component
 
 **Files:**
+
 - Create: `src/lib/components/Stage.svelte`
 - Test: `src/lib/components/Stage.svelte.spec.ts`
 
@@ -1007,6 +1012,7 @@ git commit -m "feat: crossfading photo stage with scroll-accelerated dissolve"
 ### Task 6: Layout + Home route
 
 **Files:**
+
 - Modify: `src/routes/+layout.svelte`
 - Modify: `src/routes/+page.svelte`
 
@@ -1024,7 +1030,10 @@ git commit -m "feat: crossfading photo stage with scroll-accelerated dissolve"
 
 <svelte:head>
 	<link rel="icon" href={favicon} />
-	<meta name="description" content="( parentesi ) — a suspended moment. Plant-based dining, catering, workshops and itinerant events by chef Pietro Platania, Berlin." />
+	<meta
+		name="description"
+		content="( parentesi ) — a suspended moment. Plant-based dining, catering, workshops and itinerant events by chef Pietro Platania, Berlin."
+	/>
 </svelte:head>
 
 {#key page.url.pathname}
@@ -1057,12 +1066,14 @@ git commit -m "feat: crossfading photo stage with scroll-accelerated dissolve"
 
 <Stage spec={stages.home} corner="Berlin">
 	<h1 class="wordmark rise" style="--d: 100ms" aria-label="parentesi">
-		<span class="paren left">(</span><span class="letters reveal">&nbsp;p a r e n t e s i&nbsp;</span><span class="paren right">)</span>
+		<span class="paren left">(</span><span class="letters reveal"
+			>&nbsp;p a r e n t e s i&nbsp;</span
+		><span class="paren right">)</span>
 	</h1>
 	<div class="manifesto rise" style="--d: 1500ms">
 		<p>
-			A suspended moment where gastronomy, music, art and conscious consumption create an
-			inspiring dialogue.
+			A suspended moment where gastronomy, music, art and conscious consumption create an inspiring
+			dialogue.
 		</p>
 		<p>
 			We believe in food as unity, a form of cultural connection and discovery within a sensory
@@ -1171,6 +1182,7 @@ git add src/routes && git commit -m "feat: layout with nav and home stage"
 ### Task 7: Food route
 
 **Files:**
+
 - Create: `src/routes/food/+page.svelte`
 
 Desktop: two-column grid (bio left, sample menu right), left-aligned, `rise` at 150/300ms. Mobile: an absolutely-positioned scrollable text frame (top 120 / bottom 80 / sides 28) with masked fades; inner scroll must still work (`touch-action: pan-y` on the frame) and the page never moves.
@@ -1399,6 +1411,7 @@ git add src/routes/food && git commit -m "feat: food route"
 ### Task 8: Music + Contact routes
 
 **Files:**
+
 - Create: `src/routes/music/+page.svelte`
 - Create: `src/routes/contact/+page.svelte`
 
@@ -1535,7 +1548,7 @@ git add src/routes/food && git commit -m "feat: food route"
 <Stage spec={stages.contact} credit="Photos: Fredericke Alma Sauerbrey, Zoe Spawton">
 	<div class="row rise" style="--d: 100ms">
 		<span class="big left" aria-hidden="true">(</span>
-		<div class="block reveal">
+		<div class="reveal block">
 			<a href="mailto:parentesi.berlin@gmail.com">parentesi.berlin@gmail.com</a>
 			<a href="tel:+393408732532">+39 340 873 2532</a>
 			<!-- Instagram handle TBC with owner; placeholder points at Planatia -->

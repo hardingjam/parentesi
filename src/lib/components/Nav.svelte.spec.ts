@@ -57,4 +57,27 @@ describe('Nav.svelte', () => {
 		document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', bubbles: true }));
 		await expect.poll(() => nav.open).toBe(false);
 	});
+
+	it('closes when the closing paren is clicked while open (regression: persistent element)', async () => {
+		// Regression guard for the fix that made both parens single, persistent
+		// <a> elements instead of swapping <a>/<button> via {#if}/{:else} — the
+		// swap used to mean the CLOSING paren specifically (a fresh element
+		// each toggle) had nothing for its transform transition to animate
+		// from. Clicking it while open should still run onParenClick's
+		// closeNav() branch.
+		nav.open = true;
+		render(Nav, { current: '/' });
+		const closingParen = page.getByRole('link', { name: 'home' }).last();
+		await expect.element(closingParen).toBeInTheDocument();
+		// Clicking it while open also carries a real href="/" navigation (the
+		// spec'd "tap either paren while open -> navigate home and close").
+		// Stop that default action so this component-only test doesn't
+		// navigate the whole test page away — Nav's own onclick still runs
+		// and calls closeNav() synchronously regardless of who else is
+		// listening.
+		const element = closingParen.element() as HTMLAnchorElement;
+		element.addEventListener('click', (e) => e.preventDefault(), { once: true, capture: true });
+		element.click();
+		expect(nav.open).toBe(false);
+	});
 });

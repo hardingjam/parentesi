@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { resolve } from '$app/paths';
 	import { closeNav, nav, toggleNav } from '$lib/nav.svelte';
 
 	let { current }: { current: string } = $props();
@@ -8,6 +9,16 @@
 		{ href: '/music', label: 'music' },
 		{ href: '/contact', label: 'contact' }
 	];
+
+	// resolve()'s types are generated from the routes that exist today; the
+	// food/music/contact pages are on the site's route map (see the project
+	// plan) but don't have +page.svelte files yet, so TypeScript doesn't
+	// recognize their pathnames. This only narrows the *type* resolve() sees
+	// — resolve() still runs its real base-path prefixing at runtime — and
+	// can be dropped once those routes exist.
+	function resolveRouteHref(href: string) {
+		return resolve(href as '/');
+	}
 
 	let viewportWidth = $state(typeof window !== 'undefined' ? window.innerWidth : 1440);
 	// Natural width of the "food music contact" row, measured live so the
@@ -58,21 +69,27 @@
 
 <svelte:window bind:innerWidth={viewportWidth} onkeydown={onKeydown} />
 
-<nav class:open={nav.open} class:mobile={isMobile} aria-label="site">
+<nav class:open={nav.open} aria-label="site">
 	<div class="row">
-		<a class="paren" href="/" aria-label={nav.open ? 'home' : 'open menu'} onclick={onParenClick}
-			>(</a
+		<a
+			class="paren"
+			href={resolve('/')}
+			aria-label={nav.open ? 'home' : 'open menu'}
+			aria-expanded={nav.open}
+			onclick={onParenClick}>(</a
 		>
 		<div
 			class="links"
-			style="left: {parenSize}px; max-width: {isMobile ? `${maxLinksWidth}px` : 'none'}"
+			style="left: {parenSize}px; max-width: {isMobile
+				? `${maxLinksWidth}px`
+				: 'none'}; gap: {linkGap}px"
 			bind:clientWidth={linksContentWidth}
 			aria-hidden={!nav.open}
 		>
 			{#each routes as route, i (route.href)}
 				{@const isCurrent = current === route.href}
 				<a
-					href={route.href}
+					href={resolveRouteHref(route.href)}
 					style="--i: {i}"
 					aria-current={isCurrent ? 'page' : undefined}
 					tabindex={nav.open && !isCurrent ? undefined : -1}
@@ -82,15 +99,24 @@
 		</div>
 		<a
 			class="paren closing"
-			href="/"
+			href={resolve('/')}
 			style="transform: translateX({nav.open ? openDistance : 0}px)"
 			aria-label={nav.open ? 'home' : 'open menu'}
+			aria-expanded={nav.open}
 			onclick={onParenClick}>)</a
 		>
 	</div>
 </nav>
 
 <style>
+	/* Geometry that's purely a breakpoint concern (position, sizing, type)
+	   lives in real media queries so first paint on a phone is already
+	   correct — no waiting on JS hydration to read window.innerWidth and
+	   flip a class, which would otherwise flash desktop geometry first. Only
+	   values that genuinely need live measurement (linksContentWidth,
+	   maxLinksWidth, openDistance, and the gap that feeds openDistance's
+	   math — see script) stay in JS, and those only matter once the nav is
+	   opened, which is inherently post-hydration anyway. */
 	nav {
 		position: fixed;
 		top: 40px;
@@ -99,10 +125,12 @@
 		height: 56px;
 	}
 
-	nav.mobile {
-		top: 56px;
-		left: 24px;
-		height: 44px;
+	@media (max-width: 1023px) {
+		nav {
+			top: 56px;
+			left: 24px;
+			height: 44px;
+		}
 	}
 
 	.row {
@@ -131,10 +159,12 @@
 		transition: opacity 200ms;
 	}
 
-	nav.mobile .paren {
-		min-width: 44px;
-		min-height: 44px;
-		font-size: 22px;
+	@media (max-width: 1023px) {
+		.paren {
+			min-width: 44px;
+			min-height: 44px;
+			font-size: 22px;
+		}
 	}
 
 	.paren:hover {
@@ -154,17 +184,15 @@
 		height: 100%;
 		display: flex;
 		align-items: center;
-		gap: 40px;
 		overflow: hidden;
 		pointer-events: none;
+		/* gap is set inline from the same `linkGap` value that feeds
+		   `openDistance`'s math (see script) — one source of truth instead
+		   of a second hardcoded literal here that could drift from it. */
 	}
 
 	nav.open .links {
 		pointer-events: auto;
-	}
-
-	nav.mobile .links {
-		gap: 12px;
 	}
 
 	.links a {
@@ -178,23 +206,25 @@
 			visibility 200ms;
 	}
 
-	nav.mobile .links a {
-		font-size: 22px;
-		letter-spacing: 0.12em;
-		min-height: 44px;
-		display: inline-flex;
-		align-items: center;
-		/* Let flexbox actually shrink (and clip, with an ellipsis) each link's
-		   own box to fit `.links`' clamped max-width, instead of relying on
-		   the ancestor's overflow:hidden to visually hide an overflowing tail
-		   — that left the anchor's own hit-tested/measured box wider than
-		   what's rendered, which read as overlapping the closing paren under
-		   a raw bounding-box check even though nothing was actually visible
-		   or clickable there. */
-		min-width: 0;
-		flex-shrink: 1;
-		overflow: hidden;
-		text-overflow: ellipsis;
+	@media (max-width: 1023px) {
+		.links a {
+			font-size: 22px;
+			letter-spacing: 0.12em;
+			min-height: 44px;
+			display: inline-flex;
+			align-items: center;
+			/* Let flexbox actually shrink (and clip, with an ellipsis) each
+			   link's own box to fit `.links`' clamped max-width, instead of
+			   relying on the ancestor's overflow:hidden to visually hide an
+			   overflowing tail — that left the anchor's own hit-tested/
+			   measured box wider than what's rendered, which read as
+			   overlapping the closing paren under a raw bounding-box check
+			   even though nothing was actually visible or clickable there. */
+			min-width: 0;
+			flex-shrink: 1;
+			overflow: hidden;
+			text-overflow: ellipsis;
+		}
 	}
 
 	nav.open .links a {
