@@ -17,10 +17,21 @@ describe('PhotoStack.svelte', () => {
 		}
 	});
 
-	it('raises the nav scrim while the nav is open', async () => {
+	it('keeps its pace regardless of nav state (no nav scrim over the photos)', async () => {
 		render(PhotoStack, { spec: stages.home });
 		nav.open = true;
-		await expect.poll(() => Boolean(document.querySelector('.nav-scrim.visible'))).toBe(true);
+		await Promise.resolve();
+		expect(document.querySelector('.nav-scrim')).toBeNull();
+	});
+
+	it('ignores scroll input (no wheel/touch listeners on the reel)', async () => {
+		render(PhotoStack, { spec: stages.home });
+		await Promise.resolve();
+		const anims = [...document.querySelectorAll('.stack img')].flatMap((el) => el.getAnimations());
+		expect(anims.length).toBeGreaterThan(0);
+		window.dispatchEvent(new WheelEvent('wheel', { deltaY: 600 }));
+		await new Promise((r) => setTimeout(r, 100));
+		for (const anim of anims) expect(anim.playbackRate).toBe(1);
 	});
 
 	it('hard-cuts between photos under prefers-reduced-motion (no WAAPI animations)', async () => {

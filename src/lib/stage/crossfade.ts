@@ -1,6 +1,6 @@
-export const SECONDS_PER_PHOTO = 7;
-export const DISSOLVE_SECONDS = 2;
-export const DECAY_MS = 1500;
+export const HOLD_SECONDS = 5;
+export const DISSOLVE_SECONDS = 1;
+export const SECONDS_PER_PHOTO = HOLD_SECONDS + DISSOLVE_SECONDS;
 const RELEASE_EPSILON = 0.0006;
 
 export function cycleSeconds(count: number): number {
@@ -8,9 +8,11 @@ export function cycleSeconds(count: number): number {
 }
 
 /**
- * Opacity keyframes for one photo in an n-photo endless crossfade.
- * The photo fades in over the current one and is released (cut to 0)
- * only once the next photo fully covers it — no flash of the base.
+ * Opacity keyframes for one photo in an n-photo endless crossfade: each
+ * photo displays for HOLD_SECONDS, then the next dissolves in over
+ * DISSOLVE_SECONDS. The photo fades in over the current one and is
+ * released (cut to 0) only once the next photo fully covers it — no
+ * flash of the base.
  */
 export function crossfadeKeyframes(count: number): Keyframe[] {
 	if (count < 3) throw new Error(`crossfade needs at least 3 photos, got ${count}`);
@@ -31,17 +33,4 @@ export function crossfadeKeyframes(count: number): Keyframe[] {
 /** Negative delay so photo i is mid-hold at t=0 and exactly one photo is visible. */
 export function photoDelaySeconds(index: number): number {
 	return -(SECONDS_PER_PHOTO / 2 + SECONDS_PER_PHOTO * index);
-}
-
-/** Wheel/touch delta → playback rate, 1..7. */
-export function rateFromDelta(deltaY: number): number {
-	return 1 + Math.min(Math.abs(deltaY) / 120, 6);
-}
-
-/** Ease the boosted rate back to 1 over DECAY_MS (cubic ease-out). */
-export function decayedRate(rate: number, elapsedMs: number): number {
-	if (elapsedMs >= DECAY_MS) return 1;
-	const u = Math.max(elapsedMs, 0) / DECAY_MS;
-	const eased = 1 - Math.pow(1 - u, 3);
-	return rate + (1 - rate) * eased;
 }

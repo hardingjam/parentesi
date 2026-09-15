@@ -14,7 +14,7 @@ Portfolio website for ( parentesi ), a Berlin-based itinerant food project by It
 
 Full brief in [docs/design-prompt.md](docs/design-prompt.md) — read it before touching UI. Key decisions (agreed with the site owner):
 
-- **No long scrolling pages.** Each route is a single full-screen stage: 3–6 full-bleed photos crossfade endlessly (8–12s cycles) behind fixed, always-readable text. Scroll/swipe input doesn't move the page — it accelerates the crossfade.
+- **No long scrolling pages.** Each route is a single full-screen stage over ONE site-wide photo reel that crossfades continuously (5s display + 1s dissolve per photo) and never restarts on navigation — routes only retune its scrim/filter. Nothing the user does affects the reel's pace: scroll/swipe input is inert (owner decision 2026-09-15, superseding the design handoff's scroll-acceleration idea), and opening the nav doesn't darken the photos.
 - **Nav is the logo:** a `( )` mark acts as the hamburger; opening it spreads the parentheses to reveal `( food  music  contact )`. The mark returns home.
 - **Routes:** `/` (home), `/food`, `/music`, `/contact`. Music is a deliberate teaser page (darker treatment), not a full section.
 - **Identity:** evolution of the brochure (`static/Brochure Example.pdf`) — beige/ecru (~#D6CFAF), near-black ink, typewriter voice (`static/font/Typo.ttf`), generous whitespace, `( )` as punctuation-as-logo. No cards, drop shadows, decorative gradients, or bouncy motion.

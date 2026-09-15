@@ -1,17 +1,15 @@
 <script lang="ts">
 	import { srcset, stagePhotos, type StageSpec } from '$lib/content';
-	import { nav } from '$lib/nav.svelte';
 	import {
 		SECONDS_PER_PHOTO,
 		crossfadeKeyframes,
 		cycleSeconds,
-		decayedRate,
-		photoDelaySeconds,
-		rateFromDelta
+		photoDelaySeconds
 	} from '$lib/stage/crossfade';
 
 	// The route's treatment (scrim, filter) changes on navigation; the photo
-	// reel itself is mounted once in the layout and never restarts.
+	// reel itself is mounted once in the layout and never restarts. Nothing
+	// the user does — scrolling, opening the nav — affects its pace.
 	let { spec }: { spec: StageSpec } = $props();
 
 	let stack: HTMLDivElement | undefined = $state();
@@ -42,45 +40,7 @@
 			})
 		);
 
-		let boostedRate = 1;
-		let lastInput = 0;
-		let raf = 0;
-		const applyRate = (rate: number) => {
-			for (const animation of animations) animation.playbackRate = rate;
-		};
-		const tick = () => {
-			const rate = decayedRate(boostedRate, performance.now() - lastInput);
-			applyRate(rate);
-			if (rate > 1.001) {
-				raf = requestAnimationFrame(tick);
-			} else {
-				raf = 0;
-				applyRate(1);
-			}
-		};
-		const boost = (delta: number) => {
-			boostedRate = rateFromDelta(delta);
-			lastInput = performance.now();
-			if (!raf) raf = requestAnimationFrame(tick);
-		};
-
-		let lastTouchY: number | null = null;
-		const onWheel = (e: WheelEvent) => boost(e.deltaY);
-		const onTouchMove = (e: TouchEvent) => {
-			const y = e.touches[0].clientY;
-			if (lastTouchY !== null) boost((lastTouchY - y) * 3);
-			lastTouchY = y;
-		};
-		const onTouchEnd = () => (lastTouchY = null);
-		window.addEventListener('wheel', onWheel, { passive: true });
-		window.addEventListener('touchmove', onTouchMove, { passive: true });
-		window.addEventListener('touchend', onTouchEnd, { passive: true });
-
 		return () => {
-			window.removeEventListener('wheel', onWheel);
-			window.removeEventListener('touchmove', onTouchMove);
-			window.removeEventListener('touchend', onTouchEnd);
-			if (raf) cancelAnimationFrame(raf);
 			for (const animation of animations) animation.cancel();
 		};
 	});
@@ -100,7 +60,6 @@
 		{/each}
 	</div>
 	<div class="scrim"></div>
-	<div class="nav-scrim" class:visible={nav.open}></div>
 </div>
 
 <style>
@@ -111,8 +70,7 @@
 		background: var(--base);
 	}
 	.stack,
-	.scrim,
-	.nav-scrim {
+	.scrim {
 		position: absolute;
 		inset: 0;
 	}
@@ -135,15 +93,6 @@
 	}
 	.scrim {
 		background: var(--scrim-d);
-	}
-	.nav-scrim {
-		background: rgba(11, 10, 8, 0.35);
-		opacity: 0;
-		pointer-events: none;
-		transition: opacity 200ms;
-	}
-	.nav-scrim.visible {
-		opacity: 1;
 	}
 
 	@media (max-width: 1023px) {
