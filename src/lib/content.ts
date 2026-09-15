@@ -1,10 +1,10 @@
 export interface StagePhoto {
-	slug: string;
-	alt: string;
+	readonly slug: string;
+	readonly alt: string;
 }
 
 export interface StageSpec {
-	photos: StagePhoto[];
+	readonly photos: readonly StagePhoto[];
 	/** Full CSS background values for the scrim layer. */
 	scrimDesktop: string;
 	scrimMobile: string;
