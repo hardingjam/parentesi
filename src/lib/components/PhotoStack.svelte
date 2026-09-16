@@ -1,62 +1,105 @@
 <script lang="ts">
-	import { srcset, stagePhotos, type StageSpec } from '$lib/content';
-	import {
-		SECONDS_PER_PHOTO,
-		crossfadeKeyframes,
-		cycleSeconds,
-		photoDelaySeconds
-	} from '$lib/stage/crossfade';
+	import { onDestroy, tick } from 'svelte';
+	import { srcset, type StagePhoto, type StageSpec } from '$lib/content';
+	import { FADE_MS, HOLD_MS } from '$lib/stage/crossfade';
 
-	// The route's treatment (scrim, filter) changes on navigation; the photo
-	// reel itself is mounted once in the layout and never restarts. Nothing
-	// the user does — scrolling, opening the nav — affects its pace.
+	// The site's ambient slideshow: a double-buffered pair of layers that
+	// dissolve into each other on a fixed clock. Mounted once in the layout;
+	// navigation only switches which photo GROUP plays (dissolving into the
+	// new group, never hard-cutting), and nothing the user does — scrolling,
+	// opening the nav — affects its pace.
 	let { spec }: { spec: StageSpec } = $props();
 
-	let stack: HTMLDivElement | undefined = $state();
+	interface Layer {
+		photo: StagePhoto | null;
+		shown: boolean;
+	}
 
-	$effect(() => {
-		if (!stack) return;
-		const imgs = [...stack.querySelectorAll('img')];
-		if (imgs.length < 3) return;
+	// Layer 0 starts with the entry route's first photo so it is part of the
+	// server-rendered HTML — no blank frame before hydration. Reading spec's
+	// INITIAL value here is deliberate: later group changes flow through the
+	// $effect below, not through re-initialization.
+	// svelte-ignore state_referenced_locally
+	const entryGroup = spec.group;
+	let layers: [Layer, Layer] = $state([
+		{ photo: entryGroup.photos[0], shown: true },
+		{ photo: null, shown: false }
+	]);
+	let front = $state(0);
+	const els: (HTMLImageElement | undefined)[] = [undefined, undefined];
 
-		if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-			let visible = 0;
-			imgs.forEach((el, i) => (el.style.opacity = i === 0 ? '1' : '0'));
-			const id = setInterval(() => {
-				imgs[visible].style.opacity = '0';
-				visible = (visible + 1) % imgs.length;
-				imgs[visible].style.opacity = '1';
-			}, SECONDS_PER_PHOTO * 1000);
-			return () => clearInterval(id);
+	let groupId = entryGroup.id;
+	let photoIndex = 0;
+	let generation = 0;
+	let timer: ReturnType<typeof setTimeout> | undefined;
+	let instant = $state(false); // prefers-reduced-motion: hard cuts, same clock
+
+	async function showNext(target?: number) {
+		const gen = ++generation;
+		clearTimeout(timer);
+		const group = spec.group;
+		photoIndex = target ?? (photoIndex + 1) % group.photos.length;
+		const back = 1 - front;
+		layers[back] = { photo: group.photos[photoIndex], shown: false };
+		await tick();
+		const el = els[back];
+		if (el) {
+			// Never fade to a half-loaded image; if decode fails, show anyway.
+			try {
+				await el.decode();
+			} catch {
+				/* ignore */
+			}
 		}
-
-		const keyframes = crossfadeKeyframes(imgs.length);
-		const duration = cycleSeconds(imgs.length) * 1000;
-		const animations = imgs.map((el, i) =>
-			el.animate(keyframes, {
-				duration,
-				iterations: Infinity,
-				delay: photoDelaySeconds(i) * 1000
-			})
+		if (gen !== generation) return;
+		layers[back] = { ...layers[back], shown: true };
+		timer = setTimeout(
+			() => {
+				if (gen !== generation) return;
+				// The old front is fully covered now — unmount it silently.
+				layers[front] = { photo: null, shown: false };
+				front = back;
+				timer = setTimeout(() => showNext(), HOLD_MS);
+			},
+			instant ? 0 : FADE_MS
 		);
+	}
 
-		return () => {
-			for (const animation of animations) animation.cancel();
-		};
+	let started = false;
+	$effect(() => {
+		const id = spec.group.id; // reactive: reruns on route/group change
+		if (!started) {
+			started = true;
+			instant = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+			timer = setTimeout(() => showNext(), HOLD_MS);
+		} else if (id !== groupId) {
+			groupId = id;
+			showNext(0);
+		}
+	});
+
+	onDestroy(() => {
+		generation++;
+		clearTimeout(timer);
 	});
 </script>
 
 <div class="backdrop" style="--scrim-d: {spec.scrimDesktop}; --scrim-m: {spec.scrimMobile}">
-	<div class="stack" bind:this={stack}>
-		{#each stagePhotos as photo, i (photo.slug)}
-			<img
-				srcset={srcset(photo.slug)}
-				sizes="100vw"
-				alt={photo.alt}
-				style:filter={spec.filter}
-				loading={i === 0 ? 'eager' : 'lazy'}
-				decoding="async"
-			/>
+	<div class="stack">
+		{#each layers as layer, i (i)}
+			{#if layer.photo}
+				<img
+					bind:this={els[i]}
+					srcset={srcset(layer.photo.slug)}
+					sizes="100vw"
+					alt={layer.photo.alt}
+					style:filter={spec.filter}
+					class:shown={layer.shown}
+					class:incoming={i !== front}
+					class:instant
+					decoding="async"
+				/>
+			{/if}
 		{/each}
 	</div>
 	<div class="scrim"></div>
@@ -68,6 +111,9 @@
 		inset: 0;
 		overflow: hidden;
 		background: var(--base);
+		/* Guaranteed stacking context so the layers' z-index can never paint
+		   above the route content. */
+		isolation: isolate;
 	}
 	.stack,
 	.scrim {
@@ -81,15 +127,21 @@
 		height: 100%;
 		object-fit: cover;
 		opacity: 0;
-		/* Route changes retune the filter (music darkens); ease it so the
-		   continuous reel never visibly jumps. */
-		transition: filter 600ms;
+		/* opacity duration must match FADE_MS in $lib/stage/crossfade. The
+		   filter ease keeps the music route's darkening from jumping. */
+		transition:
+			opacity 1000ms linear,
+			filter 600ms;
 	}
-	/* One photo painted before the WAAPI animations take over — their
-	   negative delays put exactly one photo at full opacity immediately,
-	   so nothing flashes on load. */
-	.stack img:first-child {
+	.stack img.shown {
 		opacity: 1;
+	}
+	/* The dissolving-in layer always paints above the current one. */
+	.stack img.incoming {
+		z-index: 1;
+	}
+	.stack img.instant {
+		transition: filter 600ms;
 	}
 	.scrim {
 		background: var(--scrim-d);

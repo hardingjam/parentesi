@@ -2,22 +2,26 @@
 	import './layout.css';
 	import favicon from '$lib/assets/favicon.svg';
 	import { page } from '$app/state';
+	import { resolve } from '$app/paths';
 	import Nav from '$lib/components/Nav.svelte';
 	import PhotoStack from '$lib/components/PhotoStack.svelte';
 	import { stages, type StageSpec } from '$lib/content';
 
 	let { children } = $props();
 
+	// Keys are resolved like the nav's hrefs so route matching still works
+	// if a base path is ever configured.
 	const specByPath: Record<string, StageSpec> = {
-		'/': stages.home,
-		'/food': stages.food,
-		'/music': stages.music,
-		'/contact': stages.contact
+		[resolve('/')]: stages.home,
+		[resolve('/food')]: stages.food,
+		[resolve('/music')]: stages.music,
+		[resolve('/contact')]: stages.contact
 	};
 	const spec = $derived(specByPath[page.url.pathname] ?? stages.home);
 </script>
 
 <svelte:head>
+	<title>( parentesi )</title>
 	<link rel="icon" href={favicon} />
 	<meta
 		name="description"

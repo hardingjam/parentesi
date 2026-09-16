@@ -24,6 +24,14 @@ body {
 	color: var(--ecru);
 	font-family: 'Typo', 'Courier New', monospace;
 	font-weight: 400;
+	/* Legibility over bright photo areas: a tight near-black contact edge
+	   plus a wide soft halo, in the scrim's own color so it reads as photo
+	   depth rather than decoration. text-shadow inherits, so this covers
+	   every piece of copy on the stages. (An owner-requested exception to
+	   the "no drop shadows" brief, which is about boxes, not type.) */
+	text-shadow:
+		0 1px 2px rgba(11, 10, 8, 0.55),
+		0 2px 16px rgba(11, 10, 8, 0.5);
 }
 
 body {

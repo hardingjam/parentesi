@@ -42,7 +42,10 @@
 		display: flex;
 		align-items: baseline;
 		margin: 0 0 44px;
-		font-size: 64px;
+		/* 64px at ≥1440px, scaling down so the unwrappable letter-spaced
+		   wordmark never overflows the 160px-padded column at narrow
+		   desktop widths (it was clipping at ~1024-1150px). */
+		font-size: min(64px, 4.4vw);
 		font-weight: 400;
 		line-height: 1;
 		letter-spacing: 0.32em;

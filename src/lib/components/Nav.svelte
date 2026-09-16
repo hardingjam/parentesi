@@ -41,29 +41,39 @@
 	// past the opening paren's hit area it rests.
 	const openDistance = $derived(linksContentWidth + trailingGap);
 
-	// Hover-capable devices (desktop): the nav opens when the pointer enters
-	// it and closes when it leaves; the parens are then plain home links.
-	// Touch devices: no hover exists, so tapping the mark toggles instead —
-	// tap to open, tap a paren again to go home (which also closes).
+	// Mouse users: the nav opens when the pointer enters it and closes when
+	// it leaves; the parens are then plain home links. Touch input (phones,
+	// AND taps on hover-capable touch-screen laptops): tapping the mark
+	// toggles instead — tap to open, tap outside to close, tap a paren again
+	// to go home. Media queries can't tell a touch-screen laptop's tap from
+	// its mouse, so the last pointer's type is tracked per event instead:
+	// pointerdown fires before the tap's synthesized mouseenter/click, and
+	// pointermove flips it back to 'mouse' the moment the mouse moves.
 	const hoverCapable = () => window.matchMedia('(hover: hover)').matches;
+	let lastPointerType = 'mouse';
+	const hoverIntent = () => hoverCapable() && lastPointerType !== 'touch';
+
+	function onPointerEvent(e: PointerEvent) {
+		if (e.pointerType) lastPointerType = e.pointerType;
+	}
 
 	function onMouseEnter() {
-		if (hoverCapable()) nav.open = true;
+		if (hoverIntent()) nav.open = true;
 	}
 
 	function onMouseLeave() {
-		if (hoverCapable()) closeNav();
+		if (hoverIntent()) closeNav();
 	}
 
-	// Keyboard access on hover-capable devices: tabbing into the nav opens
-	// it, tabbing out closes it. (Guarded like hover so a touch tap's
-	// focus event can't fight the tap-to-toggle click handler below.)
+	// Keyboard access: tabbing into the nav opens it, tabbing out closes it.
+	// (Guarded like hover so a touch tap's focus event can't fight the
+	// tap-to-toggle click handler below.)
 	function onFocusIn() {
-		if (hoverCapable()) nav.open = true;
+		if (hoverIntent()) nav.open = true;
 	}
 
 	function onFocusOut(e: FocusEvent) {
-		if (hoverCapable() && !(e.currentTarget as Node).contains(e.relatedTarget as Node)) {
+		if (hoverIntent() && !(e.currentTarget as Node).contains(e.relatedTarget as Node)) {
 			closeNav();
 		}
 	}
@@ -72,7 +82,7 @@
 	// swapped between <a> and <button>) so the CSS transform transition has
 	// something to interpolate from and actually animates.
 	function onParenClick(e: MouseEvent) {
-		if (hoverCapable()) {
+		if (hoverIntent()) {
 			// Hover already opened the nav; a paren click is just "go home".
 			closeNav();
 			return;
@@ -85,14 +95,29 @@
 		}
 	}
 
+	// Touch has no Esc and no mouseleave: a tap anywhere outside the open
+	// nav dismisses it without navigating.
+	function onWindowPointerDown(e: PointerEvent) {
+		onPointerEvent(e);
+		if (nav.open && !navElement?.contains(e.target as Node)) closeNav();
+	}
+
+	let navElement: HTMLElement | undefined = $state();
+
 	function onKeydown(e: KeyboardEvent) {
 		if (e.key === 'Escape') closeNav();
 	}
 </script>
 
-<svelte:window bind:innerWidth={viewportWidth} onkeydown={onKeydown} />
+<svelte:window
+	bind:innerWidth={viewportWidth}
+	onkeydown={onKeydown}
+	onpointerdown={onWindowPointerDown}
+	onpointermove={onPointerEvent}
+/>
 
 <nav
+	bind:this={navElement}
 	class:open={nav.open}
 	aria-label="site"
 	onmouseenter={onMouseEnter}
@@ -261,15 +286,24 @@
 		}
 	}
 
+	/* Open state: the CURRENT route reads at full strength, the other
+	   destinations sit dimmer until pointed at. */
 	nav.open .links a {
-		opacity: 1;
+		opacity: 0.55;
 		visibility: visible;
 		transition-delay: calc(120ms + var(--i) * 60ms);
 	}
 
+	nav.open .links a:hover,
+	nav.open .links a:focus-visible {
+		opacity: 1;
+		/* The stagger delay is an entrance effect only — hover feedback
+		   must be immediate. */
+		transition-delay: 0ms;
+	}
+
 	nav.open .links a[aria-current='page'] {
-		opacity: 0.55;
+		opacity: 1;
 		pointer-events: none;
-		transition-delay: calc(120ms + var(--i) * 60ms);
 	}
 </style>

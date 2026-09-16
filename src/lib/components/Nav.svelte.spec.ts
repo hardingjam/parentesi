@@ -30,15 +30,17 @@ describe('Nav.svelte', () => {
 		render(Nav, { current: '/' });
 		await page.getByRole('link', { name: 'open menu' }).first().hover();
 		await expect.poll(() => nav.open).toBe(true);
+		// Non-current destinations rest dimmed at .55 (full opacity on
+		// hover/focus; the current route rests at full opacity).
 		await expect
 			.element(page.getByRole('link', { name: 'food' }))
-			.toHaveStyle({ visibility: 'visible', opacity: '1' });
+			.toHaveStyle({ visibility: 'visible', opacity: '0.55' });
 		await expect
 			.element(page.getByRole('link', { name: 'music' }))
-			.toHaveStyle({ visibility: 'visible', opacity: '1' });
+			.toHaveStyle({ visibility: 'visible', opacity: '0.55' });
 		await expect
 			.element(page.getByRole('link', { name: 'contact' }))
-			.toHaveStyle({ visibility: 'visible', opacity: '1' });
+			.toHaveStyle({ visibility: 'visible', opacity: '0.55' });
 	});
 
 	it('closes when the pointer leaves the nav', async () => {
@@ -49,12 +51,12 @@ describe('Nav.svelte', () => {
 		await expect.poll(() => nav.open).toBe(false);
 	});
 
-	it('marks the current route non-interactive', async () => {
+	it('shows the current route at full opacity, non-interactive', async () => {
 		nav.open = true;
 		render(Nav, { current: '/food' });
-		await expect
-			.element(page.getByRole('link', { name: 'food' }))
-			.toHaveAttribute('aria-current', 'page');
+		const food = page.getByRole('link', { name: 'food' });
+		await expect.element(food).toHaveAttribute('aria-current', 'page');
+		await expect.element(food).toHaveStyle({ opacity: '1', pointerEvents: 'none' });
 	});
 
 	it('closes on Escape', async () => {
