@@ -13,8 +13,8 @@
 			<a href="mailto:parentesi.berlin@gmail.com">parentesi.berlin@gmail.com</a>
 			<a href="tel:+393408732532">+39 340 873 2532</a>
 			<!-- Instagram handle TBC with owner; placeholder points at Planatia -->
-			<a class="secondary" href="https://www.instagram.com/planatia/" rel="external">instagram</a>
-			<p class="secondary place">Berlin · itinerant</p>
+			<a href="https://www.instagram.com/planatia/" rel="external">instagram</a>
+			<p class="place">Berlin · itinerant</p>
 		</div>
 		<span class="big right" aria-hidden="true">)</span>
 	</div>
@@ -59,10 +59,6 @@
 	}
 	.block p {
 		margin: 0;
-	}
-	.secondary {
-		font-size: 15px;
-		letter-spacing: 0.14em;
 	}
 	.place {
 		margin-top: 10px;
@@ -113,10 +109,6 @@
 			padding: 24px 0;
 			font-size: 17px;
 			letter-spacing: 0.03em;
-		}
-		.secondary {
-			font-size: 13px;
-			letter-spacing: 0.12em;
 		}
 	}
 </style>
