@@ -51,6 +51,11 @@
 				/* ignore */
 			}
 		}
+		// Let the browser paint the new layer at opacity 0 first — a cached
+		// image can decode within the mount frame, and flipping `shown` in
+		// that same frame would skip the transition (hard cut, no dissolve).
+		await new Promise(requestAnimationFrame);
+		await new Promise(requestAnimationFrame);
 		if (gen !== generation) return;
 		layers[back] = { ...layers[back], shown: true };
 		timer = setTimeout(
@@ -119,6 +124,13 @@
 	.scrim {
 		position: absolute;
 		inset: 0;
+	}
+	.stack {
+		/* Contain the layers' z-index INSIDE the stack: without this, the
+		   incoming layer's z-index lifted it above the sibling scrim while
+		   dissolving, so photos faded in undimmed and the scrim "snapped"
+		   on when the fade finished. */
+		isolation: isolate;
 	}
 	.stack img {
 		position: absolute;
