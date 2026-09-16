@@ -41,6 +41,13 @@
 	// past the opening paren's hit area it rests.
 	const openDistance = $derived(linksContentWidth + trailingGap);
 
+	// Closed, the mark doubles as the page heading: `( food )` on /food.
+	// Home shows the bare `( )`. The label's measured width pushes the
+	// closing paren out just far enough; 0 (empty label) collapses it.
+	const currentLabel = $derived(routes.find((route) => route.href === current)?.label ?? '');
+	let currentLabelWidth = $state(0);
+	const closedDistance = $derived(currentLabel ? currentLabelWidth + trailingGap : 0);
+
 	// Mouse users: the nav opens when the pointer enters it and closes when
 	// it leaves; the parens are then plain home links. Touch input (phones,
 	// AND taps on hover-capable touch-screen laptops): tapping the mark
@@ -133,6 +140,14 @@
 			aria-expanded={nav.open}
 			onclick={onParenClick}>(</a
 		>
+		{#if currentLabel}
+			<span
+				class="current-label"
+				style="left: {parenSize}px"
+				bind:clientWidth={currentLabelWidth}
+				aria-hidden={nav.open}>{currentLabel}</span
+			>
+		{/if}
 		<div
 			class="links"
 			style="left: {parenSize}px; max-width: {isMobile
@@ -155,7 +170,7 @@
 		<a
 			class="paren closing"
 			href={resolve('/')}
-			style="transform: translateX({nav.open ? openDistance : 0}px)"
+			style="transform: translateX({nav.open ? openDistance : closedDistance}px)"
 			aria-label={nav.open ? 'home' : 'open menu'}
 			aria-expanded={nav.open}
 			onclick={onParenClick}>)</a
@@ -231,6 +246,33 @@
 		transition:
 			transform 320ms var(--ease-paren),
 			opacity 200ms;
+	}
+
+	/* Closed-state page heading between the parens: `( food )`. Typography
+	   matches the open-state links so the label doesn't resize when the
+	   route list dissolves into its place. */
+	.current-label {
+		position: absolute;
+		top: 0;
+		height: 100%;
+		display: flex;
+		align-items: center;
+		white-space: nowrap;
+		font-size: 26px;
+		letter-spacing: 0.15em;
+		pointer-events: none;
+		transition: opacity 200ms;
+	}
+
+	nav.open .current-label {
+		opacity: 0;
+	}
+
+	@media (max-width: 1023px) {
+		.current-label {
+			font-size: 18px;
+			letter-spacing: 0.06em;
+		}
 	}
 
 	.links {

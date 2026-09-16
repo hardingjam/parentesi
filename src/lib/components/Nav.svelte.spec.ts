@@ -51,6 +51,20 @@ describe('Nav.svelte', () => {
 		await expect.poll(() => nav.open).toBe(false);
 	});
 
+	it('shows the current route between the parens while closed, hiding it when open', async () => {
+		render(Nav, { current: '/food' });
+		const label = () => document.querySelector('.current-label');
+		expect(label()?.textContent).toBe('food');
+		expect(label()?.getAttribute('aria-hidden')).toBe('false');
+		nav.open = true;
+		await expect.poll(() => label()?.getAttribute('aria-hidden')).toBe('true');
+	});
+
+	it('shows the bare ( ) mark on home (no route label)', async () => {
+		render(Nav, { current: '/' });
+		expect(document.querySelector('.current-label')).toBeNull();
+	});
+
 	it('shows the current route at full opacity, non-interactive', async () => {
 		nav.open = true;
 		render(Nav, { current: '/food' });

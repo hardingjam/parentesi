@@ -33,7 +33,7 @@
 	<div class="frame">
 		<div class="grid">
 			<div class="bio rise" style="--d: 150ms">
-				<p class="label">( food )</p>
+				<!-- The route heading lives in the nav mark: `( food )` -->
 				<h2>Pietro Platania</h2>
 				<p>Italian chef, trained at Le Cordon Bleu Paris.</p>
 				<ul class="restaurants">
