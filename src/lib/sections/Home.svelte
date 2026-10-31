@@ -100,7 +100,11 @@
 	@media (max-width: 1023px) {
 		.wordmark {
 			margin-bottom: 64px;
-			font-size: 24px;
+			/* 24px, scaling down on phones narrower than ~400px so the word
+			   always fits between the parens. At 24px it's 337px wide, ~14
+			   font-sizes; the column is the viewport minus 2 × 28px padding.
+			   Too wide, the opened gap squeezed and the word slid under ")". */
+			font-size: min(24px, calc((100vw - 56px) / 14.5));
 			letter-spacing: 0.18em;
 		}
 		.manifesto {
