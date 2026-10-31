@@ -37,10 +37,6 @@ const moody: PhotoGroup = {
 			alt: 'The parentesi kitchen at dusk, seen through a window reflecting a brick courtyard'
 		},
 		{
-			slug: 'plating-live',
-			alt: 'Chefs plating dishes in front of guests at a candlelit dinner'
-		},
-		{
 			slug: 'pietro-steam',
 			alt: 'Steam rising under a pendant lamp while chefs cook'
 		},
