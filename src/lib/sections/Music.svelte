@@ -76,7 +76,7 @@
 		width: 560px;
 		max-width: 100%;
 		margin-top: 56px;
-		border: 1px solid rgba(214, 207, 175, 0.45);
+		border: 1px solid color-mix(in srgb, var(--ecru) 45%, transparent);
 	}
 	.embed iframe {
 		display: block;

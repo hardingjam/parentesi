@@ -50,6 +50,11 @@
 	--ecru: #d6cfaf;
 	--ink: #14120f;
 	--base: #0b0a08;
+	/* The copy's legibility halo over the photos: a tight near-black contact
+	   edge plus a wide soft glow. Text uses it as text-shadow, icons as
+	   drop-shadow() filters. */
+	--halo-near: 0 1px 2px color-mix(in srgb, var(--base) 55%, transparent);
+	--halo-far: 0 2px 16px color-mix(in srgb, var(--base) 50%, transparent);
 	--ease-entrance: cubic-bezier(0.2, 0.6, 0.2, 1);
 	--ease-paren: cubic-bezier(0.2, 0.7, 0.2, 1);
 	/* The one type scale for all section copy: headings, body, small
@@ -80,9 +85,7 @@ body {
 	   depth rather than decoration. text-shadow inherits, so this covers
 	   every piece of copy on the stages. (An owner-requested exception to
 	   the "no drop shadows" brief, which is about boxes, not type.) */
-	text-shadow:
-		0 1px 2px rgba(11, 10, 8, 0.55),
-		0 2px 16px rgba(11, 10, 8, 0.5);
+	text-shadow: var(--halo-near), var(--halo-far);
 }
 
 a {
@@ -93,7 +96,7 @@ a {
 /* Text links in the copy (music, contact): a quiet underline that firms
    up on hover/focus. */
 .link {
-	border-bottom: 1px solid rgba(214, 207, 175, 0.5);
+	border-bottom: 1px solid color-mix(in srgb, var(--ecru) 50%, transparent);
 	transition: border-color 200ms;
 }
 .link:hover,

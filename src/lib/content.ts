@@ -23,7 +23,7 @@ export interface StageSpec {
 }
 
 const scrim = (shape: string, inner: number, outer: number) =>
-	`radial-gradient(ellipse ${shape}, rgba(11,10,8,${inner}) 0%, rgba(11,10,8,${outer}) 100%)`;
+	`radial-gradient(ellipse ${shape}, color-mix(in srgb, var(--base) ${inner * 100}%, transparent) 0%, color-mix(in srgb, var(--base) ${outer * 100}%, transparent) 100%)`;
 
 export const srcset = (slug: string) =>
 	`/img/${slug}-1080.webp 1080w, /img/${slug}-1920.webp 1920w`;

@@ -96,8 +96,7 @@
 		stroke-linecap: round;
 		stroke-linejoin: round;
 		/* The copy's legibility halo (text-shadow doesn't reach SVG). */
-		filter: drop-shadow(0 1px 2px rgba(11, 10, 8, 0.55))
-			drop-shadow(0 2px 16px rgba(11, 10, 8, 0.5));
+		filter: drop-shadow(var(--halo-near)) drop-shadow(var(--halo-far));
 	}
 	.icons a:hover svg,
 	.icons a:focus-visible svg {
