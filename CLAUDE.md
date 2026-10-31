@@ -32,3 +32,17 @@ Full brief in [docs/design-prompt.md](docs/design-prompt.md) — read it before 
 - Contact: parentesi.berlin@gmail.com · +39 340 873 2532
 - Manifesto and services list: see docs/design-prompt.md (Home section) — use that wording verbatim.
 - Pietro's CV highlights: Le Cordon Bleu Paris; Le Bristol***; Il Luogo di Aimo e Nadia**; Joia*; Vun**; Chez Panisse; founder of Banco Natural Food, Rome; now Berlin.
+
+## Agent skills
+
+### Issue tracker
+
+GitHub Issues on hardingjam/parentesi, via the `gh` CLI. See `docs/agents/issue-tracker.md`.
+
+### Triage labels
+
+Default vocabulary: `needs-triage`, `needs-info`, `ready-for-agent`, `ready-for-human`, `wontfix`. See `docs/agents/triage-labels.md`.
+
+### Domain docs
+
+Single-context: one `GLOSSARY.md` and `docs/adr/` at the repo root, created lazily. See `docs/agents/domain.md`.
