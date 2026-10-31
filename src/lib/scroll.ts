@@ -2,16 +2,21 @@ import { pushState } from '$app/navigation';
 import { resolve } from '$app/paths';
 import type { Section } from '$lib/content';
 
-const easeInOutCubic = (t: number) => (t < 0.5 ? 4 * t ** 3 : 1 - (-2 * t + 2) ** 3 / 2);
+// Asymmetric ease-in-out: cubic ease-in over the first 30% of the time,
+// cubic ease-out over the remaining 70% (velocity-matched at the joint).
+// Paired with 0.8× the symmetric curve's duration, the landing is
+// identical to a symmetric ease-in-out cubic; only the start is quicker.
+const ACCEL = 0.3;
+const ease = (t: number) => (t < ACCEL ? t ** 3 / ACCEL ** 2 : 1 - (1 - t) ** 3 / (1 - ACCEL) ** 2);
 
 let stopCurrent: (() => void) | undefined;
 
 /**
  * Glide the page to a section and put its #hash in the URL. Native
  * `scroll-behavior: smooth` can't be slowed or eased, so this animates the
- * window itself: ease-in-out, ~1.4s per screen of travel (2.4s cap), and
- * instant under prefers-reduced-motion. Any wheel/touch/key input hands
- * control straight back to the user.
+ * window itself: quick start, slow landing, ~1.1s for one screen (1.9s
+ * cap), and instant under prefers-reduced-motion. Any wheel/touch/key
+ * input hands control straight back to the user.
  */
 export function glideTo(id: Section) {
 	stopCurrent?.();
@@ -32,7 +37,7 @@ export function glideTo(id: Section) {
 		return;
 	}
 
-	const duration = Math.min(2400, 1000 + (400 * Math.abs(distance)) / innerHeight);
+	const duration = Math.min(1920, 800 + (320 * Math.abs(distance)) / innerHeight);
 	const start = performance.now();
 	const stop = () => {
 		cancelAnimationFrame(frame);
@@ -41,7 +46,7 @@ export function glideTo(id: Section) {
 	};
 	let frame = requestAnimationFrame(function step(now) {
 		const t = Math.min((now - start) / duration, 1);
-		scrollTo(0, from + distance * easeInOutCubic(t));
+		scrollTo(0, from + distance * ease(t));
 		if (t < 1) frame = requestAnimationFrame(step);
 		else stop();
 	});
