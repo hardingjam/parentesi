@@ -12,11 +12,21 @@ describe('Nav.svelte', () => {
 		nav.open = false;
 	});
 
-	it('names the section in view between the parens when closed', async () => {
+	it('names the section in view between the parens when closed (desktop)', async () => {
+		await page.viewport(1280, 800);
 		render(Nav, { current: 'music' });
 		await expect
 			.element(page.getByRole('button', { name: 'music', includeHidden: true }))
 			.toBeVisible();
+	});
+
+	it('closes to the bare parens on phones', async () => {
+		await page.viewport(390, 844);
+		render(Nav, { current: 'music' });
+		await expect
+			.element(page.getByRole('button', { name: 'music', includeHidden: true }))
+			.not.toBeVisible();
+		await expect.element(page.getByRole('link', { name: 'open menu' }).first()).toBeVisible();
 	});
 
 	it('shows only the mark when closed', async () => {
