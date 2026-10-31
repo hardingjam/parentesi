@@ -30,7 +30,7 @@
 			loading="lazy"
 		></iframe>
 	</div>
-	<ul class="links rise" style="--d: 450ms">
+	<ul class="outlinks rise" style="--d: 450ms">
 		<li><a class="link" href="https://soundcloud.com/planatia" rel="external">soundcloud</a></li>
 		<li><a class="link" href="https://www.instagram.com/planatia/" rel="external">instagram</a></li>
 		<li><a class="link" href="https://www.radiocircolo.com/" rel="external">radio circolo</a></li>
@@ -83,7 +83,7 @@
 		width: 100%;
 		border: 0;
 	}
-	.links {
+	.outlinks {
 		display: flex;
 		gap: 40px;
 		margin: 56px 0 0;
@@ -121,13 +121,13 @@
 		.embed iframe {
 			height: 100px;
 		}
-		.links {
+		.outlinks {
 			flex-direction: column;
 			gap: 14px;
 			margin-top: 44px;
 			letter-spacing: 0.12em;
 		}
-		.links a {
+		.outlinks a {
 			display: inline-flex;
 			align-items: center;
 			min-height: 44px;

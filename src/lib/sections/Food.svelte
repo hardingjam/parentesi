@@ -40,18 +40,18 @@
 				Founder of Banco Natural Food, Rome. Now cooking in Berlin — plant-based, circular,
 				itinerant.
 			</p>
-			<ul class="services">
+			<ul class="service-grid">
 				{#each services as service (service)}
 					<li>{service}</li>
 				{/each}
 			</ul>
 		</div>
 		<div class="menu rise" style="--d: 300ms">
-			<p class="label">( sample menu )</p>
+			<p class="menu-label">( sample menu )</p>
 			{#each menu as dish (dish)}
 				<p class="dish">{dish}</p>
 			{/each}
-			<p class="label">( )</p>
+			<p class="menu-label">( )</p>
 		</div>
 	</div>
 </Stage>
@@ -64,7 +64,7 @@
 		gap: 120px;
 		text-align: left;
 	}
-	.label {
+	.menu-label {
 		margin: 0;
 		font-size: var(--text-sm);
 		letter-spacing: 0.14em;
@@ -105,7 +105,7 @@
 		font-size: var(--text-md);
 		line-height: 1.4;
 	}
-	.services {
+	.service-grid {
 		margin: 0;
 		padding: 0;
 		list-style: none;
@@ -117,11 +117,11 @@
 	   column fits it (measured: 437px at 15px, i.e. desktops from ~1320px);
 	   narrower they stay a plain list. */
 	@container (min-width: 440px) {
-		.services {
+		.service-grid {
 			display: grid;
 			grid-template-columns: repeat(2, max-content);
 		}
-		.services li:nth-child(even)::before {
+		.service-grid li:nth-child(even)::before {
 			content: '·';
 			margin: 0 0.5em;
 		}
@@ -141,11 +141,11 @@
 		.menu {
 			gap: 14px;
 		}
-		.menu > .label:first-child {
+		.menu > .menu-label:first-child {
 			/* + the 22px gap: 64px from the services to the menu. */
 			margin-top: 42px;
 		}
-		.label {
+		.menu-label {
 			letter-spacing: 0.12em;
 		}
 		.bio {
@@ -157,7 +157,7 @@
 		.restaurants {
 			gap: 8px;
 		}
-		.services {
+		.service-grid {
 			/* + the 22px gap: 44px from the CV to the services. */
 			margin-top: 22px;
 			letter-spacing: 0.04em;
@@ -171,13 +171,13 @@
 	   13px, i.e. phones from ~386px); narrower it stays a centred list. */
 	@media (max-width: 1023px) {
 		@container (min-width: 332px) {
-			.services {
+			.service-grid {
 				display: grid;
 				grid-template-columns: repeat(2, max-content);
 				justify-content: center;
 				text-align: left;
 			}
-			.services li:nth-child(even)::before {
+			.service-grid li:nth-child(even)::before {
 				content: '·';
 				margin: 0 0.5em;
 			}
