@@ -32,7 +32,7 @@
 					>
 				</a>
 			</div>
-			<a class="number" href="tel:+393408732532">+39 340 873 2532</a>
+			<a class="number heading" href="tel:+393408732532">+39 340 873 2532</a>
 		</div>
 		<span class="big right" aria-hidden="true">)</span>
 	</div>
@@ -71,9 +71,6 @@
 		flex-direction: column;
 		gap: 22px;
 		align-items: center;
-		font-size: var(--text-lg);
-		line-height: 1.4;
-		letter-spacing: 0.04em;
 	}
 	.icons {
 		display: flex;
@@ -153,7 +150,6 @@
 		.block {
 			gap: 18px;
 			padding: 24px 0;
-			letter-spacing: 0.03em;
 		}
 	}
 </style>

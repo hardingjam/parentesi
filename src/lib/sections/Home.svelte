@@ -15,7 +15,7 @@
 		<span>(</span><span class="gap"><span class="letters">&nbsp;p a r e n t e s i&nbsp;</span></span
 		><span>)</span>
 	</h1>
-	<div class="manifesto rise" style="--d: 3600ms">
+	<div class="manifesto body rise" style="--d: 3600ms">
 		<p>
 			A suspended moment where gastronomy, music, art and conscious consumption create an inspiring
 			dialogue.
@@ -25,7 +25,7 @@
 			dimension.
 		</p>
 	</div>
-	<ul class="services rise" style="--d: 3800ms">
+	<ul class="services body list rise" style="--d: 3800ms">
 		{#each services as service (service)}
 			<li>{service}</li>
 		{/each}
@@ -73,8 +73,6 @@
 	}
 	.manifesto {
 		max-width: 700px;
-		font-size: var(--text-md);
-		line-height: 1.6;
 	}
 	.manifesto p {
 		margin: 0;
@@ -83,11 +81,7 @@
 		margin-top: 14px;
 	}
 	.services {
-		margin: 44px 0 0;
-		padding: 0;
-		list-style: none;
-		font-size: var(--text-md);
-		line-height: 1.9;
+		margin-top: 44px;
 	}
 
 	@media (prefers-reduced-motion: reduce) {
@@ -106,9 +100,6 @@
 			   Too wide, the opened gap squeezed and the word slid under ")". */
 			font-size: min(24px, calc((100vw - 56px) / 14.5));
 			letter-spacing: 0.18em;
-		}
-		.manifesto {
-			line-height: 1.55;
 		}
 		.manifesto p + p {
 			margin-top: 12px;

@@ -104,6 +104,28 @@ a {
 	border-color: var(--ecru);
 }
 
+/* Type roles: every piece of section copy takes one of these, sized from
+   the scale above. Display type (the wordmark, contact's big parens, the
+   nav) sits outside them. */
+h2,
+.heading {
+	font-size: var(--text-lg);
+	line-height: 1.2;
+	letter-spacing: 0.04em;
+}
+.body {
+	font-size: var(--text-md);
+	line-height: 1.6;
+}
+.small {
+	font-size: var(--text-sm);
+	letter-spacing: 0.12em;
+}
+/* Stacked one-line items (lists of services, restaurants). */
+.list {
+	line-height: 1.9;
+}
+
 /* Entrance animations (once per page load). Delay via --d. */
 @keyframes rise {
 	from {
