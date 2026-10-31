@@ -16,7 +16,7 @@
 			>&nbsp;p a r e n t e s i&nbsp;</span
 		><span class="paren right">)</span>
 	</h1>
-	<div class="manifesto rise" style="--d: 1500ms">
+	<div class="manifesto rise" style="--d: 3000ms">
 		<p>
 			A suspended moment where gastronomy, music, art and conscious consumption create an inspiring
 			dialogue.
@@ -26,7 +26,7 @@
 			dimension.
 		</p>
 	</div>
-	<ul class="services rise" style="--d: 1700ms">
+	<ul class="services rise" style="--d: 3200ms">
 		{#each services as service (service)}
 			<li>{service}</li>
 		{/each}
@@ -37,7 +37,7 @@
 	.wordmark {
 		display: flex;
 		align-items: baseline;
-		margin: 0 0 44px;
+		margin: 0 0 88px;
 		/* 64px at ≥1440px, scaling down so the unwrappable letter-spaced
 		   wordmark never overflows the 160px-padded column at narrow
 		   desktop widths (it was clipping at ~1024-1150px). */
@@ -48,8 +48,15 @@
 		white-space: pre;
 		--travel: 300px;
 	}
+	/* The intro: the parens open slowly and evenly (ease-in-out, not the
+	   site's front-loaded paren ease, which read as a snap), the letters
+	   reveal with them, then the title holds alone for ~1s before the copy
+	   rises in. */
 	.paren {
-		animation: 1100ms var(--ease-paren) 300ms both;
+		animation: 1800ms cubic-bezier(0.45, 0, 0.25, 1) 300ms both;
+	}
+	.letters {
+		animation-duration: 2200ms;
 	}
 	.left {
 		animation-name: from-right;
@@ -95,7 +102,7 @@
 
 	@media (max-width: 1023px) {
 		.wordmark {
-			margin-bottom: 36px;
+			margin-bottom: 64px;
 			font-size: 24px;
 			letter-spacing: 0.18em;
 			--travel: 140px;
