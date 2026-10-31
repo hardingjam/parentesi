@@ -82,6 +82,9 @@
 		--space-3: 18px;
 		--space-4: 36px;
 		--space-5: 64px;
+		/* Phones: the home panels snap one swipe at a time (Home.svelte);
+		   the rest of the page scrolls freely (+page.svelte). */
+		scroll-snap-type: y mandatory;
 	}
 }
 

@@ -45,7 +45,11 @@ export function glideTo(id: Section) {
 
 	const duration = Math.min(1920, 800 + (320 * Math.abs(distance)) / innerHeight);
 	const start = performance.now();
+	// Scroll snapping (phones) would catch every frame; off until the glide ends.
+	const root = document.documentElement.style;
+	root.scrollSnapType = 'none';
 	const stop = () => {
+		root.scrollSnapType = '';
 		cancelAnimationFrame(frame);
 		for (const type of ['wheel', 'touchstart', 'keydown']) removeEventListener(type, stop);
 		stopCurrent = undefined;

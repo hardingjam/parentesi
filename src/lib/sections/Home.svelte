@@ -11,25 +11,31 @@
 </script>
 
 <Stage id="home">
-	<h1 class="wordmark rise" style="--d: 100ms" aria-label="parentesi">
-		<span>(</span><span class="gap"><span class="letters">&nbsp;p a r e n t e s i&nbsp;</span></span
-		><span>)</span>
-	</h1>
-	<div class="manifesto body rise" style="--d: 3600ms">
-		<p>
+	<!-- Phones: three snapped screens, one per panel. Desktop: one screen
+	     (the panels are display: contents). -->
+	<div class="panel">
+		<h1 class="wordmark rise" style="--d: 100ms" aria-label="parentesi">
+			<span>(</span><span class="gap"><span class="letters">&nbsp;p a r e n t e s i&nbsp;</span></span
+			><span>)</span>
+		</h1>
+		<p class="manifesto body rise" style="--d: 3600ms">
 			A suspended moment where gastronomy, music, art and conscious consumption create an inspiring
 			dialogue.
 		</p>
-		<p>
+	</div>
+	<div class="panel">
+		<p class="manifesto unity body rise" style="--d: 3600ms">
 			We believe in food as unity, a form of cultural connection and discovery within a sensory
 			dimension.
 		</p>
 	</div>
-	<ul class="services body list rise" style="--d: 3800ms">
-		{#each services as service (service)}
-			<li>{service}</li>
-		{/each}
-	</ul>
+	<div class="panel">
+		<ul class="services body list rise" style="--d: 3800ms">
+			{#each services as service (service)}
+				<li>{service}</li>
+			{/each}
+		</ul>
+	</div>
 </Stage>
 
 <style>
@@ -71,10 +77,13 @@
 			opacity: 0;
 		}
 	}
+	.panel {
+		display: contents;
+	}
 	.manifesto {
 		max-width: 700px;
 	}
-	.manifesto p + p {
+	.unity {
 		margin-top: var(--space-2);
 	}
 	.services {
@@ -96,6 +105,27 @@
 			   Too wide, the opened gap squeezed and the word slid under ")". */
 			font-size: min(24px, calc((100vw - 56px) / 14.5));
 			letter-spacing: 0.18em;
+		}
+		/* Each panel is a screen that snaps flush to the top (the page sets
+		   scroll-snap-type in layout.css), so the panels carry the stage's
+		   vertical padding instead of the stage. snap-stop: a fling still
+		   stops at every panel. */
+		:global(#home) {
+			padding-block: 0;
+		}
+		.panel {
+			min-height: 100svh;
+			padding: 140px 0 100px;
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			justify-content: center;
+			scroll-snap-align: start;
+			scroll-snap-stop: always;
+		}
+		.unity,
+		.services {
+			margin-top: 0;
 		}
 	}
 </style>

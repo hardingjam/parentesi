@@ -39,8 +39,20 @@
 <PhotoStack spec={stages[photoSection]} />
 <main>
 	<Home />
-	<Food />
-	<Music />
-	<Contact />
+	<div class="rest">
+		<Food />
+		<Music />
+		<Contact />
+	</div>
 </main>
 <Nav current={named} />
+
+<style>
+	@media (max-width: 1023px) {
+		/* Phones: past the snapped home panels, one snap area taller than the
+		   screen, where any position is a valid stop, i.e. free scrolling. */
+		.rest {
+			scroll-snap-align: start;
+		}
+	}
+</style>
