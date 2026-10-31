@@ -108,15 +108,28 @@ a {
 	text-decoration: none;
 }
 
-/* Text links in the copy (music, contact): a quiet underline that firms
-   up on hover/focus. */
+/* Text links in the copy (music): a quiet underline that firms up on
+   hover/focus. An underline, not a border, so it stays on the text when
+   the link's box grows to a 44px touch target (phones). */
 .link {
-	border-bottom: 1px solid color-mix(in srgb, var(--ecru) 50%, transparent);
-	transition: border-color 200ms;
+	text-decoration: underline 1px color-mix(in srgb, var(--ecru) 50%, transparent);
+	text-underline-offset: 0.4em;
+	transition: text-decoration-color 200ms;
 }
 .link:hover,
 .link:focus-visible {
-	border-color: var(--ecru);
+	text-decoration-color: var(--ecru);
+}
+
+/* Browser surfaces in the palette: keyboard focus and text selection. */
+:focus-visible {
+	outline: 1px solid var(--ecru);
+	outline-offset: 4px;
+}
+::selection {
+	background: var(--ecru);
+	color: var(--ink);
+	text-shadow: none;
 }
 
 /* Type roles: every piece of section copy takes one of these, sized from
@@ -127,10 +140,13 @@ h2,
 	font-size: var(--text-lg);
 	line-height: 1.2;
 	letter-spacing: 0.04em;
+	text-wrap: balance;
 }
 .body {
 	font-size: var(--text-md);
 	line-height: 1.6;
+	/* No one-word last lines ("…Le Cordon Bleu / Paris."). */
+	text-wrap: pretty;
 }
 .small {
 	font-size: var(--text-sm);

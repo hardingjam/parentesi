@@ -44,9 +44,11 @@
 		align-items: baseline;
 		margin-bottom: var(--space-5);
 		/* 64px at ≥1440px, scaling down so the unwrappable letter-spaced
-		   wordmark never overflows the 160px-padded column at narrow
-		   desktop widths (it was clipping at ~1024-1150px). */
-		font-size: min(64px, 4.4vw);
+		   wordmark always fits the 160px-padded column. It's ~17 font-sizes
+		   wide; 17.5 leaves room for a classic scrollbar. Any tighter and
+		   the opened gap squeezes, sliding "i" under ")" (it did at
+		   1024–1250px with the old 4.4vw). */
+		font-size: min(64px, calc((100vw - 320px) / 17.5));
 		font-weight: 400;
 		line-height: 1;
 		letter-spacing: 0.32em;
