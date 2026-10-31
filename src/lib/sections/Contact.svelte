@@ -42,7 +42,7 @@
 	.row {
 		display: flex;
 		align-items: center;
-		gap: 40px;
+		gap: var(--space-4);
 	}
 	.big {
 		font-size: 300px;
@@ -69,12 +69,12 @@
 	.block {
 		display: flex;
 		flex-direction: column;
-		gap: 22px;
+		gap: var(--space-3);
 		align-items: center;
 	}
 	.icons {
 		display: flex;
-		gap: 32px;
+		gap: var(--space-3);
 	}
 	.icons a {
 		display: flex;
@@ -116,7 +116,7 @@
 	@media (max-width: 1023px) {
 		.row {
 			flex-direction: column;
-			gap: 8px;
+			gap: var(--space-1);
 		}
 		.big {
 			display: flex;
@@ -148,8 +148,7 @@
 			}
 		}
 		.block {
-			gap: 18px;
-			padding: 24px 0;
+			padding: var(--space-3) 0;
 		}
 	}
 </style>

@@ -47,11 +47,11 @@
 			</ul>
 		</div>
 		<div class="menu rise" style="--d: 300ms">
-			<p class="menu-label small">( sample menu )</p>
+			<p class="small">( sample menu )</p>
 			{#each menu as dish (dish)}
 				<p class="body">{dish}</p>
 			{/each}
-			<p class="menu-label small">( )</p>
+			<p class="small">( )</p>
 		</div>
 	</div>
 </Stage>
@@ -61,7 +61,7 @@
 		width: 100%;
 		display: grid;
 		grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-		gap: 120px;
+		gap: var(--space-5);
 		text-align: left;
 	}
 	.bio,
@@ -70,13 +70,13 @@
 		flex-direction: column;
 	}
 	.bio {
-		gap: 28px;
+		gap: var(--space-3);
 		/* The services grid below switches on when this column is wide
 		   enough for it. */
 		container-type: inline-size;
 	}
 	.menu {
-		gap: 22px;
+		gap: var(--space-3);
 	}
 	/* Services as a 2 × 2 grid with a · between the columns, wherever the
 	   column fits it (measured: 426px at 15px, i.e. desktops from ~1300px);
@@ -94,23 +94,15 @@
 
 	@media (max-width: 1023px) {
 		.grid {
+			/* Stacked, the 64px phone --space-5 separates the services from
+			   the menu. */
 			display: flex;
 			flex-direction: column;
-			gap: 22px;
-		}
-		.menu {
-			gap: 14px;
-		}
-		.menu > .menu-label:first-child {
-			/* + the 22px gap: 64px from the services to the menu. */
-			margin-top: 42px;
-		}
-		.bio {
-			gap: 22px;
 		}
 		.service-grid {
-			/* + the 22px gap: 44px from the CV to the services. */
-			margin-top: 22px;
+			/* Plus the bio's gap: twice the CV's own spacing above the
+			   services. */
+			margin-top: var(--space-3);
 			/* Exception to the .12em small tracking: tightened so the 2 × 2
 			   grid fits a 390px phone. */
 			letter-spacing: 0.04em;

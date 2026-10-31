@@ -41,16 +41,16 @@
 <style>
 	.intro {
 		max-width: 560px;
-		margin-bottom: 56px;
+		margin-bottom: var(--space-4);
 	}
 	h2 {
-		margin-bottom: 28px;
+		margin-bottom: var(--space-3);
 	}
 	.intro p + p {
-		margin-top: 14px;
+		margin-top: var(--space-2);
 	}
 	.equation p + p {
-		margin-top: 18px;
+		margin-top: var(--space-3);
 	}
 	.eq {
 		white-space: nowrap;
@@ -58,7 +58,7 @@
 	.embed {
 		width: 560px;
 		max-width: 100%;
-		margin-top: 56px;
+		margin-top: var(--space-4);
 		border: 1px solid color-mix(in srgb, var(--ecru) 45%, transparent);
 	}
 	.embed iframe {
@@ -68,35 +68,24 @@
 	}
 	.outlinks {
 		display: flex;
-		gap: 40px;
-		margin-top: 56px;
+		gap: var(--space-4);
+		margin-top: var(--space-4);
 	}
 
 	@media (max-width: 1023px) {
-		.intro {
-			margin-bottom: 44px;
-		}
-		h2 {
-			margin-bottom: 22px;
-		}
 		/* The handoff asks for a break before "=" on mobile. */
 		.equation .eq {
 			display: block;
 		}
-		.equation p + p {
-			margin-top: 16px;
-		}
 		.embed {
 			width: 100%;
-			margin-top: 44px;
 		}
 		.embed iframe {
 			height: 100px;
 		}
 		.outlinks {
 			flex-direction: column;
-			gap: 14px;
-			margin-top: 44px;
+			gap: var(--space-2);
 		}
 		.outlinks a {
 			display: inline-flex;

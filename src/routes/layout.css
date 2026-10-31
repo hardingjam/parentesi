@@ -63,6 +63,13 @@
 	--text-lg: 32px;
 	--text-md: 20px;
 	--text-sm: 15px;
+	/* The spacing scale for gaps and margins between copy (page gutters and
+	   the nav's own geometry sit outside it). */
+	--space-1: 8px;
+	--space-2: 14px;
+	--space-3: 22px;
+	--space-4: 44px;
+	--space-5: 88px;
 }
 
 @media (max-width: 1023px) {
@@ -70,6 +77,11 @@
 		--text-lg: 24px;
 		--text-md: 16px;
 		--text-sm: 13px;
+		--space-1: 8px;
+		--space-2: 12px;
+		--space-3: 18px;
+		--space-4: 36px;
+		--space-5: 64px;
 	}
 }
 
