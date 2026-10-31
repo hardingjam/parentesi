@@ -6,50 +6,35 @@
 	<div class="row rise" style="--d: 100ms">
 		<span class="big left" aria-hidden="true">(</span>
 		<div class="reveal block">
-			<!-- Line icons from Feather (MIT), drawn in the text colour. The phone
-			     number is plain text so it can be selected and copied (one
-			     click selects it all); the icon beside it dials. -->
-			<ul class="contacts">
-				<li>
-					<a
-						href="mailto:pietroplatania89@gmail.com"
-						aria-label="Email pietroplatania89@gmail.com"
-						title="pietroplatania89@gmail.com"
+			<!-- Line icons from Feather (MIT), drawn in the text colour. -->
+			<div class="icons">
+				<a
+					href="mailto:pietroplatania89@gmail.com"
+					aria-label="Email pietroplatania89@gmail.com"
+					title="pietroplatania89@gmail.com"
+				>
+					<svg viewBox="0 0 24 24" aria-hidden="true"
+						><path
+							d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"
+						/><polyline points="22,6 12,13 2,6" /></svg
 					>
-						<svg viewBox="0 0 24 24" aria-hidden="true"
-							><path
-								d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"
-							/><polyline points="22,6 12,13 2,6" /></svg
-						>
-						Email
-					</a>
-				</li>
-				<li>
-					<a href="tel:+393408732532" aria-label="Call +39 340 873 2532">
-						<svg viewBox="0 0 24 24" aria-hidden="true"
-							><path
-								d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"
-							/></svg
-						>
-					</a>
-					<span class="number">+39 340 873 2532</span>
-				</li>
-				<li>
-					<a
-						href="https://www.instagram.com/parentesi.berlin/"
-						rel="external"
-						aria-label="parentesi.berlin on Instagram"
+				</a>
+				<a
+					href="https://www.instagram.com/parentesi.berlin/"
+					rel="external"
+					aria-label="parentesi.berlin on Instagram"
+					title="@parentesi.berlin"
+				>
+					<svg viewBox="0 0 24 24" aria-hidden="true"
+						><rect x="2" y="2" width="20" height="20" rx="5" ry="5" /><path
+							d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"
+						/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5" /></svg
 					>
-						<svg viewBox="0 0 24 24" aria-hidden="true"
-							><rect x="2" y="2" width="20" height="20" rx="5" ry="5" /><path
-								d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"
-							/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5" /></svg
-						>
-						parentesi.berlin
-					</a>
-				</li>
-			</ul>
-			<p class="place">Berlin · itinerant</p>
+				</a>
+			</div>
+			<!-- Plain text so it can be selected and copied (one click selects
+			     it all). -->
+			<p class="number">+39 340 873 2532</p>
 		</div>
 		<span class="big right" aria-hidden="true">)</span>
 	</div>
@@ -88,56 +73,43 @@
 		flex-direction: column;
 		gap: 22px;
 		align-items: center;
-		font-size: var(--text-md);
+		font-size: var(--text-lg);
 		line-height: 1.4;
 		letter-spacing: 0.04em;
 	}
 	.block p {
 		margin: 0;
 	}
-	.contacts {
+	.icons {
 		display: flex;
-		flex-direction: column;
-		/* Rows share a left edge (icons in a column); the group is centred
-		   by .block. */
-		align-items: flex-start;
-		gap: 10px;
-		margin: 0;
-		padding: 0;
-		list-style: none;
+		gap: 32px;
 	}
-	.contacts li,
-	.contacts a {
+	.icons a {
 		display: flex;
 		align-items: center;
-		gap: 16px;
-	}
-	.contacts a {
-		min-height: 44px;
+		justify-content: center;
+		width: 56px;
+		height: 56px;
 		transition: opacity 200ms;
 	}
-	.contacts a:hover,
-	.contacts a:focus-visible {
+	.icons a:hover,
+	.icons a:focus-visible {
 		opacity: 0.7;
 	}
-	.number {
-		user-select: all;
-	}
-	.contacts svg {
-		flex: none;
-		width: 24px;
-		height: 24px;
+	.icons svg {
+		width: 40px;
+		height: 40px;
 		fill: none;
 		stroke: currentColor;
-		stroke-width: 1.5;
+		stroke-width: 1.25;
 		stroke-linecap: round;
 		stroke-linejoin: round;
 		/* The copy's legibility halo (text-shadow doesn't reach SVG). */
 		filter: drop-shadow(0 1px 2px rgba(11, 10, 8, 0.55))
 			drop-shadow(0 2px 16px rgba(11, 10, 8, 0.5));
 	}
-	.place {
-		margin-top: 10px;
+	.number {
+		user-select: all;
 	}
 
 	@media (prefers-reduced-motion: reduce) {
