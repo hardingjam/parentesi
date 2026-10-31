@@ -14,7 +14,7 @@
 	<title>( parentesi )</title>
 </svelte:head>
 
-<Stage corner="Berlin">
+<Stage>
 	<h1 class="wordmark rise" style="--d: 100ms" aria-label="parentesi">
 		<span class="paren left">(</span><span class="letters reveal"
 			>&nbsp;p a r e n t e s i&nbsp;</span

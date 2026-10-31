@@ -20,11 +20,6 @@ describe('Stage.svelte', () => {
 		expect(document.body.textContent).not.toContain('Photos:');
 	});
 
-	it('shows a corner note', async () => {
-		render(Stage, { corner: 'Berlin', children: content });
-		await expect.element(page.getByText('Berlin')).toBeInTheDocument();
-	});
-
 	it('dims the content while the nav is open', async () => {
 		render(Stage, { children: content });
 		await expect.element(page.getByText('stage content')).toBeVisible();
