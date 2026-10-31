@@ -44,10 +44,10 @@
 	.row {
 		display: flex;
 		align-items: center;
-		gap: 56px;
+		gap: 40px;
 	}
 	.big {
-		font-size: 440px;
+		font-size: 300px;
 		line-height: 1;
 		transform: translateY(-4%);
 		animation: 1100ms var(--ease-paren) 300ms both;
@@ -60,12 +60,12 @@
 	}
 	@keyframes from-right {
 		from {
-			transform: translateY(-4%) translateX(200px);
+			transform: translateY(-4%) translateX(140px);
 		}
 	}
 	@keyframes from-left {
 		from {
-			transform: translateY(-4%) translateX(-200px);
+			transform: translateY(-4%) translateX(-140px);
 		}
 	}
 	.block {
@@ -127,9 +127,9 @@
 			display: flex;
 			align-items: center;
 			justify-content: center;
-			width: 240px;
-			height: 120px;
-			font-size: 200px;
+			width: 170px;
+			height: 84px;
+			font-size: 140px;
 			transform: none;
 		}
 		/* With rotate(90deg) applied first, translateX moves along the rotated
@@ -144,12 +144,12 @@
 		}
 		@keyframes from-below {
 			from {
-				transform: rotate(90deg) translateX(130px);
+				transform: rotate(90deg) translateX(90px);
 			}
 		}
 		@keyframes from-above {
 			from {
-				transform: rotate(90deg) translateX(-130px);
+				transform: rotate(90deg) translateX(-90px);
 			}
 		}
 		.block {
