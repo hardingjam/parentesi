@@ -5,7 +5,7 @@ Portfolio website for ( parentesi ), a Berlin-based itinerant food project by It
 ## Stack
 
 - SvelteKit 2 + Svelte 5 (runes), TypeScript
-- Tailwind CSS 4 (via `@tailwindcss/vite`)
+- Plain CSS: scoped component styles + shared tokens/reset in `src/routes/layout.css` (no Tailwind)
 - Vercel adapter (`@sveltejs/adapter-vercel`)
 - Vitest (browser mode via Playwright) for tests
 - `npm run dev` / `build` / `check` / `lint` / `format` / `test`
