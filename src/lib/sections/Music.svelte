@@ -33,6 +33,7 @@
 	<ul class="links rise" style="--d: 450ms">
 		<li><a class="link" href="https://soundcloud.com/planatia" rel="external">soundcloud</a></li>
 		<li><a class="link" href="https://www.instagram.com/planatia/" rel="external">instagram</a></li>
+		<li><a class="link" href="https://www.radiocircolo.com/" rel="external">radio circolo</a></li>
 		<li><a class="link" href="mailto:pietroplatania89@gmail.com">bookings</a></li>
 	</ul>
 </Stage>
