@@ -1,8 +1,11 @@
 import { page } from 'vitest/browser';
-import { beforeEach, describe, expect, it } from 'vitest';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { render } from 'vitest-browser-svelte';
 import { nav } from '$lib/nav.svelte';
 import Nav from './Nav.svelte';
+
+// The router isn't running in component tests.
+vi.mock('$app/navigation', () => ({ pushState: vi.fn() }));
 
 describe('Nav.svelte', () => {
 	beforeEach(() => {

@@ -1,6 +1,7 @@
 <script lang="ts">
 	import type { Section } from '$lib/content';
 	import { closeNav, nav, toggleNav } from '$lib/nav.svelte';
+	import { glideTo } from '$lib/scroll';
 
 	// `current` is the section in view (the page's scroll spy).
 	let { current }: { current: Section } = $props();
@@ -54,15 +55,20 @@
 		}
 	}
 
+	// The links glide to their section (see glideTo) instead of the
+	// browser's instant/native-smooth hash jump.
+	function go(e: MouseEvent, id: Section) {
+		e.preventDefault();
+		closeNav();
+		glideTo(id);
+	}
+
 	// Shared by both parens and the label between them.
 	function onParenClick(e: MouseEvent) {
-		if (hoverIntent()) {
-			// Hover already opened the nav; a paren click is just "go home".
-			closeNav();
-			return;
-		}
-		if (nav.open) {
-			closeNav();
+		// Hover already opened the nav, or a touch tap on the open mark: a
+		// paren click is just "go home". Otherwise a tap opens the menu.
+		if (hoverIntent() || nav.open) {
+			go(e, 'home');
 		} else {
 			e.preventDefault();
 			toggleNav();
@@ -125,7 +131,7 @@
 					style="--i: {i}"
 					aria-current={isCurrent ? 'location' : undefined}
 					tabindex={nav.open && !isCurrent ? undefined : -1}
-					onclick={closeNav}>{id}</a
+					onclick={(e) => go(e, id)}>{id}</a
 				>
 			{/each}
 		</div>
