@@ -1,6 +1,6 @@
 # ( parentesi )
 
-Portfolio website for ( parentesi ), a Berlin-based itinerant food project by Italian chef Pietro Platania: plant-based fine dining, supper-club events, tailor-made catering, cooking workshops, and food consulting. The name means _parenthesis_ — a suspended moment — and `( )` is the logo and core graphic motif. The sibling music project is **Planatia** (Pietro's music alias — this is not a typo of "Platania"): soundcloud.com/planatia, instagram.com/planatia.
+Portfolio website for ( parentesi ), a Berlin-based itinerant food project by Italian chef Pietro Platania: plant-based fine dining, pop-up dinners, tailor-made catering, cooking workshops, and food consulting. The name means _parenthesis_ — a suspended moment — and `( )` is the logo and core graphic motif. The sibling music project is **Planatia** (Pietro's music alias — this is not a typo of "Platania"): soundcloud.com/planatia, instagram.com/planatia.
 
 ## Stack
 

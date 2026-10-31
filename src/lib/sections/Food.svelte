@@ -9,7 +9,7 @@
 		'Chez Panisse'
 	];
 	const services = [
-		'supper-club events',
+		'pop-up dinners',
 		'tailor-made catering',
 		'cooking workshops',
 		'food consulting'
