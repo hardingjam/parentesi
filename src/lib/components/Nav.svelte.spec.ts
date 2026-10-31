@@ -9,7 +9,14 @@ describe('Nav.svelte', () => {
 		nav.open = false;
 	});
 
-	it('shows only the ( ) mark when closed', async () => {
+	it('names the section in view between the parens when closed', async () => {
+		render(Nav, { current: 'music' });
+		await expect
+			.element(page.getByRole('button', { name: 'music', includeHidden: true }))
+			.toBeVisible();
+	});
+
+	it('shows only the mark when closed', async () => {
 		render(Nav, { current: 'home' });
 		// The parens are persistent <a> elements (not swapped for a <button>)
 		// so their transform transition has something to animate from — see
@@ -76,13 +83,7 @@ describe('Nav.svelte', () => {
 		await expect.poll(() => nav.open).toBe(false);
 	});
 
-	it('closes when the closing paren is clicked while open (regression: persistent element)', async () => {
-		// Regression guard for the fix that made both parens single, persistent
-		// <a> elements instead of swapping <a>/<button> via {#if}/{:else} — the
-		// swap used to mean the CLOSING paren specifically (a fresh element
-		// each toggle) had nothing for its transform transition to animate
-		// from. Clicking it while open should still run onParenClick's
-		// closeNav() branch.
+	it('closes when the closing paren is clicked while open', async () => {
 		nav.open = true;
 		render(Nav, { current: 'home' });
 		const closingParen = page.getByRole('link', { name: 'home' }).last();
