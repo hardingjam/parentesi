@@ -44,7 +44,9 @@ describe('stages', () => {
 		expect(stages.food.group.id).toBe('food');
 	});
 
-	it('shows Pietro and Vincenzo on home', () => {
-		expect(stages.home.group.photos.map((p) => p.slug)).toContain('pietro-vincenzo');
+	it('shows Pietro and Vincenzo and one food plate on home', () => {
+		const slugs = stages.home.group.photos.map((p) => p.slug);
+		expect(slugs).toContain('pietro-vincenzo');
+		expect(slugs.filter((s) => s.startsWith('food-'))).toEqual(['food-06']);
 	});
 });

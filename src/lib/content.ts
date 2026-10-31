@@ -51,19 +51,6 @@ const moody: PhotoGroup = {
 	]
 };
 
-/** Home: the moody series plus Pietro and Vincenzo at the stove. */
-const home: PhotoGroup = {
-	id: 'home',
-	photos: [
-		moody.photos[0],
-		{
-			slug: 'pietro-vincenzo',
-			alt: 'Pietro and Vincenzo cooking under a pendant lamp, guests looking on'
-		},
-		...moody.photos.slice(1)
-	]
-};
-
 /**
  * Plate photography for the food section (daylight series + Zoe Spawton's
  * documentary set). Portrait originals from static/img/food, processed by
@@ -82,6 +69,23 @@ const food: PhotoGroup = {
 		{ slug: 'food-08', alt: 'A vegetable dish dressed with fresh herbs' },
 		{ slug: 'food-09', alt: 'A plated course on a linen-covered table' },
 		{ slug: 'food-10', alt: 'A finished dish ready for service' }
+	]
+};
+
+/**
+ * Home: the moody series plus Pietro and Vincenzo at the stove and one
+ * plate from the food series.
+ */
+const home: PhotoGroup = {
+	id: 'home',
+	photos: [
+		moody.photos[0],
+		{
+			slug: 'pietro-vincenzo',
+			alt: 'Pietro and Vincenzo cooking under a pendant lamp, guests looking on'
+		},
+		...moody.photos.slice(1),
+		food.photos[5] // food-06, the shaved-vegetable plate
 	]
 };
 
