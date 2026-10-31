@@ -89,9 +89,8 @@
 		margin: 44px 0 0;
 		padding: 0;
 		list-style: none;
-		font-size: var(--text-sm);
+		font-size: var(--text-md);
 		line-height: 1.9;
-		letter-spacing: 0.14em;
 	}
 
 	@media (prefers-reduced-motion: reduce) {
@@ -115,7 +114,6 @@
 		}
 		.services {
 			margin-top: 36px;
-			letter-spacing: 0.12em;
 		}
 	}
 </style>
