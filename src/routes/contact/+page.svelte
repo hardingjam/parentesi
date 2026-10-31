@@ -6,7 +6,7 @@
 	<title>( contact ) — parentesi</title>
 </svelte:head>
 
-<Stage credit="Photos: Fredericke Alma Sauerbrey, Zoe Spawton">
+<Stage>
 	<div class="row rise" style="--d: 100ms">
 		<span class="big left" aria-hidden="true">(</span>
 		<div class="reveal block">

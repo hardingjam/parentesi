@@ -14,21 +14,14 @@ describe('Stage.svelte', () => {
 		nav.open = false;
 	});
 
-	it('renders the content snippet and the default photo credit', async () => {
+	it('renders the content snippet without a photo credit', async () => {
 		render(Stage, { children: content });
 		await expect.element(page.getByText('stage content')).toBeVisible();
-		await expect.element(page.getByText('Photos: Fredericke Alma Sauerbrey')).toBeVisible();
+		expect(document.body.textContent).not.toContain('Photos:');
 	});
 
-	it('shows a custom credit and corner note', async () => {
-		render(Stage, {
-			credit: 'Photos: Fredericke Alma Sauerbrey, Zoe Spawton',
-			corner: 'Berlin',
-			children: content
-		});
-		await expect
-			.element(page.getByText('Photos: Fredericke Alma Sauerbrey, Zoe Spawton'))
-			.toBeVisible();
+	it('shows a corner note', async () => {
+		render(Stage, { corner: 'Berlin', children: content });
 		await expect.element(page.getByText('Berlin')).toBeInTheDocument();
 	});
 

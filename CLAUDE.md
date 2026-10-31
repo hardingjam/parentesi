@@ -23,7 +23,7 @@ Full brief in [docs/design-prompt.md](docs/design-prompt.md) — read it before 
 ## Assets (`static/`)
 
 - `Brochure Example.pdf` — existing brand document; reference, not template.
-- `photos/` — three families: moody candlelit event series (files prefixed `( )`, by Fredericke Alma Sauerbrey), daylight plating series (`3H6A*.jpg`), documentary series (`parentesi_240327_* © Zoe Spawton_Large.jpg`). Photo credits (Sauerbrey, Spawton) must appear on the site. Two `IMG_*.HEIC` files need conversion before web use. Filenames contain spaces/parentheses/`©` — URL-encode when referencing.
+- `photos/` — three families: moody candlelit event series (files prefixed `( )`, by Fredericke Alma Sauerbrey), daylight plating series (`3H6A*.jpg`), documentary series (`parentesi_240327_* © Zoe Spawton_Large.jpg`). No photo credits on the site (owner decision 2026-10-31). Two `IMG_*.HEIC` files need conversion before web use. Filenames contain spaces/parentheses/`©` — URL-encode when referencing.
 - `font/Typo.ttf` — brand typewriter face.
 - `text/Text website parentesi update.pages` — source copy (already transcribed into the design prompt).
 
