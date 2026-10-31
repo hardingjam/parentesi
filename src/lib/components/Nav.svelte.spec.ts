@@ -43,6 +43,13 @@ describe('Nav.svelte', () => {
 			.toHaveStyle({ visibility: 'visible', opacity: '0.55' });
 	});
 
+	it('links home to the top of the page', async () => {
+		nav.open = true;
+		render(Nav, { current: 'food' });
+		// The text link, not the parens (which are also labelled "home").
+		await expect.element(page.getByText('home', { exact: true })).toHaveAttribute('href', '#home');
+	});
+
 	it('closes when the pointer leaves the nav', async () => {
 		nav.open = true;
 		render(Nav, { current: 'home' });

@@ -5,10 +5,10 @@
 	// `current` is the section in view (the page's scroll spy).
 	let { current }: { current: Section } = $props();
 
-	const links = ['food', 'music', 'contact'] as const;
+	const links = ['home', 'food', 'music', 'contact'] as const;
 
 	let viewportWidth = $state(typeof window !== 'undefined' ? window.innerWidth : 1440);
-	// Natural width of the "food music contact" row, measured live so the
+	// Natural width of the "home food music contact" row, measured live so the
 	// closing paren's travel distance always trails the *actual* rendered
 	// content (never overlapping it) regardless of font metrics. On mobile
 	// this is additionally clamped by `maxLinksWidth` below, so the measured
@@ -19,7 +19,7 @@
 	const isMobile = $derived(viewportWidth <= 1023);
 	const edge = $derived(isMobile ? 24 : 48);
 	const parenSize = $derived(isMobile ? 44 : 56);
-	const linkGap = $derived(isMobile ? 10 : 40);
+	const linkGap = $derived(isMobile ? 8 : 40);
 	// Small on both breakpoints: the closing paren's glyph is centered inside
 	// its ≥44px hit box, which already contributes ~15px of visual air — a
 	// full linkGap here made ") contact" read much wider than "( food".
@@ -260,12 +260,12 @@
 
 	@media (max-width: 1023px) {
 		.links a {
-			/* The handoff's 22px/.12em genuinely can't fit "food music contact"
-			   between two 44px parens at 360-390px — it ellipsis-clipped the
-			   labels. Readable beats clipped, so the open row runs smaller and
-			   tighter on phones. */
-			font-size: 18px;
-			letter-spacing: 0.06em;
+			/* Sized so all of "home food music contact" fits between two 44px
+			   parens down to a 360px screen (measured: 15px clips at 360).
+			   Readable beats clipped, so the open row runs smaller and tighter
+			   on phones. */
+			font-size: 14px;
+			letter-spacing: 0.04em;
 			min-height: 44px;
 			display: inline-flex;
 			align-items: center;
