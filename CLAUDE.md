@@ -29,8 +29,7 @@ Full brief in [docs/design-prompt.md](docs/design-prompt.md) — read it before 
 
 ## Content facts
 
-- Contact: parentesi.berlin@gmail.com · +39 340 873 2532 · instagram.com/parentesi.berlin
-- Music bookings: pietroplatania89@gmail.com
+- Contact: pietroplatania89@gmail.com · +39 340 873 2532 · instagram.com/parentesi.berlin (also used for music bookings; parentesi.berlin@gmail.com is no longer on the site)
 - Manifesto and services list: see docs/design-prompt.md (Home section) — use that wording verbatim.
 - Pietro's CV highlights: Le Cordon Bleu Paris; Le Bristol***; Il Luogo di Aimo e Nadia**; Joia*; Vun**; Chez Panisse; founder of Banco Natural Food, Rome; now Berlin.
 

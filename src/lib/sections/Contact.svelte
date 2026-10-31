@@ -10,9 +10,9 @@
 			<ul class="icons">
 				<li>
 					<a
-						href="mailto:parentesi.berlin@gmail.com"
-						aria-label="Email parentesi.berlin@gmail.com"
-						title="parentesi.berlin@gmail.com"
+						href="mailto:pietroplatania89@gmail.com"
+						aria-label="Email pietroplatania89@gmail.com"
+						title="pietroplatania89@gmail.com"
 					>
 						<svg viewBox="0 0 24 24" aria-hidden="true">
 							<path
