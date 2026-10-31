@@ -88,17 +88,13 @@
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		width: 56px;
-		height: 56px;
-		transition: opacity 200ms;
-	}
-	.icons a:hover,
-	.icons a:focus-visible {
-		opacity: 0.7;
+		width: 64px;
+		height: 64px;
 	}
 	.icons svg {
-		width: 40px;
-		height: 40px;
+		width: 48px;
+		height: 48px;
+		transition: transform 300ms var(--ease-entrance);
 		fill: none;
 		stroke: currentColor;
 		stroke-width: 1.25;
@@ -107,6 +103,10 @@
 		/* The copy's legibility halo (text-shadow doesn't reach SVG). */
 		filter: drop-shadow(0 1px 2px rgba(11, 10, 8, 0.55))
 			drop-shadow(0 2px 16px rgba(11, 10, 8, 0.5));
+	}
+	.icons a:hover svg,
+	.icons a:focus-visible svg {
+		transform: scale(1.12);
 	}
 	.number {
 		user-select: all;
