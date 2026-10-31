@@ -1,7 +1,7 @@
 <script lang="ts">
 	import type { Section } from '$lib/content';
 	import { closeNav, nav, toggleNav } from '$lib/nav.svelte';
-	import { glideTo } from '$lib/scroll';
+	import { glideTo } from '$lib/scroll.svelte';
 
 	// `current` is the section in view (the page's scroll spy).
 	let { current }: { current: Section } = $props();

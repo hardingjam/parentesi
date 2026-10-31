@@ -11,6 +11,9 @@ const ease = (t: number) => (t < ACCEL ? t ** 3 / ACCEL ** 2 : 1 - (1 - t) ** 3 
 
 let stopCurrent: (() => void) | undefined;
 
+/** True while a glide is moving the page (the photo reel waits for it). */
+export const glide = $state({ active: false });
+
 /**
  * Glide the page to a section and put its #hash in the URL. Native
  * `scroll-behavior: smooth` can't be slowed or eased, so this animates the
@@ -43,6 +46,7 @@ export function glideTo(id: Section) {
 		cancelAnimationFrame(frame);
 		for (const type of ['wheel', 'touchstart', 'keydown']) removeEventListener(type, stop);
 		stopCurrent = undefined;
+		glide.active = false;
 	};
 	let frame = requestAnimationFrame(function step(now) {
 		const t = Math.min((now - start) / duration, 1);
@@ -54,4 +58,5 @@ export function glideTo(id: Section) {
 		addEventListener(type, stop, { passive: true });
 	}
 	stopCurrent = stop;
+	glide.active = true;
 }

@@ -1,6 +1,7 @@
 import { page } from 'vitest/browser';
 import { describe, expect, it, vi } from 'vitest';
 import { render } from 'vitest-browser-svelte';
+import { stages } from '$lib/content';
 import { nav } from '$lib/nav.svelte';
 import Page from './+page.svelte';
 
@@ -22,10 +23,17 @@ describe('one-page scroll', () => {
 			.toContain('brightness');
 	});
 
-	it('glides slowly to a section from the nav, easing in', async () => {
+	it('glides to a section from the nav, holding the photos until arrival', async () => {
 		render(Page);
 		scrollTo(0, 0);
 		const target = document.getElementById('contact')!.offsetTop;
+		// Watch for the food reel, which the glide passes on its way down.
+		const foodAlt = stages.food.group.photos[0].alt;
+		let sawFood = false;
+		const watch = new MutationObserver(() => {
+			sawFood ||= !!document.querySelector(`img[alt="${foodAlt}"]`);
+		});
+		watch.observe(document.body, { subtree: true, childList: true, attributes: true });
 		nav.open = true;
 		document.querySelector<HTMLAnchorElement>('nav a[href="#contact"]')!.click();
 
@@ -36,5 +44,11 @@ describe('one-page scroll', () => {
 		expect(scrollY).toBeLessThan(target * 0.2);
 
 		await expect.poll(() => Math.round(scrollY), { timeout: 4000 }).toBe(target);
+		// Arrived: the reel retunes to contact, never having shown food.
+		await expect
+			.poll(() => document.querySelector<HTMLElement>('.backdrop')?.style.cssText)
+			.toContain(stages.contact.scrimDesktop);
+		watch.disconnect();
+		expect(sawFood).toBe(false);
 	});
 });

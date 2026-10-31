@@ -6,10 +6,17 @@
 	import Home from '$lib/sections/Home.svelte';
 	import Music from '$lib/sections/Music.svelte';
 	import { sections, stages, type Section } from '$lib/content';
+	import { glide } from '$lib/scroll.svelte';
 
 	// Scroll spy: the section crossing the viewport's midline is current. It
-	// retunes the one fixed photo reel and is marked in the nav.
+	// is marked in the nav and retunes the one fixed photo reel, which holds
+	// still while a nav glide passes through other sections and changes once,
+	// on arrival.
 	let current: Section = $state('home');
+	let photoSection: Section = $state('home');
+	$effect(() => {
+		if (!glide.active) photoSection = current;
+	});
 
 	$effect(() => {
 		const io = new IntersectionObserver(
@@ -28,7 +35,7 @@
 	});
 </script>
 
-<PhotoStack spec={stages[current]} />
+<PhotoStack spec={stages[photoSection]} />
 <main>
 	<Home />
 	<Food />
