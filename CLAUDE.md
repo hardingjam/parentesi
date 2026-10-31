@@ -20,6 +20,16 @@ Full brief in [docs/design-prompt.md](docs/design-prompt.md) — read it before 
 - **Identity:** evolution of the brochure (`static/Brochure Example.pdf`) — beige/ecru (~#D6CFAF), near-black ink, typewriter voice (`static/font/Typo.ttf`), generous whitespace, `( )` as punctuation-as-logo. No cards, drop shadows, decorative gradients, or bouncy motion.
 - Must work well on mobile (390px) and desktop.
 
+## CSS rules
+
+Tokens, the reset and the shared type roles live in `src/routes/layout.css`; components style themselves in scoped `<style>` blocks. No CSS framework.
+
+- **Type:** section copy takes a role instead of restating font-size/line-height/letter-spacing: `h2`/`.heading` (`--text-lg`, lh 1.2, .04em), `.body` (`--text-md`, lh 1.6), `.small` (`--text-sm`, .12em), plus `.list` (lh 1.9) for stacked one-line items. Exempt: display type (the home wordmark, contact's big parens, the nav). Any other exception carries a comment saying why (today: the food services grid's .04em on phones, so it fits 390px).
+- **Spacing:** gaps and margins between copy use `--space-1`…`--space-5` (8/14/22/44/88px; phones 8/12/18/36/64). Exempt: section padding (page gutters), the nav's internal geometry, and em-based inline spacing (e.g. the `·` separators).
+- **Colour:** only `--ecru`, `--ink` and `--base`; alphas via `color-mix(in srgb, var(--…) N%, transparent)`; the legibility halo via `--halo-near`/`--halo-far` (as text-shadow, or `drop-shadow()` for SVG).
+- **Breakpoint:** one, `@media (max-width: 1023px)` for phones and tablets, written as exactly that literal (media queries can't use variables). Container queries only where a layout depends on its column's width (the food services grid).
+- **Class names:** one meaning per name across the codebase; scoping prevents clashes, but searching a class should find one thing.
+
 ## Assets (`static/`)
 
 - `Brochure Example.pdf` — existing brand document; reference, not template.
