@@ -32,7 +32,7 @@ describe('photo groups', () => {
 });
 
 describe('stages', () => {
-	it('gives every route a group and a scrim treatment', () => {
+	it('gives every section a group and a scrim treatment', () => {
 		for (const key of ['home', 'food', 'music', 'contact'] as const) {
 			expect(stages[key].group.photos.length).toBeGreaterThan(0);
 			expect(stages[key].scrimDesktop).toContain('radial-gradient');
@@ -40,7 +40,7 @@ describe('stages', () => {
 		}
 	});
 
-	it('plays the food reel on the food route', () => {
+	it('plays the food reel in the food section', () => {
 		expect(stages.food.group.id).toBe('food');
 	});
 });

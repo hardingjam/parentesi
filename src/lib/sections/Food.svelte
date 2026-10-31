@@ -25,48 +25,39 @@
 	];
 </script>
 
-<svelte:head>
-	<title>( food ) — parentesi</title>
-</svelte:head>
-
-<Stage>
-	<div class="frame">
-		<div class="grid">
-			<div class="bio rise" style="--d: 150ms">
-				<!-- The route heading lives in the nav mark: `( food )` -->
-				<h2>Pietro Platania</h2>
-				<p>Italian chef, trained at Le Cordon Bleu Paris.</p>
-				<ul class="restaurants">
-					{#each restaurants as restaurant (restaurant)}
-						<li>{restaurant}</li>
-					{/each}
-				</ul>
-				<p>
-					Founder of Banco Natural Food, Rome. Now cooking in Berlin — plant-based, circular,
-					itinerant.
-				</p>
-				<ul class="services">
-					{#each services as service (service)}
-						<li>{service}</li>
-					{/each}
-				</ul>
-			</div>
-			<div class="menu rise" style="--d: 300ms">
-				<p class="label">( a sample menu )</p>
-				{#each menu as dish (dish)}
-					<p class="dish">{dish}</p>
+<Stage id="food">
+	<div class="grid">
+		<div class="bio rise" style="--d: 150ms">
+			<h2>Pietro Platania</h2>
+			<p>Italian chef, trained at Le Cordon Bleu Paris.</p>
+			<ul class="restaurants">
+				{#each restaurants as restaurant (restaurant)}
+					<li>{restaurant}</li>
 				{/each}
-				<p class="label">( )</p>
-			</div>
+			</ul>
+			<p>
+				Founder of Banco Natural Food, Rome. Now cooking in Berlin — plant-based, circular,
+				itinerant.
+			</p>
+			<ul class="services">
+				{#each services as service (service)}
+					<li>{service}</li>
+				{/each}
+			</ul>
+		</div>
+		<div class="menu rise" style="--d: 300ms">
+			<p class="label">( a sample menu )</p>
+			{#each menu as dish (dish)}
+				<p class="dish">{dish}</p>
+			{/each}
+			<p class="label">( )</p>
 		</div>
 	</div>
 </Stage>
 
 <style>
-	.frame {
-		width: 100%;
-	}
 	.grid {
+		width: 100%;
 		display: grid;
 		grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
 		gap: 120px;
@@ -87,22 +78,6 @@
 	}
 	.menu {
 		gap: 22px;
-		max-height: 560px;
-		overflow-y: auto;
-		scrollbar-width: none;
-		/* Content starts/ends beyond the mask's fade zones so nothing sits
-		   half-faded at rest — the fades only ever eat scrolled-away text. */
-		padding: 60px 0;
-		mask-image: linear-gradient(
-			to bottom,
-			transparent,
-			#000 60px,
-			#000 calc(100% - 60px),
-			transparent
-		);
-	}
-	.menu::-webkit-scrollbar {
-		display: none;
 	}
 	h2 {
 		margin: 0;
@@ -141,39 +116,12 @@
 	}
 
 	@media (max-width: 1023px) {
-		.frame {
-			position: absolute;
-			top: 120px;
-			right: 28px;
-			bottom: 80px;
-			left: 28px;
-			/* Cancel the base width:100% — with left+width set, right would be
-			   ignored and the frame would overflow the viewport. */
-			width: auto;
-			overflow-y: auto;
-			padding-top: 40px;
-			touch-action: pan-y;
-			scrollbar-width: none;
-			mask-image: linear-gradient(
-				to bottom,
-				transparent,
-				#000 40px,
-				#000 calc(100% - 60px),
-				transparent
-			);
-		}
-		.frame::-webkit-scrollbar {
-			display: none;
-		}
 		.grid {
 			display: flex;
 			flex-direction: column;
 			gap: 22px;
 		}
 		.menu {
-			max-height: none;
-			overflow: visible;
-			mask-image: none;
 			gap: 14px;
 		}
 		.menu > .label:first-child {

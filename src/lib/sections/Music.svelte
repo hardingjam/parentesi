@@ -7,11 +7,7 @@
 		'&color=%23d6cfaf&auto_play=false&show_user=true&visual=false';
 </script>
 
-<svelte:head>
-	<title>( music ) — parentesi</title>
-</svelte:head>
-
-<Stage>
+<Stage id="music">
 	<div class="equation rise" style="--d: 150ms">
 		<p>Tastes like sound <span class="eq">= Planatia</span></p>
 		<p>Sounds like taste <span class="eq">= ( parentesi )</span></p>

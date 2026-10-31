@@ -2,11 +2,7 @@
 	import Stage from '$lib/components/Stage.svelte';
 </script>
 
-<svelte:head>
-	<title>( contact ) — parentesi</title>
-</svelte:head>
-
-<Stage>
+<Stage id="contact">
 	<div class="row rise" style="--d: 100ms">
 		<span class="big left" aria-hidden="true">(</span>
 		<div class="reveal block">

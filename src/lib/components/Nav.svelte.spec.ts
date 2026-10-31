@@ -10,7 +10,7 @@ describe('Nav.svelte', () => {
 	});
 
 	it('shows only the ( ) mark when closed', async () => {
-		render(Nav, { current: '/' });
+		render(Nav, { current: 'home' });
 		// The parens are persistent <a> elements (not swapped for a <button>)
 		// so their transform transition has something to animate from — see
 		// Nav.svelte's onParenClick. That makes their accessible role "link".
@@ -25,13 +25,13 @@ describe('Nav.svelte', () => {
 			.toHaveStyle({ visibility: 'hidden', opacity: '0' });
 	});
 
-	it('opens on hover and reveals the route links', async () => {
+	it('opens on hover and reveals the section links', async () => {
 		// The test browser is hover-capable, so entering the nav opens it.
-		render(Nav, { current: '/' });
+		render(Nav, { current: 'home' });
 		await page.getByRole('link', { name: 'open menu' }).first().hover();
 		await expect.poll(() => nav.open).toBe(true);
 		// Non-current destinations rest dimmed at .55 (full opacity on
-		// hover/focus; the current route rests at full opacity).
+		// hover/focus; the current section rests at full opacity).
 		await expect
 			.element(page.getByRole('link', { name: 'food' }))
 			.toHaveStyle({ visibility: 'visible', opacity: '0.55' });
@@ -45,23 +45,23 @@ describe('Nav.svelte', () => {
 
 	it('closes when the pointer leaves the nav', async () => {
 		nav.open = true;
-		render(Nav, { current: '/' });
+		render(Nav, { current: 'home' });
 		const el = document.querySelector('nav');
 		el?.dispatchEvent(new MouseEvent('mouseleave'));
 		await expect.poll(() => nav.open).toBe(false);
 	});
 
-	it('shows the current route at full opacity, non-interactive', async () => {
+	it('shows the section in view at full opacity, non-interactive', async () => {
 		nav.open = true;
-		render(Nav, { current: '/food' });
+		render(Nav, { current: 'food' });
 		const food = page.getByRole('link', { name: 'food' });
-		await expect.element(food).toHaveAttribute('aria-current', 'page');
+		await expect.element(food).toHaveAttribute('aria-current', 'location');
 		await expect.element(food).toHaveStyle({ opacity: '1', pointerEvents: 'none' });
 	});
 
 	it('closes on Escape', async () => {
 		nav.open = true;
-		render(Nav, { current: '/' });
+		render(Nav, { current: 'home' });
 		await expect
 			.element(page.getByRole('link', { name: 'food' }))
 			.toHaveStyle({ visibility: 'visible' });
@@ -77,11 +77,11 @@ describe('Nav.svelte', () => {
 		// from. Clicking it while open should still run onParenClick's
 		// closeNav() branch.
 		nav.open = true;
-		render(Nav, { current: '/' });
+		render(Nav, { current: 'home' });
 		const closingParen = page.getByRole('link', { name: 'home' }).last();
 		await expect.element(closingParen).toBeInTheDocument();
-		// Clicking it while open also carries a real href="/" navigation (the
-		// spec'd "tap either paren while open -> navigate home and close").
+		// Clicking it while open also carries a real href="#home" jump (the
+		// spec'd "tap either paren while open -> go home and close").
 		// Stop that default action so this component-only test doesn't
 		// navigate the whole test page away — Nav's own onclick still runs
 		// and calls closeNav() synchronously regardless of who else is

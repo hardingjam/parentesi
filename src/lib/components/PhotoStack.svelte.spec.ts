@@ -5,12 +5,12 @@ import { stages } from '$lib/content';
 import PhotoStack from './PhotoStack.svelte';
 
 describe('PhotoStack.svelte', () => {
-	it('renders the route group’s first photo immediately', async () => {
+	it('renders the section group’s first photo immediately', async () => {
 		render(PhotoStack, { spec: stages.home });
 		await expect.element(page.getByAltText(stages.home.group.photos[0].alt)).toBeInTheDocument();
 	});
 
-	it('dissolves into the new group when the spec changes route', async () => {
+	it('dissolves into the new group when the section changes', async () => {
 		const screen = render(PhotoStack, { spec: stages.home });
 		await expect.element(page.getByAltText(stages.home.group.photos[0].alt)).toBeInTheDocument();
 		await screen.rerender({ spec: stages.food });

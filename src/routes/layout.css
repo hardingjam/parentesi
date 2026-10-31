@@ -17,8 +17,6 @@
 
 html,
 body {
-	height: 100%;
-	overflow: hidden;
 	margin: 0;
 	background: var(--ink);
 	color: var(--ecru);
@@ -34,8 +32,11 @@ body {
 		0 2px 16px rgba(11, 10, 8, 0.5);
 }
 
-body {
-	touch-action: none;
+/* Nav hash links glide to their section (native, no JS). */
+@media (prefers-reduced-motion: no-preference) {
+	html {
+		scroll-behavior: smooth;
+	}
 }
 
 a {
@@ -43,7 +44,7 @@ a {
 	text-decoration: none;
 }
 
-/* Entrance animations (once per route load). Delay via --d. */
+/* Entrance animations (once per page load). Delay via --d. */
 @keyframes rise {
 	from {
 		opacity: 0;

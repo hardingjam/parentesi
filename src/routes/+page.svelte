@@ -1,120 +1,38 @@
 <script lang="ts">
-	import Stage from '$lib/components/Stage.svelte';
+	import Nav from '$lib/components/Nav.svelte';
+	import PhotoStack from '$lib/components/PhotoStack.svelte';
+	import Contact from '$lib/sections/Contact.svelte';
+	import Food from '$lib/sections/Food.svelte';
+	import Home from '$lib/sections/Home.svelte';
+	import Music from '$lib/sections/Music.svelte';
+	import { sections, stages, type Section } from '$lib/content';
 
-	const services = [
-		'circular plant-based dining',
-		'tailor-made catering',
-		'itinerant experiences',
-		'cooking workshops',
-		'food consulting'
-	];
+	// Scroll spy: the section crossing the viewport's midline is current. It
+	// retunes the one fixed photo reel and is marked in the nav.
+	let current: Section = $state('home');
+
+	$effect(() => {
+		const io = new IntersectionObserver(
+			(entries) => {
+				for (const entry of entries) {
+					if (entry.isIntersecting) current = entry.target.id as Section;
+				}
+			},
+			{ rootMargin: '-50% 0px -50% 0px' }
+		);
+		for (const id of sections) {
+			const el = document.getElementById(id);
+			if (el) io.observe(el);
+		}
+		return () => io.disconnect();
+	});
 </script>
 
-<svelte:head>
-	<title>( parentesi )</title>
-</svelte:head>
-
-<Stage>
-	<h1 class="wordmark rise" style="--d: 100ms" aria-label="parentesi">
-		<span class="paren left">(</span><span class="letters reveal"
-			>&nbsp;p a r e n t e s i&nbsp;</span
-		><span class="paren right">)</span>
-	</h1>
-	<div class="manifesto rise" style="--d: 1500ms">
-		<p>
-			A suspended moment where gastronomy, music, art and conscious consumption create an inspiring
-			dialogue.
-		</p>
-		<p>
-			We believe in food as unity, a form of cultural connection and discovery within a sensory
-			dimension.
-		</p>
-	</div>
-	<ul class="services rise" style="--d: 1700ms">
-		{#each services as service (service)}
-			<li>{service}</li>
-		{/each}
-	</ul>
-</Stage>
-
-<style>
-	.wordmark {
-		display: flex;
-		align-items: baseline;
-		margin: 0 0 44px;
-		/* 64px at ≥1440px, scaling down so the unwrappable letter-spaced
-		   wordmark never overflows the 160px-padded column at narrow
-		   desktop widths (it was clipping at ~1024-1150px). */
-		font-size: min(64px, 4.4vw);
-		font-weight: 400;
-		line-height: 1;
-		letter-spacing: 0.32em;
-		white-space: pre;
-		--travel: 300px;
-	}
-	.paren {
-		animation: 1100ms var(--ease-paren) 300ms both;
-	}
-	.left {
-		animation-name: from-right;
-	}
-	.right {
-		animation-name: from-left;
-	}
-	@keyframes from-right {
-		from {
-			transform: translateX(var(--travel));
-		}
-	}
-	@keyframes from-left {
-		from {
-			transform: translateX(calc(-1 * var(--travel)));
-		}
-	}
-	.manifesto {
-		max-width: 700px;
-		font-size: 22px;
-		line-height: 1.6;
-	}
-	.manifesto p {
-		margin: 0;
-	}
-	.manifesto p + p {
-		margin-top: 14px;
-	}
-	.services {
-		margin: 44px 0 0;
-		padding: 0;
-		list-style: none;
-		font-size: 15px;
-		line-height: 1.9;
-		letter-spacing: 0.14em;
-	}
-
-	@media (prefers-reduced-motion: reduce) {
-		.paren {
-			animation: none;
-		}
-	}
-
-	@media (max-width: 1023px) {
-		.wordmark {
-			margin-bottom: 36px;
-			font-size: 24px;
-			letter-spacing: 0.18em;
-			--travel: 140px;
-		}
-		.manifesto {
-			font-size: 17px;
-			line-height: 1.55;
-		}
-		.manifesto p + p {
-			margin-top: 12px;
-		}
-		.services {
-			margin-top: 36px;
-			font-size: 13px;
-			letter-spacing: 0.12em;
-		}
-	}
-</style>
+<PhotoStack spec={stages[current]} />
+<main>
+	<Home />
+	<Food />
+	<Music />
+	<Contact />
+</main>
+<Nav {current} />

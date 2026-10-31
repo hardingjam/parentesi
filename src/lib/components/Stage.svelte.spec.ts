@@ -15,15 +15,15 @@ describe('Stage.svelte', () => {
 	});
 
 	it('renders the content snippet without a photo credit', async () => {
-		render(Stage, { children: content });
+		render(Stage, { id: 'home', children: content });
 		await expect.element(page.getByText('stage content')).toBeVisible();
 		expect(document.body.textContent).not.toContain('Photos:');
 	});
 
 	it('dims the content while the nav is open', async () => {
-		render(Stage, { children: content });
+		render(Stage, { id: 'home', children: content });
 		await expect.element(page.getByText('stage content')).toBeVisible();
 		nav.open = true;
-		await expect.poll(() => Boolean(document.querySelector('.content.dimmed'))).toBe(true);
+		await expect.poll(() => Boolean(document.querySelector('#home.dimmed'))).toBe(true);
 	});
 });

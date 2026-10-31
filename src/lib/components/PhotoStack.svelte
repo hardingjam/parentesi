@@ -4,10 +4,10 @@
 	import { FADE_MS, HOLD_MS } from '$lib/stage/crossfade';
 
 	// The site's ambient slideshow: a double-buffered pair of layers that
-	// dissolve into each other on a fixed clock. Mounted once in the layout;
-	// navigation only switches which photo GROUP plays (dissolving into the
-	// new group, never hard-cutting), and nothing the user does — scrolling,
-	// opening the nav — affects its pace.
+	// dissolve into each other on a fixed clock. Mounted once, fixed behind
+	// the scrolling page; the section in view only switches which photo
+	// GROUP plays (dissolving into the new group, never hard-cutting), and
+	// nothing the user does — scrolling, opening the nav — affects its pace.
 	let { spec }: { spec: StageSpec } = $props();
 
 	interface Layer {
@@ -15,7 +15,7 @@
 		shown: boolean;
 	}
 
-	// Layer 0 starts with the entry route's first photo so it is part of the
+	// Layer 0 starts with the entry section's first photo so it is part of the
 	// server-rendered HTML — no blank frame before hydration. Reading spec's
 	// INITIAL value here is deliberate: later group changes flow through the
 	// $effect below, not through re-initialization.
@@ -72,7 +72,7 @@
 
 	let started = false;
 	$effect(() => {
-		const id = spec.group.id; // reactive: reruns on route/group change
+		const id = spec.group.id; // reactive: reruns on section/group change
 		if (!started) {
 			started = true;
 			instant = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -117,7 +117,7 @@
 		overflow: hidden;
 		background: var(--base);
 		/* Guaranteed stacking context so the layers' z-index can never paint
-		   above the route content. */
+		   above the page content. */
 		isolation: isolate;
 	}
 	.stack,
@@ -140,7 +140,7 @@
 		object-fit: cover;
 		opacity: 0;
 		/* opacity duration must match FADE_MS in $lib/stage/crossfade. The
-		   filter ease keeps the music route's darkening from jumping. */
+		   filter ease keeps the music section's darkening from jumping. */
 		transition:
 			opacity 1000ms linear,
 			filter 600ms;

@@ -8,13 +8,17 @@ export interface PhotoGroup {
 	readonly photos: readonly StagePhoto[];
 }
 
-/** Per-route treatment: which photo group plays, plus scrim/filter. */
+/** Page sections, top to bottom; each id is also its #hash. */
+export const sections = ['home', 'food', 'music', 'contact'] as const;
+export type Section = (typeof sections)[number];
+
+/** Per-section treatment: which photo group plays, plus scrim/filter. */
 export interface StageSpec {
 	readonly group: PhotoGroup;
 	/** Full CSS background values for the scrim layer. */
 	scrimDesktop: string;
 	scrimMobile: string;
-	/** Optional CSS filter applied to every photo (music route). */
+	/** Optional CSS filter applied to every photo (music section). */
 	filter?: string;
 }
 
@@ -48,7 +52,7 @@ const moody: PhotoGroup = {
 };
 
 /**
- * Plate photography for the food route (daylight series + Zoe Spawton's
+ * Plate photography for the food section (daylight series + Zoe Spawton's
  * documentary set). Portrait originals from static/img/food, processed by
  * scripts/optimize-images.mjs in sorted filename order.
  */
@@ -70,7 +74,7 @@ const food: PhotoGroup = {
 
 export const groups = { moody, food };
 
-export const stages: Record<'home' | 'food' | 'music' | 'contact', StageSpec> = {
+export const stages: Record<Section, StageSpec> = {
 	home: {
 		group: moody,
 		scrimDesktop: scrim('80% 70% at 50% 45%', 0.18, 0.62),

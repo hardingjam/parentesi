@@ -1,14 +1,11 @@
 <script lang="ts">
-	import { resolve } from '$app/paths';
+	import type { Section } from '$lib/content';
 	import { closeNav, nav, toggleNav } from '$lib/nav.svelte';
 
-	let { current }: { current: string } = $props();
+	// `current` is the section in view (the page's scroll spy).
+	let { current }: { current: Section } = $props();
 
-	const routes = [
-		{ href: resolve('/food'), label: 'food' },
-		{ href: resolve('/music'), label: 'music' },
-		{ href: resolve('/contact'), label: 'contact' }
-	] as const;
+	const links = ['food', 'music', 'contact'] as const;
 
 	let viewportWidth = $state(typeof window !== 'undefined' ? window.innerWidth : 1440);
 	// Natural width of the "food music contact" row, measured live so the
@@ -128,7 +125,7 @@
 	<div class="row">
 		<a
 			class="paren"
-			href={resolve('/')}
+			href="#home"
 			aria-label={nav.open ? 'home' : 'open menu'}
 			aria-expanded={nav.open}
 			onclick={onParenClick}>(</a
@@ -141,20 +138,20 @@
 			bind:clientWidth={linksContentWidth}
 			aria-hidden={!nav.open}
 		>
-			{#each routes as route, i (route.href)}
-				{@const isCurrent = current === route.href}
+			{#each links as id, i (id)}
+				{@const isCurrent = current === id}
 				<a
-					href={route.href}
+					href="#{id}"
 					style="--i: {i}"
-					aria-current={isCurrent ? 'page' : undefined}
+					aria-current={isCurrent ? 'location' : undefined}
 					tabindex={nav.open && !isCurrent ? undefined : -1}
-					onclick={closeNav}>{route.label}</a
+					onclick={closeNav}>{id}</a
 				>
 			{/each}
 		</div>
 		<a
 			class="paren closing"
-			href={resolve('/')}
+			href="#home"
 			style="transform: translateX({nav.open ? openDistance : 0}px)"
 			aria-label={nav.open ? 'home' : 'open menu'}
 			aria-expanded={nav.open}
@@ -286,7 +283,7 @@
 		}
 	}
 
-	/* Open state: the CURRENT route reads at full strength, the other
+	/* Open state: the CURRENT section reads at full strength, the other
 	   destinations sit dimmer until pointed at. */
 	nav.open .links a {
 		opacity: 0.55;
@@ -302,7 +299,7 @@
 		transition-delay: 0ms;
 	}
 
-	nav.open .links a[aria-current='page'] {
+	nav.open .links a[aria-current] {
 		opacity: 1;
 		pointer-events: none;
 	}
