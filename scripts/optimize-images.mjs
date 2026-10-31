@@ -6,7 +6,8 @@ const photos = [
 	['static/photos/( ) Cover.jpg', 'cover'],
 	['static/photos/( ) Plating live.jpg', 'plating-live'],
 	['static/photos/( ) Pietro steam.jpg', 'pietro-steam'],
-	['static/photos/( ) Cutting.jpg', 'cutting']
+	['static/photos/( ) Cutting.jpg', 'cutting'],
+	['static/photos/( ) Pietro and Vincenzo.jpg', 'pietro-vincenzo']
 ];
 
 // Food route reel — every JPG the owner drops into static/img/food/

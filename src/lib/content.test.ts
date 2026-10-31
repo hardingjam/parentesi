@@ -43,4 +43,8 @@ describe('stages', () => {
 	it('plays the food reel in the food section', () => {
 		expect(stages.food.group.id).toBe('food');
 	});
+
+	it('shows Pietro and Vincenzo on home', () => {
+		expect(stages.home.group.photos.map((p) => p.slug)).toContain('pietro-vincenzo');
+	});
 });

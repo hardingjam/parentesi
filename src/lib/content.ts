@@ -51,6 +51,19 @@ const moody: PhotoGroup = {
 	]
 };
 
+/** Home: the moody series plus Pietro and Vincenzo at the stove. */
+const home: PhotoGroup = {
+	id: 'home',
+	photos: [
+		moody.photos[0],
+		{
+			slug: 'pietro-vincenzo',
+			alt: 'Pietro and Vincenzo cooking under a pendant lamp, guests looking on'
+		},
+		...moody.photos.slice(1)
+	]
+};
+
 /**
  * Plate photography for the food section (daylight series + Zoe Spawton's
  * documentary set). Portrait originals from static/img/food, processed by
@@ -72,11 +85,11 @@ const food: PhotoGroup = {
 	]
 };
 
-export const groups = { moody, food };
+export const groups = { moody, home, food };
 
 export const stages: Record<Section, StageSpec> = {
 	home: {
-		group: moody,
+		group: home,
 		scrimDesktop: scrim('80% 70% at 50% 45%', 0.18, 0.62),
 		scrimMobile: scrim('110% 70% at 50% 45%', 0.22, 0.66)
 	},
