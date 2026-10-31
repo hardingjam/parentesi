@@ -17,6 +17,9 @@
 	let labelWidth = $state(0);
 	let linksWidth = $state(0);
 	const slotWidth = $derived(nav.open ? linksWidth : labelWidth);
+	// Phones stack the mark vertically (see the CSS); there the slot's
+	// height opens from one line to the measured list instead.
+	let linksHeight = $state(0);
 
 	// Mouse users: the nav opens when the pointer enters it and closes when
 	// it leaves; the parens are then plain home links. Touch input (phones,
@@ -95,6 +98,10 @@
 	onpointermove={onPointerEvent}
 />
 
+<!-- Blurs the page behind the open menu so it reads (a touch on desktop,
+     more on phones, where the menu sits over the copy). -->
+<div class="veil" class:open={nav.open} aria-hidden="true"></div>
+
 <nav
 	bind:this={navElement}
 	class:open={nav.open}
@@ -111,7 +118,11 @@
 		aria-expanded={nav.open}
 		onclick={onParenClick}>(</a
 	>
-	<div class="slot" style:width={slotWidth ? `${slotWidth}px` : undefined}>
+	<div
+		class="slot"
+		style:width={slotWidth ? `${slotWidth}px` : undefined}
+		style:--open-h={nav.open && linksHeight ? `${linksHeight}px` : undefined}
+	>
 		<!-- Visual twin of the parens' "open menu" (so tapping the word works
 		     on phones too); the current section is announced via the links'
 		     aria-current. -->
@@ -123,7 +134,12 @@
 			bind:clientWidth={labelWidth}
 			onclick={onParenClick}>{current}</button
 		>
-		<div class="links" bind:clientWidth={linksWidth} aria-hidden={!nav.open}>
+		<div
+			class="links"
+			bind:clientWidth={linksWidth}
+			bind:clientHeight={linksHeight}
+			aria-hidden={!nav.open}
+		>
 			{#each links as id, i (id)}
 				{@const isCurrent = current === id}
 				<a
@@ -147,7 +163,8 @@
 
 <style>
 	/* Breakpoint geometry lives in media queries so first paint on a phone
-	   is already right; only the slot width (measured text) comes from JS. */
+	   is already right; only the slot's width (desktop) and open height
+	   (phones) come from JS, as measured text. */
 	nav {
 		position: fixed;
 		top: 40px;
@@ -161,9 +178,10 @@
 	@media (max-width: 1023px) {
 		nav {
 			top: 56px;
-			left: 50%;
-			transform: translateX(-50%);
-			height: 44px;
+			left: 24px;
+			height: auto;
+			flex-direction: column;
+			align-items: flex-start;
 		}
 	}
 
@@ -183,7 +201,7 @@
 		.paren {
 			min-width: 44px;
 			min-height: 44px;
-			font-size: 22px;
+			font-size: 28px;
 		}
 	}
 
@@ -256,24 +274,6 @@
 			visibility 200ms;
 	}
 
-	@media (max-width: 1023px) {
-		/* Sized so all of "home food music contact" fits between two 44px
-		   parens down to a 360px screen (measured: 15px clips at 360). */
-		.label,
-		.links a {
-			font-size: 14px;
-			letter-spacing: 0.04em;
-		}
-		.links {
-			gap: 8px;
-		}
-		.links a {
-			min-height: 44px;
-			display: inline-flex;
-			align-items: center;
-		}
-	}
-
 	/* Open state: the CURRENT section reads at full strength, the other
 	   destinations sit dimmer until pointed at. */
 	nav.open .links a {
@@ -293,5 +293,73 @@
 	nav.open .links a[aria-current] {
 		opacity: 1;
 		pointer-events: none;
+	}
+
+	.veil {
+		position: fixed;
+		inset: 0;
+		z-index: 29;
+		pointer-events: none;
+		-webkit-backdrop-filter: blur(0);
+		backdrop-filter: blur(0);
+		transition:
+			-webkit-backdrop-filter 300ms,
+			backdrop-filter 300ms;
+	}
+	.veil.open {
+		-webkit-backdrop-filter: blur(4px);
+		backdrop-filter: blur(4px);
+	}
+
+	/* Phones and tablets: a vertical mark in the top-left corner, the nav
+	   text at the h2 size. The parens lie on their side above and below the
+	   word (︵ food ︶); opening slides the lower one down as the slot grows
+	   from one line to the stacked list, over a blurred page. */
+	@media (max-width: 1023px) {
+		.paren {
+			transform: rotate(90deg);
+		}
+		.slot {
+			margin: -8px 0;
+			height: var(--open-h, 44px);
+			transition:
+				width 320ms var(--ease-paren),
+				height 500ms var(--ease-paren);
+			/* Links below the lower paren stay hidden while it moves; the
+			   margin keeps the text's soft shadow. */
+			overflow-y: clip;
+			overflow-clip-margin: 12px;
+		}
+		.label,
+		.links a {
+			font-size: var(--text-lg);
+			letter-spacing: 0;
+			min-height: 44px;
+		}
+		.label {
+			position: absolute;
+			top: 0;
+			left: 0;
+			height: auto;
+		}
+		.links {
+			flex-direction: column;
+			align-items: flex-start;
+			gap: 0;
+			height: auto;
+		}
+		.links a {
+			display: inline-flex;
+			align-items: center;
+		}
+		nav.open .links a {
+			/* Each link appears as the lower paren passes it. */
+			transition-delay: calc(100ms + var(--i) * 90ms);
+		}
+
+		.veil.open {
+			-webkit-backdrop-filter: blur(14px);
+			backdrop-filter: blur(14px);
+		}
 	}
 </style>
