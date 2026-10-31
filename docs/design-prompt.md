@@ -2,9 +2,9 @@
 
 ## What this is
 
-Design a small, atmospheric website for **( parentesi )**, a Berlin-based itinerant food project by Italian chef **Pietro Platania**: plant-based fine dining, supper-club events, tailor-made catering, cooking workshops, and food consulting. The name means *parenthesis* — a suspended moment — and the parentheses `( )` are the logo and the site's core graphic motif.
+Design a small, atmospheric website for **( parentesi )**, a Berlin-based itinerant food project by Italian chef **Pietro Platania**: plant-based fine dining, supper-club events, tailor-made catering, cooking workshops, and food consulting. The name means _parenthesis_ — a suspended moment — and the parentheses `( )` are the logo and the site's core graphic motif.
 
-Its sibling project is **Planatia**, Pietro's music alias (a play on his surname): *"Tastes like sound = Planatia. Sounds like taste = ( parentesi )."*
+Its sibling project is **Planatia**, Pietro's music alias (a play on his surname): _"Tastes like sound = Planatia. Sounds like taste = ( parentesi )."_
 
 ## Assets — look at these first
 
@@ -36,11 +36,11 @@ Public repo: **https://github.com/hardingjam/parentesi** — everything lives in
 
 Then the services as a quiet single-line-each list: `circular plant-based dining · tailor-made catering · itinerant experiences · cooking workshops · food consulting`. Imagery: the moody event series.
 
-**Food** — the fullest page. Short bio of Pietro (Le Cordon Bleu Paris; Le Bristol\*\*\*; Il Luogo di Aimo e Nadia\*\*; Joia\*; Vun\*\*; Chez Panisse; founder of Banco Natural Food, Rome; now Berlin) and a sample menu in typewriter style, e.g. *"Polenta tuile, spirulina — horseradish paté, grilled radish"*. Imagery: plating series. If the copy can't fit one elegant screen, it may quietly scroll within a fixed frame — but the page itself stays a stage.
+**Food** — the fullest page. Short bio of Pietro (Le Cordon Bleu Paris; Le Bristol\*\*\*; Il Luogo di Aimo e Nadia\*\*; Joia\*; Vun\*\*; Chez Panisse; founder of Banco Natural Food, Rome; now Berlin) and a sample menu in typewriter style, e.g. _"Polenta tuile, spirulina — horseradish paté, grilled radish"_. Imagery: plating series. If the copy can't fit one elegant screen, it may quietly scroll within a fixed frame — but the page itself stays a stage.
 
-**Music** — a teaser, darker in treatment. The equation as the hero text: *"Tastes like sound = Planatia / Sounds like taste = ( parentesi )"*, one SoundCloud embed or link (https://soundcloud.com/planatia), Instagram (https://www.instagram.com/planatia/), and a bookings pointer. Imagery: steam/pendant-lamp/night shots.
+**Music** — a teaser, darker in treatment. The equation as the hero text: _"Tastes like sound = Planatia / Sounds like taste = ( parentesi )"_, one SoundCloud embed or link (https://soundcloud.com/planatia), Instagram (https://www.instagram.com/planatia/), and a bookings pointer. Imagery: steam/pendant-lamp/night shots.
 
-**Contact** — minimal: `parentesi.berlin@gmail.com`, phone, Instagram. Set the contact block inside one large pair of parentheses. Footer credit: *Photos: Fredericke Alma Sauerbrey, Zoe Spawton.*
+**Contact** — minimal: `parentesi.berlin@gmail.com`, phone, Instagram. Set the contact block inside one large pair of parentheses. Footer credit: _Photos: Fredericke Alma Sauerbrey, Zoe Spawton._
 
 ## Deliverables
 

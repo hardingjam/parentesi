@@ -1,6 +1,6 @@
 # ( parentesi )
 
-Portfolio website for ( parentesi ), a Berlin-based itinerant food project by Italian chef Pietro Platania: plant-based fine dining, supper-club events, tailor-made catering, cooking workshops, and food consulting. The name means *parenthesis* — a suspended moment — and `( )` is the logo and core graphic motif. The sibling music project is **Planatia** (Pietro's music alias — this is not a typo of "Platania"): soundcloud.com/planatia, instagram.com/planatia.
+Portfolio website for ( parentesi ), a Berlin-based itinerant food project by Italian chef Pietro Platania: plant-based fine dining, supper-club events, tailor-made catering, cooking workshops, and food consulting. The name means _parenthesis_ — a suspended moment — and `( )` is the logo and core graphic motif. The sibling music project is **Planatia** (Pietro's music alias — this is not a typo of "Platania"): soundcloud.com/planatia, instagram.com/planatia.
 
 ## Stack
 
@@ -14,7 +14,7 @@ Portfolio website for ( parentesi ), a Berlin-based itinerant food project by It
 
 Full brief in [docs/design-prompt.md](docs/design-prompt.md) — read it before touching UI. Key decisions (agreed with the site owner):
 
-- **No long scrolling pages.** Each route is a single full-screen stage: 3–6 full-bleed photos crossfade endlessly (8–12s cycles) behind fixed, always-readable text. Scroll/swipe input doesn't move the page — it accelerates the crossfade.
+- **No long scrolling pages.** Each route is a single full-screen stage over ONE site-wide photo reel that crossfades continuously (5s display + 1s dissolve per photo) and never restarts on navigation — routes only retune its scrim/filter. Nothing the user does affects the reel's pace: scroll/swipe input is inert (owner decision 2026-09-15, superseding the design handoff's scroll-acceleration idea), and opening the nav doesn't darken the photos.
 - **Nav is the logo:** a `( )` mark acts as the hamburger; opening it spreads the parentheses to reveal `( food  music  contact )`. The mark returns home.
 - **Routes:** `/` (home), `/food`, `/music`, `/contact`. Music is a deliberate teaser page (darker treatment), not a full section.
 - **Identity:** evolution of the brochure (`static/Brochure Example.pdf`) — beige/ecru (~#D6CFAF), near-black ink, typewriter voice (`static/font/Typo.ttf`), generous whitespace, `( )` as punctuation-as-logo. No cards, drop shadows, decorative gradients, or bouncy motion.
@@ -32,3 +32,17 @@ Full brief in [docs/design-prompt.md](docs/design-prompt.md) — read it before 
 - Contact: parentesi.berlin@gmail.com · +39 340 873 2532
 - Manifesto and services list: see docs/design-prompt.md (Home section) — use that wording verbatim.
 - Pietro's CV highlights: Le Cordon Bleu Paris; Le Bristol***; Il Luogo di Aimo e Nadia**; Joia*; Vun**; Chez Panisse; founder of Banco Natural Food, Rome; now Berlin.
+
+## Agent skills
+
+### Issue tracker
+
+GitHub Issues on hardingjam/parentesi, via the `gh` CLI. See `docs/agents/issue-tracker.md`.
+
+### Triage labels
+
+Default vocabulary: `needs-triage`, `needs-info`, `ready-for-agent`, `ready-for-human`, `wontfix`. See `docs/agents/triage-labels.md`.
+
+### Domain docs
+
+Single-context: one `GLOSSARY.md` and `docs/adr/` at the repo root, created lazily. See `docs/agents/domain.md`.

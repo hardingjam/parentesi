@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet data-dc-atomics><meta name="design_doc_mode" content="canvas"><style>
+@font-face{font-family:Typo;src:url('static/font/Typo.ttf') format('truetype');font-display:swap}
+body{margin:0;background:#EDE9DC;font-family:system-ui,sans-serif;color:#14120F}
+a{color:#14120F}a:hover{color:#5a5340}
+.dv-turn{padding:40px 44px 32px;border-bottom:1px solid rgba(0,0,0,.08);scroll-margin-top:16px}
+.dv-thd{display:flex;align-items:baseline;gap:10px;margin:0 0 20px}
+.dv-tid{font:600 10px ui-monospace,Menlo,monospace;padding:3px 7px;background:#14120F;color:#EDE9DC;border-radius:4px;text-decoration:none}
+.dv-tname{font:600 13px/1.2 system-ui,sans-serif;color:#14120F}
+.dv-opts{display:flex;flex-wrap:wrap;gap:36px;align-items:flex-start}
+.dv-opt{flex:none;display:flex;flex-direction:column;gap:10px;scroll-margin-top:16px}
+.dv-oid{font:600 10.5px ui-monospace,Menlo,monospace;padding:3px 7px;background:rgba(0,0,0,.08);color:#14120F;border-radius:5px;text-decoration:none}
+.dv-olabel{display:flex;align-items:baseline;gap:8px;font:400 11px/1.3 system-ui,sans-serif;color:rgba(0,0,0,.55)}
+.dv-card{max-width:100%;background:#0b0a08;border:1px solid rgba(0,0,0,.12);overflow:hidden}
+.dv-opt:target .dv-oid{background:#14120F;color:#EDE9DC}
+.dv-next{margin:22px 0 0;font:12px/1.5 system-ui,sans-serif;color:rgba(0,0,0,.5)}
+.dv-note{font:12px/1.55 ui-monospace,Menlo,monospace;color:rgba(20,18,15,.72);display:grid;gap:4px 28px}
+.dv-note div::before{content:"→ ";color:rgba(20,18,15,.4)}
+@keyframes pxfade4{0%{opacity:0}25%{opacity:0}32.14%{opacity:1}57.14%{opacity:1}57.2%{opacity:0}100%{opacity:0}}
+@keyframes pxfade3{0%{opacity:0}33.33%{opacity:0}42.86%{opacity:1}76.19%{opacity:1}76.25%{opacity:0}100%{opacity:0}}
+@keyframes rise{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+@keyframes parenL{from{transform:translate(200px,-4%)}to{transform:translate(0,-4%)}}
+@keyframes parenR{from{transform:translate(-200px,-4%)}to{transform:translate(0,-4%)}}
+@keyframes reveal{0%{opacity:0}45%{opacity:0}100%{opacity:1}}
+@keyframes wmL{from{transform:translateX(var(--d))}to{transform:none}}
+@keyframes wmR{from{transform:translateX(calc(var(--d) * -1))}to{transform:none}}
+@keyframes parenT{from{transform:translateY(130px) rotate(90deg)}to{transform:translateY(0) rotate(90deg)}}
+@keyframes parenB{from{transform:translateY(-130px) rotate(90deg)}to{transform:translateY(0) rotate(90deg)}}
+</style></helmet>
+
+<section class="dv-turn" id="t1">
+<div class="dv-thd"><a class="dv-tid" href="#t1">1</a><span class="dv-tname">( parentesi ) — ten artboards, one direction: a quiet gallery after dark</span></div>
+
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:20px 40px;max-width:1440px;margin:0 0 36px;font:12px/1.6 ui-monospace,Menlo,monospace;color:rgba(20,18,15,.78)">
+  <div>
+    <div style="font-weight:700;margin-bottom:6px;color:#14120F">Colour</div>
+    <div style="display:flex;flex-direction:column;gap:4px">
+      <div style="display:flex;gap:8px;align-items:center"><span style="width:14px;height:14px;background:#D6CFAF;border:1px solid rgba(0,0,0,.15)"></span>ecru #D6CFAF — all text over photography, canvas desk tint</div>
+      <div style="display:flex;gap:8px;align-items:center"><span style="width:14px;height:14px;background:#14120F"></span>ink #14120F — page base, nav ink when open on light</div>
+      <div style="display:flex;gap:8px;align-items:center"><span style="width:14px;height:14px;background:rgba(11,10,8,.62)"></span>scrim rgba(11,10,8) — radial .18 centre → .62 edges (music: .45 → .85)</div>
+      <div>No other colours. Photography supplies warmth; UI stays two-tone.</div>
+    </div>
+  </div>
+  <div>
+    <div style="font-weight:700;margin-bottom:6px;color:#14120F">Type — Typo.ttf (brand typewriter), one face</div>
+    <div>desktop: wordmark 64/1 ls .32em · manifesto 22/1.6 · list 15/1.9 ls .14em · nav 26/1 ls .15em · body 17/1.65 · menu 18/1.55 · credit 12 ls .08em</div>
+    <div>mobile: wordmark 30/1 ls .22em · manifesto 17/1.55 · list 13/1.9 ls .12em · nav 22/1 · body 15/1.6 · menu 15/1.5</div>
+    <div>All lowercase except proper nouns. Parentheses are always typeset, never drawn.</div>
+  </div>
+  <div>
+    <div style="font-weight:700;margin-bottom:6px;color:#14120F">Motion</div>
+    <div>Crossfade: 3–4 photos, 7s per photo (holds 5s, dissolves 2s linear). Incoming fades in over the current; the outgoing is released only once covered — no flash of base.</div>
+    <div>Scroll/wheel/swipe never moves the page (overflow hidden, touch-action none). deltaY drives playbackRate = 1 + min(|Δ|/120, 6), easing back to 1 over 1.5s. Breathing on embers.</div>
+    <div>Text entrance: opacity 0→1, translateY 12→0, 1200ms cubic-bezier(.2,.6,.2,1), 150ms stagger, once per route load.</div>
+    <div>prefers-reduced-motion: hard cuts every 10s, no rise, nav opens instantly.</div>
+  </div>
+</div>
+
+<div class="dv-opts">
+
+<div class="dv-opt" id="1a"><div class="dv-olabel"><a class="dv-oid" href="#1a">1a</a>Home · desktop 1440×900 · nav closed</div>
+<div class="dv-card" data-screen-label="Home desktop closed" style="width:1440px;height:900px;position:relative;color:#D6CFAF;font-family:Typo,'Courier New',monospace">
+  {{ homeStack }}
+  <div style="position:absolute;inset:0;background:radial-gradient(ellipse 80% 70% at 50% 45%,rgba(11,10,8,.18) 0%,rgba(11,10,8,.62) 100%)"></div>
+  <div style="position:absolute;top:40px;left:48px;font-size:26px;line-height:1;letter-spacing:.15em;cursor:pointer">( )</div>
+  <div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:0 160px;gap:44px">
+    <h1 style="margin:0;font-size:64px;line-height:1;letter-spacing:.32em;font-weight:400;display:flex;white-space:pre;animation:rise .8s cubic-bezier(.2,.6,.2,1) .1s both">
+      <span style="--d:300px;animation:wmL 1.1s cubic-bezier(.2,.7,.2,1) .3s both">(</span>
+      <span style="animation:reveal 1.4s ease-out .3s both"> p a r e n t e s i </span>
+      <span style="--d:300px;animation:wmR 1.1s cubic-bezier(.2,.7,.2,1) .3s both">)</span>
+    </h1>
+    <div style="max-width:700px;font-size:22px;line-height:1.6;display:flex;flex-direction:column;gap:14px;animation:rise 1.2s cubic-bezier(.2,.6,.2,1) 1.5s both;text-wrap:pretty">
+      <p style="margin:0">A suspended moment where gastronomy, music, art and conscious consumption create an inspiring dialogue.</p>
+      <p style="margin:0">We believe in food as unity, a form of cultural connection and discovery within a sensory dimension.</p>
+    </div>
+    <ul style="list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:2px;font-size:15px;line-height:1.9;letter-spacing:.14em;animation:rise 1.2s cubic-bezier(.2,.6,.2,1) 1.7s both">
+      <li>circular plant-based dining</li><li>tailor-made catering</li><li>itinerant experiences</li><li>cooking workshops</li><li>food consulting</li>
+    </ul>
+  </div>
+  <div style="position:absolute;left:48px;bottom:36px;font-size:12px;letter-spacing:.08em">Photos: Fredericke Alma Sauerbrey</div>
+  <div style="position:absolute;right:48px;bottom:36px;font-size:12px;letter-spacing:.08em">Berlin</div>
+</div>
+<div class="dv-note" style="max-width:1440px;grid-template-columns:1fr 1fr">
+  <div>Stage: 100vh, overflow hidden. Photo stack: 4 × moody event series, object-fit cover, 28s cycle, 7s per photo.</div>
+  <div>Content block centred, max-width 700px, gap 44px. Wordmark 64px ls .32em; manifesto 22/1.6; services one per line 15/1.9.</div>
+  <div>Nav mark top 40 / left 48, 26px, hit area 56×56. Single hover state: opacity .7, 200ms.</div>
+  <div>Entrance: wordmark parens appear closed and open 300px each over 1100ms cubic-bezier(.2,.7,.2,1) from 300ms while the letters fade in; manifesto rises at 1500ms, list at 1700ms. Mobile: 140px travel. Wheel/swipe accelerates the dissolve only.</div>
+</div>
+</div>
+
+<div class="dv-opt" id="1b"><div class="dv-olabel"><a class="dv-oid" href="#1b">1b</a>Home · desktop 1440×900 · nav open</div>
+<div class="dv-card" data-screen-label="Home desktop open" style="width:1440px;height:900px;position:relative;color:#D6CFAF;font-family:Typo,'Courier New',monospace">
+  {{ homeStack }}
+  <div style="position:absolute;inset:0;background:radial-gradient(ellipse 80% 70% at 50% 45%,rgba(11,10,8,.18) 0%,rgba(11,10,8,.62) 100%)"></div>
+  <div style="position:absolute;inset:0;background:rgba(11,10,8,.35)"></div>
+  <nav style="position:absolute;top:40px;left:48px;display:flex;align-items:center;gap:40px;font-size:26px;line-height:1;letter-spacing:.15em">
+    <span style="cursor:pointer">(</span>
+    <a href="#1c" style="color:#D6CFAF;text-decoration:none">food</a>
+    <a href="#1d" style="color:#D6CFAF;text-decoration:none">music</a>
+    <a href="#1e" style="color:#D6CFAF;text-decoration:none">contact</a>
+    <span style="cursor:pointer">)</span>
+  </nav>
+  <div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:0 160px;gap:44px;opacity:.35">
+    <h1 style="margin:0;font-size:64px;line-height:1;letter-spacing:.32em;font-weight:400">( p a r e n t e s i )</h1>
+    <div style="max-width:700px;font-size:22px;line-height:1.6;display:flex;flex-direction:column;gap:14px;text-wrap:pretty">
+      <p style="margin:0">A suspended moment where gastronomy, music, art and conscious consumption create an inspiring dialogue.</p>
+      <p style="margin:0">We believe in food as unity, a form of cultural connection and discovery within a sensory dimension.</p>
+    </div>
+    <ul style="list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:2px;font-size:15px;line-height:1.9;letter-spacing:.14em">
+      <li>circular plant-based dining</li><li>tailor-made catering</li><li>itinerant experiences</li><li>cooking workshops</li><li>food consulting</li>
+    </ul>
+  </div>
+  <div style="position:absolute;left:48px;bottom:36px;font-size:12px;letter-spacing:.08em">Photos: Fredericke Alma Sauerbrey</div>
+</div>
+<div class="dv-note" style="max-width:1440px;grid-template-columns:1fr 1fr">
+  <div>Open: the two parentheses translate apart (closing paren slides +~330px) over 320ms cubic-bezier(.2,.7,.2,1); routes fade in 200ms, 60ms stagger, after 120ms.</div>
+  <div>Page dims to 35% opacity + extra .35 scrim behind the nav; photos keep breathing. Same layout on every route.</div>
+  <div>Tap either parenthesis while open → home (and close). Tap outside / Esc → close. Current route is rendered at 55% opacity, non-interactive.</div>
+  <div>Close reverses the same easing. No overlay panel, no hamburger lines — the mark is the menu.</div>
+</div>
+</div>
+
+<div class="dv-opt" id="1c"><div class="dv-olabel"><a class="dv-oid" href="#1c">1c</a>Food · desktop 1440×900</div>
+<div class="dv-card" data-screen-label="Food desktop" style="width:1440px;height:900px;position:relative;color:#D6CFAF;font-family:Typo,'Courier New',monospace">
+  {{ foodStack }}
+  <div style="position:absolute;inset:0;background:radial-gradient(ellipse 80% 70% at 50% 45%,rgba(11,10,8,.3) 0%,rgba(11,10,8,.72) 100%)"></div>
+  <div style="position:absolute;top:40px;left:48px;font-size:26px;line-height:1;letter-spacing:.15em;cursor:pointer">( )</div>
+  <div style="position:absolute;inset:0;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:120px;align-items:center;padding:120px 160px">
+    <div style="display:flex;flex-direction:column;gap:28px;animation:rise 1.2s cubic-bezier(.2,.6,.2,1) .15s both">
+      <div style="font-size:15px;letter-spacing:.14em">( food )</div>
+      <h2 style="margin:0;font-size:32px;line-height:1.2;font-weight:400;letter-spacing:.04em">Pietro Platania</h2>
+      <p style="margin:0;font-size:17px;line-height:1.65;text-wrap:pretty">Italian chef, trained at Le Cordon Bleu Paris.</p>
+      <ul style="list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:10px;font-size:17px;line-height:1.4">
+        <li>Le Bristol***</li><li>Il Luogo di Aimo e Nadia**</li><li>Joia*</li><li>Vun**</li><li>Chez Panisse</li>
+      </ul>
+      <p style="margin:0;font-size:17px;line-height:1.65;text-wrap:pretty">Founder of Banco Natural Food, Rome. Now cooking in Berlin — plant-based, circular, itinerant.</p>
+      <ul style="list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:2px;font-size:15px;line-height:1.9;letter-spacing:.14em">
+        <li>supper-club events</li><li>tailor-made catering</li><li>cooking workshops</li><li>food consulting</li>
+      </ul>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:22px;font-size:18px;line-height:1.55;animation:rise 1.2s cubic-bezier(.2,.6,.2,1) .3s both;text-wrap:pretty">
+      <div style="font-size:15px;letter-spacing:.14em">( a sample menu )</div>
+      <p style="margin:0">Polenta tuile, spirulina — horseradish paté, grilled radish</p>
+      <p style="margin:0">Charred leek, hazelnut milk — smoked plum, bread ash</p>
+      <p style="margin:0">Jerusalem artichoke, koji — sunflower, black garlic</p>
+      <p style="margin:0">Beetroot aged in salt — blackcurrant leaf, walnut</p>
+      <p style="margin:0">Quince, chamomile — olive oil, buckwheat</p>
+      <div style="font-size:15px;letter-spacing:.14em">( )</div>
+    </div>
+  </div>
+  <div style="position:absolute;left:48px;bottom:36px;font-size:12px;letter-spacing:.08em">Photos: Fredericke Alma Sauerbrey</div>
+</div>
+<div class="dv-note" style="max-width:1440px;grid-template-columns:1fr 1fr">
+  <div>Two-column grid, 120px gutter, 160px side margins, vertically centred. Bio 17/1.65 left; menu 18/1.55 right, dishes as plain lines with a typewriter em-dash.</div>
+  <div>Menu lines after the first are placeholders — replace with the current menu. Section labels use the parenthesis as heading: ( food ), ( a sample menu ).</div>
+  <div>Photo stack: daylight plating series when converted (3H6A*); event series stands in here. Slightly heavier scrim (.3 → .72) for the text load.</div>
+  <div>If copy exceeds the frame: the right column scrolls inside a fixed 560px-tall frame with 60px masked fades; the page itself never moves.</div>
+</div>
+</div>
+
+<div class="dv-opt" id="1d"><div class="dv-olabel"><a class="dv-oid" href="#1d">1d</a>Music · desktop 1440×900 · teaser, darker</div>
+<div class="dv-card" data-screen-label="Music desktop" style="width:1440px;height:900px;position:relative;color:#D6CFAF;font-family:Typo,'Courier New',monospace">
+  {{ musicStack }}
+  <div style="position:absolute;inset:0;background:radial-gradient(ellipse 70% 60% at 50% 50%,rgba(11,10,8,.45) 0%,rgba(11,10,8,.85) 100%)"></div>
+  <div style="position:absolute;top:40px;left:48px;font-size:26px;line-height:1;letter-spacing:.15em;cursor:pointer">( )</div>
+  <div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:0 160px;gap:56px">
+    <div style="display:flex;flex-direction:column;gap:18px;font-size:36px;line-height:1.3;letter-spacing:.04em;animation:rise 1.2s cubic-bezier(.2,.6,.2,1) .15s both">
+      <div>Tastes like sound = Planatia</div>
+      <div>Sounds like taste = ( parentesi )</div>
+    </div>
+    <div style="width:560px;height:120px;border:1px solid rgba(214,207,175,.45);display:flex;align-items:center;justify-content:center;font-size:13px;letter-spacing:.12em;animation:rise 1.2s cubic-bezier(.2,.6,.2,1) .3s both">( soundcloud embed — planatia, dark theme )</div>
+    <div style="display:flex;gap:40px;font-size:15px;letter-spacing:.14em;animation:rise 1.2s cubic-bezier(.2,.6,.2,1) .45s both">
+      <a href="https://soundcloud.com/planatia" style="color:#D6CFAF;text-decoration:none;border-bottom:1px solid rgba(214,207,175,.5)">soundcloud</a>
+      <a href="https://www.instagram.com/planatia/" style="color:#D6CFAF;text-decoration:none;border-bottom:1px solid rgba(214,207,175,.5)">instagram</a>
+      <a href="mailto:parentesi.berlin@gmail.com" style="color:#D6CFAF;text-decoration:none;border-bottom:1px solid rgba(214,207,175,.5)">bookings</a>
+    </div>
+  </div>
+  <div style="position:absolute;left:48px;bottom:36px;font-size:12px;letter-spacing:.08em">Photos: Fredericke Alma Sauerbrey</div>
+</div>
+<div class="dv-note" style="max-width:1440px;grid-template-columns:1fr 1fr">
+  <div>Darker treatment: photos at brightness .6 / saturate .8, scrim .45 → .85. Steam and pendant-lamp shots only; same 7s cadence.</div>
+  <div>Equation 36/1.3 is the only large type. One SoundCloud embed (visual: dark, 560×120) — a single player, not a playlist.</div>
+  <div>Links 15px ls .14em, 1px underline at 50% ecru; hover → 100%. Bookings mails parentesi.berlin@gmail.com.</div>
+  <div>Deliberately a teaser: no bio, no tour dates. The page ends here.</div>
+</div>
+</div>
+
+<div class="dv-opt" id="1e"><div class="dv-olabel"><a class="dv-oid" href="#1e">1e</a>Contact · desktop 1440×900</div>
+<div class="dv-card" data-screen-label="Contact desktop" style="width:1440px;height:900px;position:relative;color:#D6CFAF;font-family:Typo,'Courier New',monospace">
+  {{ contactStack }}
+  <div style="position:absolute;inset:0;background:radial-gradient(ellipse 80% 70% at 50% 45%,rgba(11,10,8,.25) 0%,rgba(11,10,8,.68) 100%)"></div>
+  <div style="position:absolute;top:40px;left:48px;font-size:26px;line-height:1;letter-spacing:.15em;cursor:pointer">( )</div>
+  <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;gap:56px;animation:rise .8s cubic-bezier(.2,.6,.2,1) .1s both">
+    <span style="font-size:440px;line-height:1;font-weight:400;animation:parenL 1.1s cubic-bezier(.2,.7,.2,1) .3s both">(</span>
+    <div style="display:flex;flex-direction:column;gap:22px;text-align:center;font-size:22px;line-height:1.4;letter-spacing:.04em;animation:reveal 1.4s ease-out .3s both">
+      <a href="mailto:parentesi.berlin@gmail.com" style="color:#D6CFAF;text-decoration:none">parentesi.berlin@gmail.com</a>
+      <a href="tel:+393408732532" style="color:#D6CFAF;text-decoration:none">+39 340 873 2532</a>
+      <a href="#" style="color:#D6CFAF;text-decoration:none;font-size:15px;letter-spacing:.14em">instagram</a>
+      <div style="font-size:15px;letter-spacing:.14em;margin-top:10px">Berlin · itinerant</div>
+    </div>
+    <span style="font-size:440px;line-height:1;font-weight:400;animation:parenR 1.1s cubic-bezier(.2,.7,.2,1) .3s both">)</span>
+  </div>
+  <div style="position:absolute;left:48px;bottom:36px;font-size:12px;letter-spacing:.08em">Photos: Fredericke Alma Sauerbrey, Zoe Spawton</div>
+</div>
+<div class="dv-note" style="max-width:1440px;grid-template-columns:1fr 1fr">
+  <div>One pair of parentheses at 440px, typeset in Typo, flanking the contact block at 22/1.4. Gap 56px. Nothing else.</div>
+  <div>Route entrance: the pair fades in closed (touching, 800ms), then opens — each glyph travels 200px outward over 1100ms cubic-bezier(.2,.7,.2,1) from 300ms; contact details fade in during the second half of the opening. Plays once per visit; reduced-motion shows the open state.</div>
+  <div>Instagram handle for ( parentesi ) to be confirmed — link is a placeholder. Email and phone are live mailto:/tel: links.</div>
+  <div>Footer credit lists both photographers, 12px ls .08em, bottom 36 / left 48.</div>
+  <div>Photo stack: cover shot + plating; this is the warmest page.</div>
+</div>
+</div>
+
+<div class="dv-opt" id="1f"><div class="dv-olabel"><a class="dv-oid" href="#1f">1f</a>Home · mobile 390×844 · nav closed</div>
+<div class="dv-card" data-screen-label="Home mobile closed" style="width:390px;height:844px;position:relative;color:#D6CFAF;font-family:Typo,'Courier New',monospace">
+  {{ homeStack }}
+  <div style="position:absolute;inset:0;background:radial-gradient(ellipse 110% 70% at 50% 45%,rgba(11,10,8,.22) 0%,rgba(11,10,8,.66) 100%)"></div>
+  <div style="position:absolute;top:56px;left:24px;font-size:22px;line-height:1;letter-spacing:.15em;padding:8px;margin:-8px">( )</div>
+  <div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:0 28px;gap:36px">
+    <h1 style="margin:0;font-size:24px;line-height:1;letter-spacing:.18em;font-weight:400;white-space:pre;display:flex;animation:rise .8s cubic-bezier(.2,.6,.2,1) .1s both">
+      <span style="--d:140px;animation:wmL 1.1s cubic-bezier(.2,.7,.2,1) .3s both">(</span>
+      <span style="animation:reveal 1.4s ease-out .3s both"> p a r e n t e s i </span>
+      <span style="--d:140px;animation:wmR 1.1s cubic-bezier(.2,.7,.2,1) .3s both">)</span>
+    </h1>
+    <div style="font-size:17px;line-height:1.55;display:flex;flex-direction:column;gap:12px;animation:rise 1.2s cubic-bezier(.2,.6,.2,1) 1.5s both;text-wrap:pretty">
+      <p style="margin:0">A suspended moment where gastronomy, music, art and conscious consumption create an inspiring dialogue.</p>
+      <p style="margin:0">We believe in food as unity, a form of cultural connection and discovery within a sensory dimension.</p>
+    </div>
+    <ul style="list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:0;font-size:13px;line-height:1.9;letter-spacing:.12em;animation:rise 1.2s cubic-bezier(.2,.6,.2,1) 1.7s both">
+      <li>circular plant-based dining</li><li>tailor-made catering</li><li>itinerant experiences</li><li>cooking workshops</li><li>food consulting</li>
+    </ul>
+  </div>
+  <div style="position:absolute;left:24px;bottom:32px;font-size:11px;letter-spacing:.08em">Photos: Fredericke Alma Sauerbrey</div>
+</div>
+<div class="dv-note" style="max-width:390px">
+  <div>Safe-area aware: nav mark top 56 (below notch), credit bottom 32.</div>
+  <div>Swipe up/down = accelerate dissolve; touch-action none on the stage. Pinch is ignored.</div>
+  <div>Wordmark 30px ls .22em fits 390 with 28px margins.</div>
+</div>
+</div>
+
+<div class="dv-opt" id="1g"><div class="dv-olabel"><a class="dv-oid" href="#1g">1g</a>Home · mobile 390×844 · nav open</div>
+<div class="dv-card" data-screen-label="Home mobile open" style="width:390px;height:844px;position:relative;color:#D6CFAF;font-family:Typo,'Courier New',monospace">
+  {{ homeStack }}
+  <div style="position:absolute;inset:0;background:radial-gradient(ellipse 110% 70% at 50% 45%,rgba(11,10,8,.22) 0%,rgba(11,10,8,.66) 100%)"></div>
+  <div style="position:absolute;inset:0;background:rgba(11,10,8,.35)"></div>
+  <nav style="position:absolute;top:56px;left:24px;right:24px;display:flex;align-items:center;justify-content:space-between;font-size:22px;line-height:1;letter-spacing:.12em">
+    <span>(</span>
+    <a href="#1h" style="color:#D6CFAF;text-decoration:none">food</a>
+    <a href="#1i" style="color:#D6CFAF;text-decoration:none">music</a>
+    <a href="#1j" style="color:#D6CFAF;text-decoration:none">contact</a>
+    <span>)</span>
+  </nav>
+  <div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:0 28px;gap:36px;opacity:.35">
+    <h1 style="margin:0;font-size:24px;line-height:1;letter-spacing:.18em;font-weight:400;white-space:nowrap">( p a r e n t e s i )</h1>
+    <div style="font-size:17px;line-height:1.55;display:flex;flex-direction:column;gap:12px;text-wrap:pretty">
+      <p style="margin:0">A suspended moment where gastronomy, music, art and conscious consumption create an inspiring dialogue.</p>
+      <p style="margin:0">We believe in food as unity, a form of cultural connection and discovery within a sensory dimension.</p>
+    </div>
+    <ul style="list-style:none;margin:0;padding:0;display:flex;flex-direction:column;font-size:13px;line-height:1.9;letter-spacing:.12em">
+      <li>circular plant-based dining</li><li>tailor-made catering</li><li>itinerant experiences</li><li>cooking workshops</li><li>food consulting</li>
+    </ul>
+  </div>
+  <div style="position:absolute;left:24px;bottom:32px;font-size:11px;letter-spacing:.08em">Photos: Fredericke Alma Sauerbrey</div>
+</div>
+<div class="dv-note" style="max-width:390px">
+  <div>Closing paren slides to the right edge (24px margin); routes distribute between with space-between. 22px, each hit area ≥44px tall.</div>
+  <div>Same 320ms easing and 200ms/60ms stagger as desktop. Tap a parenthesis → home; tap the dimmed page → close.</div>
+</div>
+</div>
+
+<div class="dv-opt" id="1h"><div class="dv-olabel"><a class="dv-oid" href="#1h">1h</a>Food · mobile 390×844 · inner scroll frame</div>
+<div class="dv-card" data-screen-label="Food mobile" style="width:390px;height:844px;position:relative;color:#D6CFAF;font-family:Typo,'Courier New',monospace">
+  {{ foodStack }}
+  <div style="position:absolute;inset:0;background:radial-gradient(ellipse 110% 70% at 50% 45%,rgba(11,10,8,.34) 0%,rgba(11,10,8,.76) 100%)"></div>
+  <div style="position:absolute;top:56px;left:24px;font-size:22px;line-height:1;letter-spacing:.15em">( )</div>
+  <div style="position:absolute;top:120px;bottom:80px;left:28px;right:28px;overflow:hidden;mask-image:linear-gradient(to bottom,transparent,#000 40px,#000 calc(100% - 60px),transparent);-webkit-mask-image:linear-gradient(to bottom,transparent,#000 40px,#000 calc(100% - 60px),transparent)">
+    <div style="display:flex;flex-direction:column;gap:22px;padding-top:40px;animation:rise 1.2s cubic-bezier(.2,.6,.2,1) .15s both">
+      <div style="font-size:13px;letter-spacing:.12em">( food )</div>
+      <h2 style="margin:0;font-size:24px;line-height:1.2;font-weight:400;letter-spacing:.04em">Pietro Platania</h2>
+      <p style="margin:0;font-size:15px;line-height:1.6;text-wrap:pretty">Italian chef, trained at Le Cordon Bleu Paris.</p>
+      <ul style="list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px;font-size:15px;line-height:1.4">
+        <li>Le Bristol***</li><li>Il Luogo di Aimo e Nadia**</li><li>Joia*</li><li>Vun**</li><li>Chez Panisse</li>
+      </ul>
+      <p style="margin:0;font-size:15px;line-height:1.6;text-wrap:pretty">Founder of Banco Natural Food, Rome. Now cooking in Berlin — plant-based, circular, itinerant.</p>
+      <ul style="list-style:none;margin:0;padding:0;display:flex;flex-direction:column;font-size:13px;line-height:1.9;letter-spacing:.12em">
+        <li>supper-club events</li><li>tailor-made catering</li><li>cooking workshops</li><li>food consulting</li>
+      </ul>
+      <div style="font-size:13px;letter-spacing:.12em;margin-top:18px">( a sample menu )</div>
+      <div style="display:flex;flex-direction:column;gap:14px;font-size:15px;line-height:1.5;text-wrap:pretty">
+        <p style="margin:0">Polenta tuile, spirulina — horseradish paté, grilled radish</p>
+        <p style="margin:0">Charred leek, hazelnut milk — smoked plum, bread ash</p>
+        <p style="margin:0">Jerusalem artichoke, koji — sunflower, black garlic</p>
+        <p style="margin:0">Beetroot aged in salt — blackcurrant leaf, walnut</p>
+      </div>
+    </div>
+  </div>
+  <div style="position:absolute;left:24px;bottom:32px;font-size:11px;letter-spacing:.08em">Photos: Fredericke Alma Sauerbrey</div>
+</div>
+<div class="dv-note" style="max-width:390px">
+  <div>Exception route: the text frame (top 120 → bottom 80) scrolls internally; 40/60px masked fades top and bottom. Photos, nav and credit stay fixed.</div>
+  <div>Scroll inside the frame moves the text normally; it also accelerates the dissolve — the two are not in conflict.</div>
+  <div>No scrollbar drawn. Bio first, menu second, ( ) closes the list.</div>
+</div>
+</div>
+
+<div class="dv-opt" id="1i"><div class="dv-olabel"><a class="dv-oid" href="#1i">1i</a>Music · mobile 390×844</div>
+<div class="dv-card" data-screen-label="Music mobile" style="width:390px;height:844px;position:relative;color:#D6CFAF;font-family:Typo,'Courier New',monospace">
+  {{ musicStack }}
+  <div style="position:absolute;inset:0;background:radial-gradient(ellipse 100% 60% at 50% 50%,rgba(11,10,8,.5) 0%,rgba(11,10,8,.88) 100%)"></div>
+  <div style="position:absolute;top:56px;left:24px;font-size:22px;line-height:1;letter-spacing:.15em">( )</div>
+  <div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:0 28px;gap:44px">
+    <div style="display:flex;flex-direction:column;gap:16px;font-size:22px;line-height:1.35;letter-spacing:.03em;animation:rise 1.2s cubic-bezier(.2,.6,.2,1) .15s both">
+      <div>Tastes like sound<br>= Planatia</div>
+      <div>Sounds like taste<br>= ( parentesi )</div>
+    </div>
+    <div style="width:100%;height:100px;border:1px solid rgba(214,207,175,.45);display:flex;align-items:center;justify-content:center;font-size:12px;letter-spacing:.1em;padding:0 16px;text-align:center;animation:rise 1.2s cubic-bezier(.2,.6,.2,1) .3s both">( soundcloud embed — planatia )</div>
+    <div style="display:flex;flex-direction:column;gap:14px;font-size:13px;letter-spacing:.12em;animation:rise 1.2s cubic-bezier(.2,.6,.2,1) .45s both">
+      <a href="https://soundcloud.com/planatia" style="color:#D6CFAF;text-decoration:none;border-bottom:1px solid rgba(214,207,175,.5);padding-bottom:2px">soundcloud</a>
+      <a href="https://www.instagram.com/planatia/" style="color:#D6CFAF;text-decoration:none;border-bottom:1px solid rgba(214,207,175,.5);padding-bottom:2px">instagram</a>
+      <a href="mailto:parentesi.berlin@gmail.com" style="color:#D6CFAF;text-decoration:none;border-bottom:1px solid rgba(214,207,175,.5);padding-bottom:2px">bookings</a>
+    </div>
+  </div>
+  <div style="position:absolute;left:24px;bottom:32px;font-size:11px;letter-spacing:.08em">Photos: Fredericke Alma Sauerbrey</div>
+</div>
+<div class="dv-note" style="max-width:390px">
+  <div>Equation breaks before “=” on mobile, 22/1.35. Embed full-width, 100px. Links stack vertically, ≥44px tap rows.</div>
+</div>
+</div>
+
+<div class="dv-opt" id="1j"><div class="dv-olabel"><a class="dv-oid" href="#1j">1j</a>Contact · mobile 390×844</div>
+<div class="dv-card" data-screen-label="Contact mobile" style="width:390px;height:844px;position:relative;color:#D6CFAF;font-family:Typo,'Courier New',monospace">
+  {{ contactStack }}
+  <div style="position:absolute;inset:0;background:radial-gradient(ellipse 110% 70% at 50% 45%,rgba(11,10,8,.28) 0%,rgba(11,10,8,.72) 100%)"></div>
+  <div style="position:absolute;top:56px;left:24px;font-size:22px;line-height:1;letter-spacing:.15em">( )</div>
+  <div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;animation:rise .8s cubic-bezier(.2,.6,.2,1) .1s both">
+    <div style="width:240px;height:120px;display:flex;align-items:center;justify-content:center;overflow:visible"><span style="font-size:200px;line-height:1;display:block;animation:parenT 1.1s cubic-bezier(.2,.7,.2,1) .3s both">(</span></div>
+    <div style="display:flex;flex-direction:column;gap:18px;text-align:center;font-size:17px;line-height:1.4;letter-spacing:.03em;padding:24px 0;animation:reveal 1.4s ease-out .3s both">
+      <a href="mailto:parentesi.berlin@gmail.com" style="color:#D6CFAF;text-decoration:none">parentesi.berlin@gmail.com</a>
+      <a href="tel:+393408732532" style="color:#D6CFAF;text-decoration:none">+39 340 873 2532</a>
+      <a href="#" style="color:#D6CFAF;text-decoration:none;font-size:13px;letter-spacing:.12em">instagram</a>
+      <div style="font-size:13px;letter-spacing:.12em">Berlin · itinerant</div>
+    </div>
+    <div style="width:240px;height:120px;display:flex;align-items:center;justify-content:center;overflow:visible"><span style="font-size:200px;line-height:1;display:block;animation:parenB 1.1s cubic-bezier(.2,.7,.2,1) .3s both">)</span></div>
+  </div>
+  <div style="position:absolute;left:24px;bottom:32px;font-size:11px;letter-spacing:.08em;line-height:1.5">Photos: Fredericke Alma Sauerbrey,<br>Zoe Spawton</div>
+</div>
+<div class="dv-note" style="max-width:390px">
+  <div>Portrait has no room to flank: the parentheses rotate 90° and bracket the block above and below (200px glyphs, 120px rows). Same glyph, same face — still typeset.</div>
+  <div>Same entrance as desktop, vertical: the pair appears closed, each glyph travels 130px up/down over 1100ms cubic-bezier(.2,.7,.2,1) from 300ms; details fade in during the second half.</div>
+  <div>Credit wraps to two lines.</div>
+</div>
+</div>
+
+</div>
+<p class="dv-next">Try next: “swap the rotated parens in <a class="dv-oid" href="#1j">1j</a> for a smaller flanking pair” · “make the food menu in <a class="dv-oid" href="#1c">1c</a> a single centred column” · “show the nav mid-transition”</p>
+</section>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  stack(files, opts = {}) {
+    const n = files.length, T = (opts.per || 7) * n;
+    return React.createElement('div', { style: { position: 'absolute', inset: 0, background: '#0b0a08', overflow: 'hidden' } },
+      files.map((f, i) => React.createElement('img', {
+        key: f, src: 'static/photos/' + encodeURIComponent(f), alt: '',
+        style: { position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', opacity: 0,
+          animation: `pxfade${n} ${T}s linear infinite`, animationDelay: `${-(T / n / 2 + (T / n) * i)}s`,
+          filter: opts.dark ? 'brightness(.6) saturate(.8)' : 'none' }
+      })));
+  }
+  renderVals() {
+    const cover = '( ) Cover.jpg', cut = '( ) Cutting.jpg', steam = '( ) Pietro steam.jpg', plate = '( ) Plating live.jpg';
+    return {
+      homeStack: this.stack([cover, plate, steam, cut]),
+      foodStack: this.stack([cut, plate, steam]),
+      musicStack: this.stack([steam, cover, cut], { dark: true }),
+      contactStack: this.stack([cover, plate, cut])
+    };
+  }
+}
+</script>
+</body>
+</html>
