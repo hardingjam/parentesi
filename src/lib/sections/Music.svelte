@@ -31,9 +31,9 @@
 		></iframe>
 	</div>
 	<ul class="links rise" style="--d: 450ms">
-		<li><a href="https://soundcloud.com/planatia" rel="external">soundcloud</a></li>
-		<li><a href="https://www.instagram.com/planatia/" rel="external">instagram</a></li>
-		<li><a href="mailto:parentesi.berlin@gmail.com">bookings</a></li>
+		<li><a class="link" href="https://soundcloud.com/planatia" rel="external">soundcloud</a></li>
+		<li><a class="link" href="https://www.instagram.com/planatia/" rel="external">instagram</a></li>
+		<li><a class="link" href="mailto:parentesi.berlin@gmail.com">bookings</a></li>
 	</ul>
 </Stage>
 
@@ -90,13 +90,6 @@
 		list-style: none;
 		font-size: 15px;
 		letter-spacing: 0.14em;
-	}
-	.links a {
-		border-bottom: 1px solid rgba(214, 207, 175, 0.5);
-		transition: border-color 200ms;
-	}
-	.links a:hover {
-		border-color: var(--ecru);
 	}
 
 	@media (max-width: 1023px) {

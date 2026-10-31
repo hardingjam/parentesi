@@ -6,10 +6,10 @@
 	<div class="row rise" style="--d: 100ms">
 		<span class="big left" aria-hidden="true">(</span>
 		<div class="reveal block">
-			<a href="mailto:parentesi.berlin@gmail.com">parentesi.berlin@gmail.com</a>
-			<a href="tel:+393408732532">+39 340 873 2532</a>
+			<a class="link" href="mailto:parentesi.berlin@gmail.com">parentesi.berlin@gmail.com</a>
+			<a class="link" href="tel:+393408732532">+39 340 873 2532</a>
 			<!-- Instagram handle TBC with owner; placeholder points at Planatia -->
-			<a href="https://www.instagram.com/planatia/" rel="external">instagram</a>
+			<a class="link" href="https://www.instagram.com/planatia/" rel="external">instagram</a>
 			<p class="place">Berlin · itinerant</p>
 		</div>
 		<span class="big right" aria-hidden="true">)</span>

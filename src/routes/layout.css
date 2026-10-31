@@ -44,6 +44,17 @@ a {
 	text-decoration: none;
 }
 
+/* Text links in the copy (music, contact): a quiet underline that firms
+   up on hover/focus. */
+.link {
+	border-bottom: 1px solid rgba(214, 207, 175, 0.5);
+	transition: border-color 200ms;
+}
+.link:hover,
+.link:focus-visible {
+	border-color: var(--ecru);
+}
+
 /* Entrance animations (once per page load). Delay via --d. */
 @keyframes rise {
 	from {
