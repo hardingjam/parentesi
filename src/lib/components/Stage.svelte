@@ -1,14 +1,13 @@
 <script lang="ts">
 	import type { Snippet } from 'svelte';
 	import type { Section } from '$lib/content';
-	import { nav } from '$lib/nav.svelte';
 
 	// One full-screen section of the scrolling page: centered copy over the
-	// fixed photo reel (PhotoStack, in the page), dimmed while the nav is open.
+	// fixed photo reel (PhotoStack, in the page).
 	let { id, children }: { id: Section; children: Snippet } = $props();
 </script>
 
-<section {id} class="stage" class:dimmed={nav.open}>
+<section {id} class="stage">
 	{@render children()}
 </section>
 
@@ -23,10 +22,6 @@
 		justify-content: center;
 		text-align: center;
 		padding: 140px 160px;
-		transition: opacity 200ms;
-	}
-	.stage.dimmed {
-		opacity: 0.35;
 	}
 
 	@media (max-width: 1023px) {

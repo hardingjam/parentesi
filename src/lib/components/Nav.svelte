@@ -311,17 +311,19 @@
 		backdrop-filter: blur(4px);
 	}
 
-	/* Phones and tablets: a vertical mark in the top-left corner, the nav
-	   text at the h2 size. The parens lie on their side above and below the
-	   word (︵ food ︶); opening slides the lower one down as the slot grows
-	   from one line to the stacked list, over a blurred page. */
+	/* Phones and tablets: a vertical mark in the top-left corner. Closed,
+	   it's just the parens on their side (︵ ︶), stacked close; opening
+	   slides the lower one down as the slot grows to the stacked list
+	   (h2-size links), over a blurred page. */
 	@media (max-width: 1023px) {
 		.paren {
 			transform: rotate(90deg);
 		}
 		.slot {
+			/* Closed, the slot is empty and the paren boxes overlap, leaving
+			   ~20px between the arcs' tips. */
 			margin: -8px 0;
-			height: var(--open-h, 44px);
+			height: var(--open-h, 0px);
 			transition:
 				width 320ms var(--ease-paren),
 				height 500ms var(--ease-paren);
@@ -330,17 +332,14 @@
 			overflow-y: clip;
 			overflow-clip-margin: 12px;
 		}
-		.label,
 		.links a {
 			font-size: var(--text-lg);
 			letter-spacing: 0;
 			min-height: 44px;
 		}
+		/* The page name only shows in the open list on phones. */
 		.label {
-			position: absolute;
-			top: 0;
-			left: 0;
-			height: auto;
+			display: none;
 		}
 		.links {
 			flex-direction: column;
