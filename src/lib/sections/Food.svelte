@@ -1,11 +1,12 @@
 <script lang="ts">
 	import Stage from '$lib/components/Stage.svelte';
 
+	// Non-breaking space before the stars so they never wrap alone.
 	const restaurants = [
-		'Le Bristol***',
-		'Il Luogo di Aimo e Nadia**',
-		'Joia*',
-		'Vun**',
+		'Le Bristol\u00a0***',
+		'Il Luogo di Aimo e Nadia\u00a0**',
+		'Joia\u00a0*',
+		'Vun\u00a0**',
 		'Chez Panisse'
 	];
 	const services = [
