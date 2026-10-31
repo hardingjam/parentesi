@@ -47,7 +47,7 @@
 			</ul>
 		</div>
 		<div class="menu rise" style="--d: 300ms">
-			<p class="label">( a sample menu )</p>
+			<p class="label">( sample menu )</p>
 			{#each menu as dish (dish)}
 				<p class="dish">{dish}</p>
 			{/each}
