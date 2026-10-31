@@ -76,7 +76,7 @@
 	}
 	.manifesto {
 		max-width: 700px;
-		font-size: 22px;
+		font-size: var(--text-md);
 		line-height: 1.6;
 	}
 	.manifesto p {
@@ -89,7 +89,7 @@
 		margin: 44px 0 0;
 		padding: 0;
 		list-style: none;
-		font-size: 15px;
+		font-size: var(--text-sm);
 		line-height: 1.9;
 		letter-spacing: 0.14em;
 	}
@@ -108,7 +108,6 @@
 			--travel: 140px;
 		}
 		.manifesto {
-			font-size: 17px;
 			line-height: 1.55;
 		}
 		.manifesto p + p {
@@ -116,7 +115,6 @@
 		}
 		.services {
 			margin-top: 36px;
-			font-size: 13px;
 			letter-spacing: 0.12em;
 		}
 	}

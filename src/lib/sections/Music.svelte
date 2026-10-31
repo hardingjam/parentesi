@@ -44,21 +44,21 @@
 	}
 	h2 {
 		margin: 0 0 28px;
-		font-size: 32px;
+		font-size: var(--text-lg);
 		font-weight: 400;
 		line-height: 1.2;
 		letter-spacing: 0.04em;
 	}
 	.intro p {
 		margin: 0;
-		font-size: 17px;
+		font-size: var(--text-md);
 		line-height: 1.65;
 	}
 	.intro p + p {
 		margin-top: 14px;
 	}
 	.equation {
-		font-size: 36px;
+		font-size: var(--text-lg);
 		line-height: 1.3;
 		letter-spacing: 0.04em;
 	}
@@ -88,7 +88,7 @@
 		margin: 56px 0 0;
 		padding: 0;
 		list-style: none;
-		font-size: 15px;
+		font-size: var(--text-sm);
 		letter-spacing: 0.14em;
 	}
 
@@ -98,14 +98,11 @@
 		}
 		h2 {
 			margin-bottom: 22px;
-			font-size: 24px;
 		}
 		.intro p {
-			font-size: 15px;
 			line-height: 1.6;
 		}
 		.equation {
-			font-size: 22px;
 			line-height: 1.35;
 			letter-spacing: 0.03em;
 		}
@@ -127,7 +124,6 @@
 			flex-direction: column;
 			gap: 14px;
 			margin-top: 44px;
-			font-size: 13px;
 			letter-spacing: 0.12em;
 		}
 		.links a {

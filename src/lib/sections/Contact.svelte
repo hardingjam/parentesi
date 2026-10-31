@@ -49,7 +49,7 @@
 		flex-direction: column;
 		gap: 22px;
 		align-items: center;
-		font-size: 22px;
+		font-size: var(--text-md);
 		line-height: 1.4;
 		letter-spacing: 0.04em;
 	}
@@ -103,7 +103,6 @@
 		.block {
 			gap: 18px;
 			padding: 24px 0;
-			font-size: 17px;
 			letter-spacing: 0.03em;
 		}
 	}

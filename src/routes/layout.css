@@ -13,6 +13,20 @@
 	--base: #0b0a08;
 	--ease-entrance: cubic-bezier(0.2, 0.6, 0.2, 1);
 	--ease-paren: cubic-bezier(0.2, 0.7, 0.2, 1);
+	/* The one type scale for all section copy: headings, body, small
+	   (labels, lists, links). Display type — the wordmark, contact's giant
+	   parens, the nav — sits outside it. */
+	--text-lg: 32px;
+	--text-md: 20px;
+	--text-sm: 15px;
+}
+
+@media (max-width: 1023px) {
+	:root {
+		--text-lg: 24px;
+		--text-md: 16px;
+		--text-sm: 13px;
+	}
 }
 
 html,
