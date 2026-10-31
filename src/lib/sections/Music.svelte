@@ -8,6 +8,15 @@
 </script>
 
 <Stage id="music">
+	<div class="intro rise" style="--d: 100ms">
+		<h2>( music )</h2>
+		<p>Sound curation by Planatia.</p>
+		<!-- Placeholder until the owner sends the real copy. -->
+		<p>
+			Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
+			labore et dolore magna aliqua.
+		</p>
+	</div>
 	<div class="equation rise" style="--d: 150ms">
 		<p>Tastes like sound <span class="eq">= Planatia</span></p>
 		<p>Sounds like taste <span class="eq">= ( parentesi )</span></p>
@@ -29,6 +38,25 @@
 </Stage>
 
 <style>
+	.intro {
+		max-width: 560px;
+		margin-bottom: 56px;
+	}
+	h2 {
+		margin: 0 0 28px;
+		font-size: 32px;
+		font-weight: 400;
+		line-height: 1.2;
+		letter-spacing: 0.04em;
+	}
+	.intro p {
+		margin: 0;
+		font-size: 17px;
+		line-height: 1.65;
+	}
+	.intro p + p {
+		margin-top: 14px;
+	}
 	.equation {
 		font-size: 36px;
 		line-height: 1.3;
@@ -72,6 +100,17 @@
 	}
 
 	@media (max-width: 1023px) {
+		.intro {
+			margin-bottom: 44px;
+		}
+		h2 {
+			margin-bottom: 22px;
+			font-size: 24px;
+		}
+		.intro p {
+			font-size: 15px;
+			line-height: 1.6;
+		}
 		.equation {
 			font-size: 22px;
 			line-height: 1.35;
