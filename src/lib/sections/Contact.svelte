@@ -8,8 +8,8 @@
 		<div class="reveal block">
 			<a class="link" href="mailto:parentesi.berlin@gmail.com">parentesi.berlin@gmail.com</a>
 			<a class="link" href="tel:+393408732532">+39 340 873 2532</a>
-			<!-- Instagram handle TBC with owner; placeholder points at Planatia -->
-			<a class="link" href="https://www.instagram.com/planatia/" rel="external">instagram</a>
+			<a class="link" href="https://www.instagram.com/parentesi.berlin/" rel="external">instagram</a
+			>
 			<p class="place">Berlin · itinerant</p>
 		</div>
 		<span class="big right" aria-hidden="true">)</span>
