@@ -24,6 +24,11 @@
 	// its ≥44px hit box, which already contributes ~15px of visual air — a
 	// full linkGap here made ") contact" read much wider than "( food".
 	const trailingGap = 8;
+	// The closed ( ) mark: the closing paren's hit box tucks this far under
+	// the opening one's, so the glyphs sit closer without shrinking either
+	// tap target (both parens do the same thing). Must match the negative
+	// margin-left on .paren.closing in the CSS below.
+	const parenOverlap = $derived(isMobile ? 12 : 16);
 	// On a narrow phone there isn't always room for the full link row
 	// between the parens' hit areas and the screen edges, so on mobile the
 	// links are capped (and clipped) to whatever room is actually
@@ -36,7 +41,8 @@
 	);
 	// Distance the closing paren travels when the nav opens, i.e. how far
 	// past the opening paren's hit area it rests.
-	const openDistance = $derived(linksContentWidth + trailingGap);
+	// (+ parenOverlap: the open position is unchanged by the tuck.)
+	const openDistance = $derived(linksContentWidth + trailingGap + parenOverlap);
 
 	// Mouse users: the nav opens when the pointer enters it and closes when
 	// it leaves; the parens are then plain home links. Touch input (phones,
@@ -225,9 +231,16 @@
 
 	.paren.closing {
 		position: relative;
+		margin-left: -16px; /* parenOverlap */
 		transition:
 			transform 320ms var(--ease-paren),
 			opacity 200ms;
+	}
+
+	@media (max-width: 1023px) {
+		.paren.closing {
+			margin-left: -12px; /* parenOverlap */
+		}
 	}
 
 	.links {
