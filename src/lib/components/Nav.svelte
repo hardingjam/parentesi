@@ -181,9 +181,11 @@
 
 	@media (max-width: 1023px) {
 		.paren {
-			min-width: 44px;
+			/* Narrower than 44px so the 24px row fits from 400px up; still
+			   well over the 24px minimum tap target. */
+			min-width: 36px;
 			min-height: 44px;
-			font-size: 22px;
+			font-size: 24px;
 		}
 	}
 
@@ -202,7 +204,7 @@
 
 	@media (max-width: 1023px) {
 		.slot {
-			margin: 0 -4px;
+			margin: 0 -3px;
 		}
 	}
 
@@ -257,12 +259,12 @@
 	}
 
 	@media (max-width: 1023px) {
-		/* Sized so all of "home food music contact" fits between two 44px
-		   parens down to a 360px screen (measured: 15px clips at 360). */
+		/* Phones: the h2 size (24px), open and closed. Untracked and with
+		   tight word gaps so the open row fits from a 400px screen up. */
 		.label,
 		.links a {
-			font-size: 14px;
-			letter-spacing: 0.04em;
+			font-size: 24px;
+			letter-spacing: 0;
 		}
 		.links {
 			gap: 8px;
@@ -293,5 +295,23 @@
 	nav.open .links a[aria-current] {
 		opacity: 1;
 		pointer-events: none;
+	}
+
+	/* Very small phones (under 400px: iPhone SE/mini, iPhone 12–15, small
+	   Androids): the 24px row can't fit, so the whole mark steps down
+	   (fits down to 360px). */
+	@media (max-width: 399px) {
+		.paren {
+			min-width: 44px;
+			font-size: 22px;
+		}
+		.slot {
+			margin: 0 -4px;
+		}
+		.label,
+		.links a {
+			font-size: 14px;
+			letter-spacing: 0.04em;
+		}
 	}
 </style>
