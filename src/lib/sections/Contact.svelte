@@ -32,9 +32,7 @@
 					>
 				</a>
 			</div>
-			<!-- Plain text so it can be selected and copied (one click selects
-			     it all). -->
-			<p class="number">+39 340 873 2532</p>
+			<a class="number" href="tel:+393408732532">+39 340 873 2532</a>
 		</div>
 		<span class="big right" aria-hidden="true">)</span>
 	</div>
@@ -77,9 +75,6 @@
 		line-height: 1.4;
 		letter-spacing: 0.04em;
 	}
-	.block p {
-		margin: 0;
-	}
 	.icons {
 		display: flex;
 		gap: 32px;
@@ -109,7 +104,11 @@
 		transform: scale(1.12);
 	}
 	.number {
-		user-select: all;
+		transition: opacity 200ms;
+	}
+	.number:hover,
+	.number:focus-visible {
+		opacity: 0.7;
 	}
 
 	@media (prefers-reduced-motion: reduce) {
