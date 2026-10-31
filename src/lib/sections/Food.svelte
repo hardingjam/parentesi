@@ -76,6 +76,9 @@
 	}
 	.bio {
 		gap: 28px;
+		/* The services grid below switches on when this column is wide
+		   enough for it. */
+		container-type: inline-size;
 	}
 	.menu {
 		gap: 22px;
@@ -110,6 +113,19 @@
 		line-height: 1.9;
 		letter-spacing: 0.14em;
 	}
+	/* Services as a 2 × 2 grid with a · between the columns, wherever the
+	   column fits it (measured: 437px at 15px, i.e. desktops from ~1320px);
+	   narrower they stay a plain list. */
+	@container (min-width: 440px) {
+		.services {
+			display: grid;
+			grid-template-columns: repeat(2, max-content);
+		}
+		.services li:nth-child(even)::before {
+			content: '·';
+			margin: 0 0.5em;
+		}
+	}
 	.dish {
 		margin: 0;
 		font-size: var(--text-md);
@@ -126,7 +142,8 @@
 			gap: 14px;
 		}
 		.menu > .label:first-child {
-			margin-top: 18px;
+			/* + the 22px gap: 64px from the services to the menu. */
+			margin-top: 42px;
 		}
 		.label {
 			letter-spacing: 0.12em;
@@ -141,10 +158,29 @@
 			gap: 8px;
 		}
 		.services {
-			letter-spacing: 0.12em;
+			/* + the 22px gap: 44px from the CV to the services. */
+			margin-top: 22px;
+			letter-spacing: 0.04em;
+			text-align: center;
 		}
 		.dish {
 			line-height: 1.5;
+		}
+	}
+	/* Phones: the same grid, centred, wherever it fits (measured: 330px at
+	   13px, i.e. phones from ~386px); narrower it stays a centred list. */
+	@media (max-width: 1023px) {
+		@container (min-width: 332px) {
+			.services {
+				display: grid;
+				grid-template-columns: repeat(2, max-content);
+				justify-content: center;
+				text-align: left;
+			}
+			.services li:nth-child(even)::before {
+				content: '·';
+				margin: 0 0.5em;
+			}
 		}
 	}
 </style>
