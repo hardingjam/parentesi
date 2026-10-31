@@ -4,7 +4,7 @@
 	const soundcloudSrc =
 		'https://w.soundcloud.com/player/?url=' +
 		encodeURIComponent('https://soundcloud.com/planatia') +
-		'&color=%23d6cfaf&auto_play=false&show_user=true&visual=false';
+		'&color=%23d6cfaf&auto_play=false&show_user=true&visual=true';
 </script>
 
 <Stage id="music">

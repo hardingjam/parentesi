@@ -109,19 +109,38 @@
 			text-align: center;
 		}
 	}
-	/* Phones: the same grid, centred, wherever it fits (measured: 330px at
-	   13px, i.e. phones from ~386px); narrower it stays a centred list. */
+	/* Phones and tablets: the same grid in two halves with the · centred
+	   between them, wherever it fits (measured: 330px at 13px, i.e. phones
+	   from ~386px); narrower it stays a centred list. On phones the halves
+	   are barely wider than the words, so each service hugs the ·. */
 	@media (max-width: 1023px) {
 		@container (min-width: 332px) {
 			.service-grid {
 				display: grid;
-				grid-template-columns: repeat(2, max-content);
-				justify-content: center;
+				grid-template-columns: 1fr 1fr;
+				column-gap: 1.6em;
+				white-space: nowrap;
+			}
+			.service-grid li:nth-child(odd) {
+				text-align: right;
+			}
+			.service-grid li:nth-child(even) {
+				position: relative;
 				text-align: left;
 			}
 			.service-grid li:nth-child(even)::before {
 				content: '·';
-				margin: 0 0.5em;
+				position: absolute;
+				right: calc(100% + 0.8em);
+				margin: 0;
+				transform: translateX(50%);
+			}
+		}
+		/* Tablets: each service centred in its half, so the grid spreads
+		   evenly across the column. */
+		@container (min-width: 520px) {
+			.service-grid li:nth-child(n) {
+				text-align: center;
 			}
 		}
 	}

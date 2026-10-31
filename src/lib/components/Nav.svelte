@@ -8,6 +8,15 @@
 
 	const links = ['home', 'food', 'music', 'contact'] as const;
 
+	// The top-of-screen haze: each layer blurs fully down to `from` (px
+	// from the top), then fades out by `to`.
+	const hazeLayers = [
+		{ blur: 16, from: 30, to: 70 },
+		{ blur: 8, from: 50, to: 95 },
+		{ blur: 4, from: 70, to: 120 },
+		{ blur: 2, from: 90, to: 150 }
+	];
+
 	// The mark always names the section in view: `( food )` closed, the
 	// full `( home food music contact )` row open. The slot between the
 	// parens animates between the two measured widths (the brand face isn't
@@ -97,6 +106,16 @@
 	onpointerdown={onWindowPointerDown}
 	onpointermove={onPointerEvent}
 />
+
+<!-- Keeps the mark legible over copy scrolling beneath it: the top of the
+     screen is always blurred, thinning out downwards. A graded blur:
+     stacked layers, the stronger ones stopping sooner, so it fades out
+     instead of ending on a line. -->
+<div class="haze" aria-hidden="true">
+	{#each hazeLayers as layer (layer.blur)}
+		<div style="--blur: {layer.blur}px; --from: {layer.from}px; --to: {layer.to}px"></div>
+	{/each}
+</div>
 
 <!-- Blurs the page behind the open menu so it reads (a touch on desktop,
      more on phones, where the menu sits over the copy). -->
@@ -293,6 +312,36 @@
 	nav.open .links a[aria-current] {
 		opacity: 1;
 		pointer-events: none;
+	}
+
+	/* Strongest behind the mark, all but gone by the sections' 140px top
+	   padding, so copy at rest is barely touched. */
+	.haze {
+		position: fixed;
+		inset: 0 0 auto;
+		height: 180px;
+		z-index: 29;
+		pointer-events: none;
+		--shift: 0px;
+	}
+	.haze div {
+		position: absolute;
+		inset: 0;
+		-webkit-backdrop-filter: blur(var(--blur));
+		backdrop-filter: blur(var(--blur));
+		--mask: linear-gradient(
+			black calc(var(--shift) + var(--from)),
+			transparent calc(var(--shift) + var(--to))
+		);
+		-webkit-mask-image: var(--mask);
+		mask-image: var(--mask);
+	}
+
+	@media (max-width: 1023px) {
+		/* The vertical mark reaches further down. */
+		.haze {
+			--shift: 20px;
+		}
 	}
 
 	.veil {
