@@ -11,8 +11,11 @@ const ease = (t: number) => (t < ACCEL ? t ** 3 / ACCEL ** 2 : 1 - (1 - t) ** 3 
 
 let stopCurrent: (() => void) | undefined;
 
-/** True while a glide is moving the page (the nav label and reel wait). */
-export const glide = $state({ active: false });
+/**
+ * The section a glide is heading to while it moves the page, else null.
+ * The nav names it straight away; the photo reel waits for arrival.
+ */
+export const glide: { target: Section | null } = $state({ target: null });
 
 /**
  * Glide the page to a section and put its #hash in the URL. Native
@@ -46,7 +49,7 @@ export function glideTo(id: Section) {
 		cancelAnimationFrame(frame);
 		for (const type of ['wheel', 'touchstart', 'keydown']) removeEventListener(type, stop);
 		stopCurrent = undefined;
-		glide.active = false;
+		glide.target = null;
 	};
 	let frame = requestAnimationFrame(function step(now) {
 		const t = Math.min((now - start) / duration, 1);
@@ -58,5 +61,5 @@ export function glideTo(id: Section) {
 		addEventListener(type, stop, { passive: true });
 	}
 	stopCurrent = stop;
-	glide.active = true;
+	glide.target = id;
 }

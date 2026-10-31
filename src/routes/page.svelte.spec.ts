@@ -23,7 +23,7 @@ describe('one-page scroll', () => {
 			.toContain('brightness');
 	});
 
-	it('glides to a section from the nav, holding the nav label and photos until arrival', async () => {
+	it('glides to a section from the nav: names it at once, holds the photos until arrival', async () => {
 		render(Page);
 		scrollTo(0, 0);
 		const target = document.getElementById('contact')!.offsetTop;
@@ -41,10 +41,12 @@ describe('one-page scroll', () => {
 		document.querySelector<HTMLAnchorElement>('nav a[href="#contact"]')!.click();
 
 		// 300ms in, an ease-in-out glide has barely started (native smooth
-		// scrolling would be most of the way there).
+		// scrolling would be most of the way there), but the nav already
+		// names the destination.
 		await new Promise((r) => setTimeout(r, 300));
 		expect(scrollY).toBeGreaterThan(0);
 		expect(scrollY).toBeLessThan(target * 0.2);
+		expect(document.querySelector('nav .label')?.textContent).toBe('contact');
 
 		await expect.poll(() => Math.round(scrollY), { timeout: 4000 }).toBe(target);
 		// Arrived: the reel retunes to contact, never having shown food, and
@@ -57,5 +59,18 @@ describe('one-page scroll', () => {
 		expect([...labels]).not.toContain('food');
 		expect([...labels]).not.toContain('music');
 		expect(document.querySelector('nav .label')?.textContent).toBe('contact');
+	});
+
+	it('names the section actually in view if the user breaks off a glide', async () => {
+		render(Page);
+		scrollTo(0, 0);
+		nav.open = true;
+		document.querySelector<HTMLAnchorElement>('nav a[href="#contact"]')!.click();
+		await new Promise((r) => setTimeout(r, 300));
+		expect(document.querySelector('nav .label')?.textContent).toBe('contact');
+
+		// Still in the home section's half of the screen when interrupted.
+		window.dispatchEvent(new WheelEvent('wheel'));
+		await expect.poll(() => document.querySelector('nav .label')?.textContent).toBe('home');
 	});
 });
