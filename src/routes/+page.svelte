@@ -8,14 +8,13 @@
 	import { sections, stages, type Section } from '$lib/content';
 	import { glide } from '$lib/scroll.svelte';
 
-	// Scroll spy: the section crossing the viewport's midline is current. It
-	// is marked in the nav and retunes the one fixed photo reel, which holds
-	// still while a nav glide passes through other sections and changes once,
-	// on arrival.
+	// Scroll spy: the section crossing the viewport's midline is current. The
+	// shown section (named in the nav, retuning the one fixed photo reel)
+	// follows it, except during a nav glide, which changes it once, on arrival.
 	let current: Section = $state('home');
-	let photoSection: Section = $state('home');
+	let shown: Section = $state('home');
 	$effect(() => {
-		if (!glide.active) photoSection = current;
+		if (!glide.active) shown = current;
 	});
 
 	$effect(() => {
@@ -35,11 +34,11 @@
 	});
 </script>
 
-<PhotoStack spec={stages[photoSection]} />
+<PhotoStack spec={stages[shown]} />
 <main>
 	<Home />
 	<Food />
 	<Music />
 	<Contact />
 </main>
-<Nav {current} />
+<Nav current={shown} />

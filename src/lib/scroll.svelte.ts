@@ -11,7 +11,7 @@ const ease = (t: number) => (t < ACCEL ? t ** 3 / ACCEL ** 2 : 1 - (1 - t) ** 3 
 
 let stopCurrent: (() => void) | undefined;
 
-/** True while a glide is moving the page (the photo reel waits for it). */
+/** True while a glide is moving the page (the nav label and reel wait). */
 export const glide = $state({ active: false });
 
 /**
